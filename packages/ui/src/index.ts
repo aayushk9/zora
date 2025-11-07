@@ -1,0 +1,1 @@
+export const greet = (key: string) => `Hello ${key}`

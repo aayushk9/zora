@@ -1,0 +1,1 @@
+export const configExample = (key: string) => `Hello ${key}`
