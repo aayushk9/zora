@@ -1,15 +1,22 @@
+import Zora from './pages/Zora';
+import Query from './pages/Query';
+import Agents from './pages/Agents';
 
-//import { greet } from 'ui'
-
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
-  //console.log(greet("aayush"))
 
   return (
-    <>
-      
-    </>
+    <div>
+      <BrowserRouter>
+         <Routes>
+           <Route path='/' element={Zora} />
+           <Route path="/query" element={Query} />
+           <Route path='/query/:id' element={Query} />
+           <Route path="/agents" element={Agents}/>
+         </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 
