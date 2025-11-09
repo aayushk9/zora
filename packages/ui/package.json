@@ -1,11 +1,11 @@
 {
   "name": "ui",
   "version": "1.0.0",
-  "main": "index.ts",
-  "types": "index.d.ts",
+  "main": "./dist/index.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
   "license": "ISC",
-  "type": "commonjs"
+  "type": "module"
 }
