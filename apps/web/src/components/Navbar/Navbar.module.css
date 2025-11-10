@@ -1,0 +1,25 @@
+.parentContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.zora {
+  color: white;
+  font-family: sans-serif;
+  font-size: 24px;
+  margin-left: 2.5rem;
+  margin-top:8px
+}
+
+.signin {
+  background-color: deepskyblue;
+  color:white;
+  margin-right:0.5rem;
+  margin-top:2px;
+  font-size: 14px;
+  border-radius: 15%;
+  padding-left: 12px;
+  padding-right:12px;
+  padding-top:8px;
+  padding-bottom: 8px;
+}

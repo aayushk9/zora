@@ -1,7 +1,14 @@
-export function Navbar() {
-    return (
-        <div>
+import styles from './Navbar.module.css'
+import React from 'react'
 
-        </div>
+export function Navbar() {
+
+    return (
+        <React.Fragment>
+          <div className={styles.parentContainer}>
+            <span className={styles.zora}>Zora</span>
+            <button className={styles.signin}>Sign in</button>
+          </div>
+        </React.Fragment>
     )
 }
