@@ -23,7 +23,6 @@ export default function Zora() {
                         width: "100%",
                         overflowY: "auto",
                         display: "flex",
-                        flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "flex-start",
                         paddingTop: "20px",
@@ -34,9 +33,9 @@ export default function Zora() {
                         border: "1px solid rgba(255, 255, 255, 0.6)",
                         borderRadius: "20px",
                         color: "white",
-                        fontSize: "14px",
+                        fontSize: "12px",
                         letterSpacing: "1px",
-                        padding: "8px 16px",
+                        padding: "8px 18px",
                         textTransform: "uppercase",
                         
                         backdropFilter: "blur(6px)",
@@ -44,7 +43,7 @@ export default function Zora() {
                         currenlty supporting polymarket
                     </span>
 
-                    <h1>nmnmnmnmmnmdme</h1>
+                    
                 </div>
 
                 {/* import input box and events here */}
