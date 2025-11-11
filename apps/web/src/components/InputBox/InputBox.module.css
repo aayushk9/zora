@@ -1,7 +1,4 @@
 .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     border: 1px solid #333;
     border-radius: 12px;
     padding: 8px 14px;
@@ -13,41 +10,113 @@
     margin-top: 1.2rem;
 }
 
-.input {
+.form {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 750px;
+    margin-top:0.3rem;
+}
+
+.textArea {
     border: 1px solid #333;
-    background-color:  #141414;
-    color: white;
+    background:  #141414;
+    color: #fff;
     font-size: 15px;
-    padding: 0 10px;
-    border-radius: 12px;
-    height: 98%;
-    width: 98%;
+    padding: 12px 48px 12px 16px;
+    border-radius: 10px;
+    width: 100%;
     resize: none;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.textArea::placeholder {
+  color: #777
 }
 
 .sendBtn {
   position: absolute;
-  bottom: 8px;          /* same as container padding */
+  bottom: 8px;          
   right: 8px;
-  width: 28px;
-  height: 28px;
-  background: white;
+  width: 32px;
+  height: 32px;
+  background: #fff;
   border: none;
-  border-radius: 8px;   /* rounded */
+  border-radius: 8px;   
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, opacity 0.2s;
 }
 
-.sendBtn:hover {
+.sendBtn:hover:not(:disabled) {
   background: #f0f0f0;
 }
 
-/* arrow image */
+.sendBtn.disabled,
+.sendBtn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 .sendIcon {
   width: 20px;
   height: 20px;
   object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 660px;
+    }
+    .form {
+        width: 660px;
+    }
+}
+
+@media (max-width: 678px) {
+    .container {
+        width:490px;
+    }
+    .form {
+        width: 490px;
+    }
+}
+
+@media (max-width: 540px) {
+    .container {
+        width: 430px;
+    }
+    .form {
+        width: 430px;
+    }
+}
+
+@media (max-width: 470px) {
+    .container {
+        width: 340px;
+    }
+    .form {
+        width: 340px;
+    }
+}
+
+@media (max-width: 390px) {
+    .container {
+        width: 300px;
+    }
+    .form {
+        width: 300px;
+    }
+}
+
+@media (max-width: 360px) {
+    .container {
+        width: 290px;
+    }
+    .form {
+        width: 290px;
+    }
 }
