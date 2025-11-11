@@ -1,1 +1,1 @@
-zora
+Ask Zora to Trade Prediction Markets (under developement)
