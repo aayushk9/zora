@@ -20,7 +20,34 @@
     font-size: 15px;
     padding: 0 10px;
     border-radius: 12px;
-    height: 100%;
-    width: 100%;
-    vertical-align: top;
+    height: 98%;
+    width: 98%;
+    resize: none;
+}
+
+.sendBtn {
+  position: absolute;
+  bottom: 8px;          /* same as container padding */
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background: white;
+  border: none;
+  border-radius: 8px;   /* rounded */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sendBtn:hover {
+  background: #f0f0f0;
+}
+
+/* arrow image */
+.sendIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
