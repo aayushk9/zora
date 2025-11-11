@@ -1,7 +1,9 @@
+import React from "react"
+
 export function GeneralPlan () {
     return (
-        <div>
+        <React.Fragment>
 
-        </div>
+        </React.Fragment>
     )
 }
