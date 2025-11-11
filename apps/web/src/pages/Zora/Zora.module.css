@@ -1,0 +1,113 @@
+.parentContainer {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    height: 93vh;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
+    margin-top: 6px;
+}
+
+.childContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    align-items: center;
+    gap: 0.5rem
+}
+
+.miniHeader {
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding: 8px 18px;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    margin-bottom: 0.7rem;
+}
+
+.mainHeader {
+    color: #FFFFFF;
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: 38px;
+    margin: 0
+}
+
+.foot {
+    color: #CCCCCC;
+    font-size: 1rem;
+    font-family: sans-serif;
+    margin: 0;
+    line-height: 1.2
+}
+
+@media (max-width: 630px){
+    .mainHeader{
+        font-size: 30px;
+    }
+    .foot{
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .mainHeader {
+        font-size: 25px;
+    }
+    .foot {
+        font-size: 0.9rem;
+    }
+    .miniHeader{
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 465px) {
+    .mainHeader {
+        font-size: 22px;
+    }
+    .foot{
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 430px) {
+    .mainHeader {
+        font-size: 20px;
+    }
+    .foot {
+        font-size: 0.7rem;
+    }
+    .miniHeader {
+        font-size:9px;
+    }
+}
+
+@media (max-width: 390px) {
+
+    .mainHeader{
+        font-size: 19px;
+    }
+    .foot {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .miniHeader{
+        font-size:8px;
+    }
+
+    .mainHeader{
+        font-size: 17px;
+    }
+
+    .foot {
+        font-size: 0.6rem;
+    }
+}
