@@ -1,0 +1,26 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 8px 14px;
+    width: 750px;
+    height: 110px;
+    margin: 0 auto;
+    position: relative;
+    background: transparent;
+    margin-top: 1.2rem;
+}
+
+.input {
+    border: 1px solid #333;
+    background-color:  #141414;
+    color: white;
+    font-size: 15px;
+    padding: 0 10px;
+    border-radius: 12px;
+    height: 100%;
+    width: 100%;
+    vertical-align: top;
+}
