@@ -6,7 +6,7 @@ export function InputBox () {
         <React.Fragment>
           
            <div className={styles.container}>
-             <input className={styles.input} type="text"  placeholder="Describe your trading strategy idea"/>
+             <textarea className={styles.input} placeholder="Describe your trading strategy idea"/>
            </div>
           
         </React.Fragment>
