@@ -8,7 +8,6 @@ type Outcome = {
 export type EventCardProps = {
     imgUrl: string;
     title: string;
-    isLive: boolean;
     outcomes: Outcome[]
     totalVolume: number;
 }
