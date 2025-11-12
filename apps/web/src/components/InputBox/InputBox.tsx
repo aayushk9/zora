@@ -32,6 +32,23 @@ export function InputBox() {
                         placeholder="Describe your trading strategy idea..."
                         rows={4}
                     />
+                    {/*
+                      BACKLOG
+                      when user points cursor or keeps the pointer on text area you are supposed to
+                      display suggested prompts with expanded view of entire container
+
+                      how?
+                      mainly two changes
+                      if user keeps the pointer on textarea
+
+                      a) in styles include a expanded area box of form ie textarea box and add a 
+                         border in between noraml textarea which is plain and suggested prompts
+
+                     b) how to display prompts on expanded view
+                        add if else if pointer moves to textarea add suggested prompts to 
+                        some jsx tag
+                    
+                    */}
                     <button
                         type="submit"
                         disabled={isEmpty}
