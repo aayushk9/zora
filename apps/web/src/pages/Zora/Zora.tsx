@@ -15,7 +15,7 @@ export default function Zora() {
                         supporting jupiter prediction markets
                     </span>
                     <h1 className={styles.mainHeader}>
-                        Ask Zora to Trade <span style={{ color: "#00E7FF"}}>Prediction Markets</span>
+                        Ask Zora to Trade <span>Prediction Markets</span>
                     </h1>
                     <span className={styles.foot}>
                         Build prediction market strategies in minutes with a single prompt
