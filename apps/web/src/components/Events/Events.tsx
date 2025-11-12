@@ -20,7 +20,7 @@ export function Events () {
   // send a request to /api/eventcategory as a post request with active category and request for
   // events with that active category
   }, [active])
-  
+
   const searchForEventFromDB = () => {
     // send searchinput to server throigh post request
   }
@@ -35,6 +35,13 @@ export function Events () {
     // FETCH -> GET -> RESPONSE -> PUT RESPONSE IN STATE -> DISPLAY STATE
 
     // send search data to backend (user i/p collected from frontend store it in state var and send to an api endpoint)
+
+    // events will be coming from backend for that we need to create event card component which should accept 
+    // certain props ie whatever resposne coming from backend such as imgyrl, title, description, options, etc
+    // style that box in certain manner and import that card component here 
+    // at frontend those props == state 
+    // such as prop imgurl = state imgurl
+    // setImageURL(res.data.imgURL)
     return (
         <React.Fragment>
           <div className={styles.container}>
