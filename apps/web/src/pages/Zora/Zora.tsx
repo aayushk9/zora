@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar } from "../../components/Navbar/Navbar.tsx"
 import  { InputBox } from '../../components/InputBox/InputBox.tsx'
+import { Events } from "../../components/Events/Events.tsx"
 import styles from './Zora.module.css'
 
 export default function Zora() {
@@ -11,18 +12,18 @@ export default function Zora() {
             <div className={styles.parentContainer}>
                 <div className={styles.childContainer}>
                     <span className={styles.miniHeader}>
-                        currenlty supporting polymarket
+                        supporting jupiter prediction markets
                     </span>
                     <h1 className={styles.mainHeader}>
                         Ask Zora to Trade <span style={{ color: "#00E7FF"}}>Prediction Markets</span>
                     </h1>
                     <span className={styles.foot}>
-                        Build prediction market strategies in minutes with a single prompt.
+                        Build prediction market strategies in minutes with a single prompt
                     </span>   
                 </div>
-                <div id="imports">
+            
                   <InputBox/>
-                </div>
+                  <Events/>
             </div>
         </React.Fragment>
     )
