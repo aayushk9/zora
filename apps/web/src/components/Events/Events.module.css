@@ -9,6 +9,7 @@
     color: #d1d6d4;
     font-size: 18px;
     font-family: sans-serif;
+    margin-left:7px;
 }
 
 .searchContainer {
@@ -21,8 +22,8 @@
 
 .search {
     margin-top: 20px;
-    background-color: black;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.932);
+    border: 1px solid rgba(255, 255, 255, 0.11);
     padding-right: 50px;
     width: 100%;
     padding: 10px 20px;
@@ -32,8 +33,7 @@
 
 .search:focus {
     outline: none;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-
+    border: 2px solid rgba(255, 255, 255, 0.082);
 }
 
 .searchBar {
@@ -45,14 +45,14 @@
     background-color: #222;
     color: #ccc;
     border: none;
-    padding: 6px 12px;
+    padding: 3px 6px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 0.9em;
 }
 
 .active {
-   background-color: #007bff; 
+    background-color: #007bff; 
     color: white;
     font-weight: bold;
 }
@@ -61,8 +61,9 @@
    display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-left:5px;
     padding-bottom: 10px;
+    margin-top:12px;
 }
 
 .eventsGrid {
