@@ -2,14 +2,13 @@ import React from "react"
 import styles from './EventCard.module.css'
 import type { EventCardProps } from "../../types/event"
 
-export function EventCard({ imgUrl, title, isLive, outcomes, totalVolume }: EventCardProps) {
+export function EventCard({ imgUrl, title, outcomes, totalVolume }: EventCardProps) {
     return (
         <React.Fragment>
             <div className={styles.parentContainer}>
                 <div className={styles.header}>
                     <img src={imgUrl} alt="event icon" className={styles.icon} />
                     <span className={styles.title}>{title}</span>
-                    {isLive && <span className={styles.liveBadge}>Live</span>}
                 </div>
 
                 <div className={styles.outcomes}>
@@ -18,7 +17,6 @@ export function EventCard({ imgUrl, title, isLive, outcomes, totalVolume }: Even
                             <span className={styles.outcomeTitle}>{outcome.title}</span>
                             <div className={styles.priceContainer}>
                                 <span className={styles.yesPercent}>{outcome.yesPercent}%</span>
-                                <span className={styles.yesNolabel}>Yes/No</span>
                             </div>
                         </div>
                     ))}
