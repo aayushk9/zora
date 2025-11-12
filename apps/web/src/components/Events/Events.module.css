@@ -42,26 +42,33 @@
 }
 
 .categoryButton {
-    background: transparent;
-    color: #CCCCCC;
+    background-color: #222;
+    color: #ccc;
     border: none;
-    border-radius: 12px;
-    padding: 10px 20px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
 }
 
 .active {
-    background-color: #00E7FF;
-    color: black;
-    font-size: 14px;
+   background-color: #007bff; 
+    color: white;
+    font-weight: bold;
 }
 
 .eventCategories {
-    margin-top: 1rem;
+   display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
 }
 
-.eventCard {
+.eventsGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-    padding: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); 
+    gap: 20px; 
+    justify-items: center; 
+    padding-top: 20px;
 }

@@ -20,8 +20,6 @@ export function Events() {
   const [active, setActive] = useState<Category>("all");
   const [events, setEvents] = useState<EventCardProps[]>([])
 
-
-
   useEffect(() => {
     // send a request to /api/eventcategory as a post request with active category and request for
     // events with that active category
@@ -72,13 +70,11 @@ export function Events() {
           ))}
         </div>
 
-        <div className={styles.eventCard}>
-          {events.map((event, index) => (
-            <EventCard
-              key={index}
+        <div className={styles.eventsGrid}>
+          <EventCard
               imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
               title="Burnley vs Chelsea"
-              isLive={true}
+
               outcomes={[
                 { title: "Chelsea", yesPercent: 65 },
                 { title: "Tie", yesPercent: 22 },
@@ -86,8 +82,28 @@ export function Events() {
               ]}
               totalVolume={25772}
             />
-          ))}
 
+             <EventCard
+              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
+              title="Burnley vs Chelsea"
+              outcomes={[
+                { title: "Chelsea", yesPercent: 65 },
+                { title: "Tie", yesPercent: 22 },
+                { title: "Burnley", yesPercent: 16 }
+              ]}
+              totalVolume={25772}
+            />
+
+             <EventCard
+              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
+              title="Burnley vs Chelsea"
+              outcomes={[
+                { title: "Chelsea", yesPercent: 65 },
+                { title: "Tie", yesPercent: 22 },
+                { title: "Burnley", yesPercent: 16 }
+              ]}
+              totalVolume={25772}
+            />
         </div>
       </div>
     </React.Fragment>
