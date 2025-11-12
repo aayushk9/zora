@@ -1,4 +1,4 @@
-import Zora from './pages/Zora';
+import Zora from './pages/Zora/Zora';
 import Query from './pages/Query';
 import Agents from './pages/Agents';
 
