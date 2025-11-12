@@ -1,0 +1,114 @@
+.parentContainer {
+  background-color: #111;
+  color: white;
+  padding: 30px;
+  border-radius: 12px;
+  font-family: system-ui, sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border 0.2s ease;
+  min-width: 0; 
+}
+
+.parentContainer:hover {
+  border: 1px solid #00e7ff;
+}
+
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.liveBadge {
+  margin-left: auto;
+  background-color: #10b981;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.outcomes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.outcomeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.outcomeTitle {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.yesPercent {
+  font-weight: bold;
+  color: #fff;
+}
+
+.yesNoLabel {
+  color: #888;
+  font-size: 12px;
+}
+
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #888;
+}
+
+.showMore {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
+.volume {
+  font-size: 12px;
+}
