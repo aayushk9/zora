@@ -35,6 +35,10 @@
   color: #777
 }
 
+.textArea:focus {
+    outline: none;
+}
+
 .sendBtn {
   position: absolute;
   bottom: 8px;          
@@ -65,6 +69,11 @@
   width: 20px;
   height: 20px;
   object-fit: contain;
+}
+
+.expanded .textarea {
+  height: 100px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 @media (max-width: 768px) {
