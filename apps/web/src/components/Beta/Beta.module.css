@@ -1,0 +1,12 @@
+.container {
+    background-color: #213f97;
+    margin-top:10px;
+    top: 0;
+}
+
+.beta {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
