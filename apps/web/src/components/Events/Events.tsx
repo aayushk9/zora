@@ -104,6 +104,28 @@ export function Events() {
               ]}
               totalVolume={25772}
             />
+
+             <EventCard
+              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
+              title="Burnley vs Chelsea"
+              outcomes={[
+                { title: "Chelsea", yesPercent: 65 },
+                { title: "Tie", yesPercent: 22 },
+                { title: "Burnley", yesPercent: 16 }
+              ]}
+              totalVolume={25772}
+            />
+
+             <EventCard
+              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
+              title="Burnley vs Chelsea"
+              outcomes={[
+                { title: "Chelsea", yesPercent: 65 },
+                { title: "Tie", yesPercent: 22 },
+                { title: "Burnley", yesPercent: 16 }
+              ]}
+              totalVolume={25772}
+            />
         </div>
       </div>
     </React.Fragment>
