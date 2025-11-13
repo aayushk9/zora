@@ -1,0 +1,19 @@
+.parentContainer {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    height: 93vh;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
+    margin-top: 6px;
+}
+
+.chatbox {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    height:60vh;
+    width:40vw;
+    display: flex;
+    justify-content: center;
+}
