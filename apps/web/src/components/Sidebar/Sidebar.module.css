@@ -1,7 +1,25 @@
 .parentContainer {
     height: 93vh;
-    width:20vw;
-     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    top:0;
+    width: 20vw;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    gap: 10rem;
+}
+
+.button {
+    color: #ffffff;
+    background: transparent;
+    border:none
+}
+
+.history {
+    color: #ffffff;
+}
+
+.newChat {
+    display: flex;
+    flex-direction: column;
+    margin-right:18rem;
 }
