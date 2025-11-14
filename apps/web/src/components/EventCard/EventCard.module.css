@@ -1,10 +1,10 @@
 .parentContainer {
     border-radius: 8px;
     padding: 16px;
-    height: 210px; 
+    height: 210px;
     display: flex;
     flex-direction: column;
-    color: white; 
+    color: white;
     cursor: pointer;
     border: 0.1px solid rgba(255, 255, 255, 0.37);
     background-color: #0f0e0e;
@@ -12,7 +12,7 @@
 }
 
 .parentContainer:hover {
-  border: 0.6px solid #3366FF
+    border: 0.6px solid #3366FF;
 }
 
 .header {
@@ -32,14 +32,14 @@
 
 .title {
     font-size: 0.9rem;
-    font-weight:700;
-    line-height:1.3; 
+    font-weight: 700;
+    line-height: 1.3;
     font-family: sans-serif;
     color: #fff;
 }
 
 .liveBadge {
-    background-color: #e50914; 
+    background-color: #e50914;
     color: white;
     font-size: 0.75em;
     font-weight: bold;
@@ -52,7 +52,7 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px; 
+    gap: 5px;
     margin-bottom: 10px;
 }
 
@@ -69,7 +69,8 @@
     font-weight: 400;
     color: #fff;
     font-size: 0.9rem;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    ;
 }
 
 .priceContainer {
@@ -83,15 +84,15 @@
 .yesPercent {
     color: rgba(255, 255, 255, 0.705);
     margin-right: 5px;
-    font-size:0.8rem;
-    font-weight:600;
+    font-size: 0.8rem;
+    font-weight: 600;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .footer {
     display: flex;
     justify-content: flex-start;
-    margin-top: auto; 
+    margin-top: auto;
     padding-top: 1px;
 }
 
@@ -99,4 +100,42 @@
     font-size: 0.8em;
     color: #888;
     font-weight: 500;
+}
+
+
+@media (max-width: 1024px) {
+    .parentContainer {
+        margin-left: 4px;
+        width: 450px;
+    }
+}
+
+@media (max-width: 900px) {
+    .parentContainer {
+        margin-left: 0px;
+        width: 350px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .parentContainer {
+        margin-left: 0px;
+        width: 640px;
+    }
+}
+
+
+@media (max-width: 420px) {
+    .parentContainer {
+        margin-left: 14px;
+        width: 330px;
+    }
+}
+
+@media (max-width: 430px) {
+    .parentContainer {
+        margin-left: 18px;
+        width: 330px;
+    }
 }
