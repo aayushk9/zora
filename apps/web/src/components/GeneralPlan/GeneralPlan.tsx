@@ -2,6 +2,7 @@ import React from "react"
 import styles from './GeneralPlan.module.css'
 import { InputBox } from "../InputBox/InputBox"
 import { Sidebar } from "../Sidebar/Sidebar"
+import DottedBackground from "../DottedBackground/DottedBackground"
 
 export function GeneralPlan () {
     return (
@@ -11,18 +12,26 @@ export function GeneralPlan () {
                <Sidebar/>
               </div>
               <div id="queryExecutionBox" className={styles.queryExecutionBox}>
-                   <div id="query" className={styles.query}>
-                        <h1>Query</h1>
+                   <div id="query" className={styles.queryBox}>
+                     <br/>
+                        <span className={styles.queryHeader}>Query</span>
+                        <br/>
+                        <br/>
                         <div className={styles.queryBorder}></div>
                         <div className={styles.inputBox}>
-                          <InputBox/>
+                          <InputBox noOuterBorder/>
                         </div>
                    </div>
                  
-                 <div className={styles.executionBorder}></div>
-                   <div id="execution" className={styles.execution}>
-                      <h1>Execution</h1>
-                      
+                   <div id="execution" className={styles.executionBox}>
+                     <br/>
+                      <span className={styles.executionHeader}>Execution</span>
+                      <br/>
+                      <br/>
+                       <div className={styles.executionBorder}></div>
+                       <div className={styles.executionBody}>
+                       <DottedBackground/>
+                       </div>
                    </div>
               </div>
            </div>
