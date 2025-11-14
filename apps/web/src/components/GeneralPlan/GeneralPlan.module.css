@@ -1,23 +1,43 @@
 .parentContainer {
     height: 93vh;
     width: 100%;
-    margin-top: 8px;
+    margin-top: 7px;
     display: flex;
     flex-direction: row;
 }
 
 .queryExecutionBox {
     border-radius: 8px;
-    height:100%;
-    width:80vw;
+    height: 100%;
+    width: 80vw;
     display: flex;
-   flex-direction: row;
-   background-color: rgba(169, 169, 169, 0.089);
+    flex-direction: row;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
 }
-
-
 
 .inputBox {
     margin-top: 40rem;
-    width:20%;
+    width: 20%;
+}
+
+.execution {
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1px;
+    margin-left: 10px;
+}
+
+.query {
+    padding-left: 14px;
+}
+
+.queryBorder {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1px;
+}
+
+.executionBorder {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1px;
 }
