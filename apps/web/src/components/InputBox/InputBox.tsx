@@ -3,7 +3,7 @@ import styles from './InputBox.module.css'
 import { useState } from "react"
 import sendIcon from '../../assets/send.png'
 
-export function InputBox() {
+export function InputBox({noOuterBorder}: any) {
 
     const [text, setText] = useState("")
     const [isExpanded, setIsExpanded] = useState(false);
@@ -26,7 +26,7 @@ export function InputBox() {
 
     return (
         <React.Fragment>
-            <div className={styles.container}>
+            <div className={`${styles.container} ${noOuterBorder ? styles.noBorder: ""}`}>
                 <form className={styles.form} onSubmit={research}>
                     <textarea
                         value={text}
@@ -56,7 +56,7 @@ export function InputBox() {
                         <img src={sendIcon} alt="send" className={styles.sendIcon} />
                     </button>
                 </form>
-                {/*when some event is selected it should be placed*/}
+                {/*when some event is selected it should be placed here*/}
             </div>
         </React.Fragment>
     )
