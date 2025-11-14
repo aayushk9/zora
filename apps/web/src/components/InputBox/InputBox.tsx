@@ -3,7 +3,7 @@ import styles from './InputBox.module.css'
 import { useState } from "react"
 import sendIcon from '../../assets/send.png'
 
-export function InputBox({noOuterBorder}: any) {
+export function InputBox({noOuterBorder, noSuggestedPrompts}: any) {
 
     const [text, setText] = useState("")
     const [isExpanded, setIsExpanded] = useState(false);
@@ -39,7 +39,7 @@ export function InputBox({noOuterBorder}: any) {
                         rows={4}
                     />
 
-                   {isExpanded && (
+                   {isExpanded && !noSuggestedPrompts && (
                     <div>
                         <button>Predict the outcome of the next Solana price event and explain your reasoning</button>
                         <button>Analyze which side (YES/NO) has a better risk-to-reward ratio for this market</button>
