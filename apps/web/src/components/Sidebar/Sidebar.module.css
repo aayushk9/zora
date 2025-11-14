@@ -14,14 +14,15 @@
     cursor: pointer;
     text-decoration: none;
     font-family:Arial, Helvetica, sans-serif;
+    padding-right: 13px;
+    padding-left: 7px;
+    padding-top:6px;
+    padding-bottom: 6px;
+    border-radius: 6px;
 }
 
 .chat {
     background-color: #007bff;
-    padding-right: 13px;
-    padding-left: 7px;
-    padding-top:3px;
-    padding-bottom: 3px;
     border-radius: 6px;
 }
 

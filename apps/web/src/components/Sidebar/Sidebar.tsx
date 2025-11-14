@@ -7,11 +7,11 @@ export function Sidebar () {
         <React.Fragment>
            <div className={styles.parentContainer}>
              <div className={styles.sidebar}>
-               <Link to="/query" className={styles.chat}>Chat</Link>
+               <Link to="/query" className={styles.chat}>Research</Link>
                <Link to="/agents" className={styles.agents}>Agents</Link>
                <Link to="/query" className={styles.history}>History</Link> {/* for history there will be dynamic route such as /query/chatid */}
              </div>
-           </div>
+             </div>
         </React.Fragment>
     )
 }
