@@ -1,0 +1,40 @@
+.parentContainer {
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    height:100%;
+     align-items: center;
+}
+
+.toggle {
+    display: flex;
+    flex-direction: row;
+    background-color: #007bff;
+    border: 1px solid;
+    border-radius: 20px;
+    width:150px;
+    padding-top:10px;
+    padding-bottom: 10px;
+    gap:0.8rem;
+    height:100%;
+}
+
+.query, .execution {
+    color: #ffffff;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.query {
+    margin-left:4px;
+}
+
+.queryPanel {
+    margin-top: auto;
+    height:100%
+}
+
+.inputBox {
+  
+}
