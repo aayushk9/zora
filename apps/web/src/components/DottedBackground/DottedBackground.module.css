@@ -1,6 +1,6 @@
 .dottedContainer {
-  background-image: radial-gradient(#333 1px, transparent 1px);
-  background-size: 20px 20px;
+  background-image: radial-gradient(#3a3a3a 1px, transparent 1px);
+  background-size:30px 30px;
   width: 100%;
   min-height: 87vh; 
   position: relative;
