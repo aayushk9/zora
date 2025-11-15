@@ -1,14 +1,14 @@
 import React from "react";
 import { Navbar } from "../components/Navbar/Navbar";
-import { Sidebar } from "../components/Sidebar/Sidebar";
+import { AgentNetwork } from "../components/AgentNetwork/AgentNetwork";
 
 export default function Agents () {
   
     return (
         <React.Fragment>
           <div>
-            <Navbar/>
-            <Sidebar/>
+             <Navbar/>
+             <AgentNetwork/>
           </div>
         </React.Fragment>
     )
