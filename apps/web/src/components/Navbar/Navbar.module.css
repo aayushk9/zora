@@ -1,4 +1,4 @@
-.parentContainer {
+.navbar {
     display: flex;
     justify-content: space-between;
 }
@@ -7,19 +7,35 @@
   color: white;
   font-family: sans-serif;
   font-size: 24px;
-  margin-left: 2.5rem;
-  margin-top:8px
+  margin-top:8px;
+  margin-left:14px;
+  text-decoration: none;
 }
 
 .signin {
-  background-color: #007bff;
+  background-color:deepskyblue;
   color:white;
-  margin-right:0.5rem;
-  margin-top:2px;
   font-size: 14px;
   border-radius: 15%;
   padding-left: 12px;
   padding-right:12px;
   padding-top:8px;
   padding-bottom: 8px;
+  text-decoration: none;
+  font-family: sans-serif;
+}
+
+.agents {
+  background: transparent;
+  color:#ffffffe8;
+  text-decoration: none;
+  font-family: sans-serif;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.navRight {
+  display: flex;
+  gap: 1rem;
 }
