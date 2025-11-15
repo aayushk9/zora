@@ -33,18 +33,18 @@ export function MobileLayout () {
                  </button>
                </div>
 
-              <div className={styles.queryEexecutionPanel}>
+              <div className={styles.queryExecutionPanel}>
 
                 {query && (
                   <div className={styles.queryPanel}>
-
+                    <div></div>
                     <div className={styles.inputBox}><InputBox noSuggestedPrompts/></div>
                   </div>
                 )}
 
                 {execution && (
                     <div>
-                        <h1 style={{color: "white"}}>fkenfekfnekf</h1>
+                        <h1 style={{color: "white"}}>Execution</h1>
                     </div>
                 )}
               </div>
