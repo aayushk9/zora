@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: row;
     background: transparent;
-    border-left: 1px solid rgba(255, 255, 255, 0.116);
+    border-left: 1px solid rgba(255, 255, 255, 0.062);
     border-top: 1px solid rgba(255, 255, 255, 0.089);
     border-bottom: 1px solid rgba(255, 255, 255, 0.068);
     border-right: 1px solid rgba(255, 255, 255, 0.068);
@@ -26,6 +26,7 @@
 .executionBox {
     flex: 1;
     border-radius: 1px;
+    border-left: 1px solid rgba(255, 255, 255, 0.096);
 }
 
 
@@ -41,6 +42,6 @@
 
 .queryHeader, .executionHeader {
     color: #ffffffef;
-    margin-left: 9px;
+    margin-left: 10px;
     font-family: sans-serif;
 }
