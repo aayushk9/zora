@@ -1,0 +1,63 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    width: 100%;
+}
+
+.menuIcon {
+    font-size: 24px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.521)
+}
+
+.right {
+    display: flex;
+    align-items: center;
+}
+
+.signin {
+    color: black;
+    text-decoration: none;
+    margin-right: 19px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+}
+
+.menuItems {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    background: transparent;
+}
+
+.navItem {
+    color: rgba(255, 255, 255, 0.521);
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+dropdownWrapper {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background: black;
+  padding: 16px;
+  z-index: 50;
+}
+
+.closeIcon {
+  color: rgba(255, 255, 255, 0.521);
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  width: fit-content;
+  margin-left:20px;
+}
