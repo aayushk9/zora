@@ -3,24 +3,18 @@ import styles from './InputBox.module.css'
 import { useState } from "react"
 import sendIcon from '../../assets/send.png'
 
-export function InputBox({noOuterBorder, noSuggestedPrompts}: any) {
+export function InputBox({noOuterBorder, noSuggestedPrompts, onSend}: any) {
 
-    const [text, setText] = useState("")
+    const [query, setQuery] = useState("")
     const [isExpanded, setIsExpanded] = useState(false);
-    const isEmpty = text.trim() === ""
+    const isEmpty = query.trim() === ""
 
     const research = (e: React.FormEvent) => {
      e.preventDefault();
 
-
-
      if(!isEmpty){
-        console.log(`User Input: ${text}`)
-        //make a post request to server via fetch/axios 
-        // content-type application/json 
-        // in body send text state in json form
-        // make sure we get reponse in event format from backend
-        // clear state after execution
+       if(onSend) onSend(query);
+       setQuery("");
      }
     }
 
@@ -29,8 +23,8 @@ export function InputBox({noOuterBorder, noSuggestedPrompts}: any) {
             <div className={`${styles.container} ${noOuterBorder ? styles.noBorder: ""}`}>
                 <form className={styles.form} onSubmit={research}>
                     <textarea
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
                         className={`${styles.textArea} ${isExpanded ? styles.expanded : ""}`}
                         onFocus={() => {setIsExpanded(true)}}
                         onBlur={() => {setIsExpanded(false)}}
