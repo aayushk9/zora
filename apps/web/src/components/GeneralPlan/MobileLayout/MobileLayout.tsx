@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from './MobileLayout.module.css'
 import { InputBox } from "../../InputBox/InputBox";
+import { MobileNavbar } from "../../MobileNavbar/MobileNavbar";
 
 export function MobileLayout () {
 
@@ -20,15 +21,18 @@ export function MobileLayout () {
     return (
         <React.Fragment>
             <div className={styles.parentContainer}>
+              <div>
+                <MobileNavbar/>
+              </div>
               <div className={styles.toggle}>
                  <button
                    onClick={handleQuery}
-                  className={styles.query}>
+                  className={`${query ? styles.activeButton : styles.query}`}>
                     Query
                   </button>
                  <button 
                   onClick={handleExecution}
-                  className={styles.execution}>
+                  className={`${execution ? styles.activeButton : styles.execution}`}>
                     Execution
                  </button>
                </div>
@@ -38,14 +42,14 @@ export function MobileLayout () {
                 {query && (
                   <div className={styles.queryPanel}>
                     <div></div>
-                    <div className={styles.inputBox}><InputBox noSuggestedPrompts/></div>
+                    <div className={styles.inputBox}><InputBox noSuggestedPrompts noOuterBorder/></div>
                   </div>
                 )}
 
                 {execution && (
-                    <div>
-                        <h1 style={{color: "white"}}>Execution</h1>
-                    </div>
+                 <div>
+                  {/* display execution stpes here*/}
+                  </div>
                 )}
               </div>
             </div>
