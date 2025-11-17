@@ -1,10 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from './DesktopLayout.module.css'
 import { Sidebar } from "../../Sidebar/Sidebar";
 import { InputBox } from "../../InputBox/InputBox";
 import DottedBackground from "../../DottedBackground/DottedBackground";
 
 export function DesktopLayout () {
+      
+   const [query, setQuery] = useState("")
+   const [response, setResponse] = useState("");
+
+   const handleUserQuery = (input: string) => {
+   // stored user input in query state
+    setQuery(input);
+
+    // now as we have user requested input in our local query state variable we can send a POST
+    // request to our backend in form of body: query and exprect response from server and update
+    // in our reposne as setResponse(backend from backend)
+    setResponse("hadr coded resposne from developer")
+   }
+
+
     return (
         <React.Fragment>
             <div className={styles.parentContainer}>
@@ -19,8 +34,16 @@ export function DesktopLayout () {
                   <br />
                   <br />
                   <div className={styles.queryBorder}></div>
+                   <div className={styles.userInterface}>
+                      <div>
+                         {query}
+                      </div>
+                      <div>
+                       {response}
+                      </div>
+                  </div>
                   <div className={styles.inputBox}>
-                     <InputBox noOuterBorder noSuggestedPrompts/>
+                     <InputBox noOuterBorder noSuggestedPrompts onSend={handleUserQuery}/>
                   </div>
                </div>
 
