@@ -3,20 +3,20 @@
     flex-direction: column;
     width:100%;
     height:100%;
-     align-items: center;
+    position: fixed;
 }
 
 .toggle {
-    display: flex;
-    flex-direction: row;
-    background-color: #007bff;
-    border: 1px solid;
-    border-radius: 20px;
-    width:150px;
-    padding-top:10px;
-    padding-bottom: 10px;
-    gap:0.8rem;
-    height:100%;
+    position: absolute;
+  top: 12px;           /* align vertically with navbar padding */
+  left: 50%;
+  transform: translateX(-50%);
+  background: black;
+  padding: 4px 8px;
+  border-radius: 20px;
+  display: flex;
+  gap: 6px;
+  z-index: 10;
 }
 
 .query, .execution {
@@ -26,13 +26,25 @@
     cursor: pointer;
 }
 
+
+.activeButton {
+    background-color: #007bff;
+    padding: 8px;
+    border: none;
+    color: white;
+    border-radius: 14px;
+  
+}
+
 .query {
     margin-left:4px;
 }
 
 .queryPanel {
-    margin-top: auto;
-    height:100%
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    justify-content: space-between;
 }
 
 .queryExecutionPanel {
@@ -47,6 +59,30 @@
     height: 100%;
 }
 
+.executionBox {
+    width:100%;
+    height:50vh;
+    border-radius: 1px;
+    border-left: 1px solid rgba(255, 255, 255, 0.096);
+}
+
+
+.queryBorder {
+    border-top: 1px solid rgba(255, 255, 255, 0.089);
+    border-radius: 1px;
+}
+
+.executionBorder {
+    border-top: 1px solid rgba(255, 255, 255, 0.089);
+    border-radius: 1px;
+}
+
+.queryHeader, .executionHeader {
+    color: #ffffffef;
+    margin-left: 10px;
+    font-family: sans-serif;
+}
+
 .inputBox {
-    margin-top: auto; /* pushes it to bottom */
+    margin-right:1.5rem;
 }
