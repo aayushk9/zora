@@ -12,11 +12,11 @@ export function DesktopLayout() {
    const location = useLocation();
    const params = new URLSearchParams(location.search);
    const incomingText = params.get("text");
-   const {query, setQuery, response, handleUserQuery} = useQueryHandler();
+   const {queries, setQueries, responses, handleUserQuery} = useQueryHandler();
 
    useEffect(() => {
       if (incomingText) {
-         setQuery(incomingText)
+         setQueries(prev => [...prev, incomingText])
       }
    }, [incomingText])
 
@@ -37,12 +37,20 @@ export function DesktopLayout() {
                   <div className={styles.queryBorder}></div>
                   <div className={styles.userInterface}>
                      <div>
-                        <p style={{
+                       
+                           {queries.map((query, index) => (
+                               <p key={index} style={{
                            color: "white"
                         }}>{query}</p>
+                           ))}
+                        
                      </div>
                      <div>
-                        <p style={{color: "white"}}>{response}</p>
+                        {responses.map((response, index) => (
+                           <p key={index} style={{color: "white"}}>
+                              {response}
+                           </p>
+                        ))}
                      </div>
                   </div>
                   <div className={styles.inputBox}>

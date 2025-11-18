@@ -14,11 +14,11 @@ export function MobileLayout() {
 
   const [stagQuery, setStagQuery] = useState(true);
   const [execution, setExecution] = useState(false);
-  const {query, setQuery, response, handleUserQuery} = useQueryHandler();
+  const {queries, setQueries, responses, handleUserQuery} = useQueryHandler();
 
   useEffect(() => {
     if (incomingText) {
-      setQuery(incomingText)
+      setQueries(prev => [...prev, incomingText])
     }
   }, [incomingText])
 
@@ -56,8 +56,18 @@ export function MobileLayout() {
           {stagQuery && (
             <div className={styles.queryPanel}>
               <div>
-                <p style={{color:"white"}}>{query}</p>
-                <p style={{color: "white"}}>{response}</p>
+                <p style={{color:"white"}}>
+                  {queries.map((query, index) => (
+                     <p key={index}>
+                       {query}
+                     </p>
+                  ))}
+                </p>
+                <p style={{color: "white"}}>
+                  {responses.map((response, index) => (
+                    <p key={index}>{response}</p>
+                  ))}
+                </p>
               </div>
               <div className={styles.inputBox}><InputBox noSuggestedPrompts noOuterBorder onSend={handleUserQuery} /></div>
             </div>
