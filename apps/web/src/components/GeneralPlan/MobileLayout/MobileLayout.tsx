@@ -10,15 +10,21 @@ export function MobileLayout() {
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const incomingText = params.get("text");
+  const incomingText = params.get("c");
 
   const [stagQuery, setStagQuery] = useState(true);
   const [execution, setExecution] = useState(false);
-  const {queries, setQueries, responses, handleUserQuery} = useQueryHandler();
+  const {messages, setMessages, handleUserQuery} = useQueryHandler();
 
   useEffect(() => {
     if (incomingText) {
-      setQueries(prev => [...prev, incomingText])
+      setMessages([
+        ...messages, 
+        {
+         role: 'user',
+         content: incomingText
+        }
+      ])
     }
   }, [incomingText])
 
@@ -57,15 +63,10 @@ export function MobileLayout() {
             <div className={styles.queryPanel}>
               <div>
                 <p style={{color:"white"}}>
-                  {queries.map((query, index) => (
+                  {messages.map((message, index) => (
                      <p key={index}>
-                       {query}
+                       {message.content}
                      </p>
-                  ))}
-                </p>
-                <p style={{color: "white"}}>
-                  {responses.map((response, index) => (
-                    <p key={index}>{response}</p>
                   ))}
                 </p>
               </div>
