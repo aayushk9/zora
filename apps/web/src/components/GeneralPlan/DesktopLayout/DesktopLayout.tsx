@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect } from "react";
 import styles from './DesktopLayout.module.css'
 import { Sidebar } from "../../Sidebar/Sidebar";
 import { InputBox } from "../../InputBox/InputBox";
@@ -14,8 +14,6 @@ export function DesktopLayout() {
    const incomingText = params.get("c");
 
    const {
-    input,
-    setInput,
     messages,
     setMessages,
     handleUserQuery
@@ -23,9 +21,8 @@ export function DesktopLayout() {
 
    useEffect(() => {
       if (incomingText) {
-         setMessages( prev => [
-            ...prev, 
-            {
+         setMessages( 
+            [{
                role: 'user',
                content: incomingText
             }]
@@ -53,7 +50,7 @@ export function DesktopLayout() {
                            {messages.map((message, index) => (
                                <p key={index} style={{
                            color: "white"
-                        }}>{message.role}</p>
+                        }}>{message.content}</p>
 
                      ))}  
                      </div>

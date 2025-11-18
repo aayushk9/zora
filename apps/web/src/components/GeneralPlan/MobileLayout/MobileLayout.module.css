@@ -7,8 +7,8 @@
 }
 
 .toggle {
-    position: absolute;
-  top: 12px;           /* align vertically with navbar padding */
+  position: absolute;
+  top: 12px;           
   left: 50%;
   transform: translateX(-50%);
   background: black;

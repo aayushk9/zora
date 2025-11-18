@@ -14,7 +14,11 @@ export function MobileLayout() {
 
   const [stagQuery, setStagQuery] = useState(true);
   const [execution, setExecution] = useState(false);
-  const {messages, setMessages, handleUserQuery} = useQueryHandler();
+  const {
+      messages,
+      setMessages,
+      handleUserQuery
+    } = useQueryHandler();
 
   useEffect(() => {
     if (incomingText) {
