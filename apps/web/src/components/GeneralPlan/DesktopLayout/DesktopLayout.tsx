@@ -11,12 +11,18 @@ export function DesktopLayout() {
 
    const location = useLocation();
    const params = new URLSearchParams(location.search);
-   const incomingText = params.get("text");
-   const {queries, setQueries, responses, handleUserQuery} = useQueryHandler();
+   const incomingText = params.get("c");
+   const {messages, setMessages, handleUserQuery} = useQueryHandler();
 
    useEffect(() => {
       if (incomingText) {
-         setQueries(prev => [...prev, incomingText])
+         setMessages([
+            ...messages, 
+            {
+               role: 'user',
+               content: incomingText
+            }
+         ])
       }
    }, [incomingText])
 
@@ -37,20 +43,12 @@ export function DesktopLayout() {
                   <div className={styles.queryBorder}></div>
                   <div className={styles.userInterface}>
                      <div>
-                       
-                           {queries.map((query, index) => (
+                           {messages.map((message, index) => (
                                <p key={index} style={{
                            color: "white"
-                        }}>{query}</p>
+                        }}>{message.content}</p>
                            ))}
                         
-                     </div>
-                     <div>
-                        {responses.map((response, index) => (
-                           <p key={index} style={{color: "white"}}>
-                              {response}
-                           </p>
-                        ))}
                      </div>
                   </div>
                   <div className={styles.inputBox}>
