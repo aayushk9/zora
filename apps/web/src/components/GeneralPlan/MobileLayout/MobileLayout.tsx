@@ -3,6 +3,7 @@ import styles from './MobileLayout.module.css'
 import { InputBox } from "../../InputBox/InputBox";
 import { MobileNavbar } from "../../MobileNavbar/MobileNavbar";
 import { useLocation } from "react-router-dom";
+import { useQueryHandler} from "../../../hooks/useQueryHandler"
 
 
 export function MobileLayout() {
@@ -13,7 +14,7 @@ export function MobileLayout() {
 
   const [stagQuery, setStagQuery] = useState(true);
   const [execution, setExecution] = useState(false);
-  const [query, setQuery] = useState("");
+  const {query, setQuery, response, handleUserQuery} = useQueryHandler();
 
   useEffect(() => {
     if (incomingText) {
@@ -29,11 +30,6 @@ export function MobileLayout() {
   const handleExecution = () => {
     setStagQuery(false);
     setExecution(true);
-  }
-
-  const handleUserQuery = (input: string) => {
-    setQuery(input)
-    // now send this query to backend and expect reponse from it, store repsone in another state variable and present it here via reposne variable
   }
 
   return (
@@ -61,6 +57,7 @@ export function MobileLayout() {
             <div className={styles.queryPanel}>
               <div>
                 <p style={{color:"white"}}>{query}</p>
+                <p style={{color: "white"}}>{response}</p>
               </div>
               <div className={styles.inputBox}><InputBox noSuggestedPrompts noOuterBorder onSend={handleUserQuery} /></div>
             </div>
