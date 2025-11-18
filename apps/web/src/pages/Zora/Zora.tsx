@@ -1,10 +1,17 @@
 import React from "react";
 import { Navbar } from "../../components/Navbar/Navbar.tsx"
-import  { InputBox } from '../../components/InputBox/InputBox.tsx'
+import { InputBox } from '../../components/InputBox/InputBox.tsx'
 import { Events } from "../../components/Events/Events.tsx"
 import styles from './Zora.module.css'
+import { useNavigate } from "react-router-dom";
 
 export default function Zora() {
+
+    const navigate = useNavigate()
+
+    const handleLandingSend = (query: string) => {
+        navigate(`/query?text=${encodeURIComponent(query)}`)
+    }
 
     return (
         <React.Fragment>
@@ -25,8 +32,8 @@ export default function Zora() {
                         Build prediction market strategies in minutes with a single prompt
                     </span>
                 </div>
-                <InputBox/>
-                <Events/>
+                <InputBox onSend={handleLandingSend} />
+                <Events />
             </div>
         </React.Fragment>
     )
