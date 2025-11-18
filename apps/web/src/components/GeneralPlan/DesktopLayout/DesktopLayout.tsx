@@ -1,36 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from './DesktopLayout.module.css'
 import { Sidebar } from "../../Sidebar/Sidebar";
 import { InputBox } from "../../InputBox/InputBox";
 import DottedBackground from "../../DottedBackground/DottedBackground";
-import { useLocation } from "react-router-dom";
 import { useQueryHandler } from "../../../hooks/useQueryHandler";
 
 
 export function DesktopLayout() {
 
-   const location = useLocation();
-   const params = new URLSearchParams(location.search);
-   const incomingText = params.get("c");
-
    const {
-    messages,
-    setMessages,
-    handleUserQuery
-  } = useQueryHandler();
+      messages,
+      handleUserQuery
+   } = useQueryHandler();
 
-   useEffect(() => {
-      if (incomingText) {
-         setMessages( 
-            [{
-               role: 'user',
-               content: incomingText
-            }]
-         )
-      }
-   }, [incomingText])
-
-  console.log(messages)
+   console.log(messages)
    return (
       <React.Fragment>
          <div className={styles.parentContainer}>
@@ -47,12 +30,12 @@ export function DesktopLayout() {
                   <div className={styles.queryBorder}></div>
                   <div className={styles.userInterface}>
                      <div>
-                           {messages.map((message, index) => (
-                               <p key={index} style={{
-                           color: "white"
-                        }}>{message.content}</p>
+                        {messages.map((message, index) => (
+                           <p key={index} style={{
+                              color: "white"
+                           }}>{message.content}</p>
 
-                     ))}  
+                        ))}
                      </div>
                   </div>
                   <div className={styles.inputBox}>

@@ -3,7 +3,7 @@ import styles from './MobileLayout.module.css'
 import { InputBox } from "../../InputBox/InputBox";
 import { MobileNavbar } from "../../MobileNavbar/MobileNavbar";
 import { useLocation } from "react-router-dom";
-import { useQueryHandler} from "../../../hooks/useQueryHandler"
+import { useQueryHandler } from "../../../hooks/useQueryHandler"
 
 
 export function MobileLayout() {
@@ -15,18 +15,18 @@ export function MobileLayout() {
   const [stagQuery, setStagQuery] = useState(true);
   const [execution, setExecution] = useState(false);
   const {
-      messages,
-      setMessages,
-      handleUserQuery
-    } = useQueryHandler();
+    messages,
+    setMessages,
+    handleUserQuery
+  } = useQueryHandler();
 
   useEffect(() => {
     if (incomingText) {
       setMessages([
-        ...messages, 
+        ...messages,
         {
-         role: 'user',
-         content: incomingText
+          role: 'user',
+          content: incomingText
         }
       ])
     }
@@ -66,11 +66,11 @@ export function MobileLayout() {
           {stagQuery && (
             <div className={styles.queryPanel}>
               <div>
-                <p style={{color:"white"}}>
+                <p style={{ color: "white" }}>
                   {messages.map((message, index) => (
-                     <p key={index}>
-                       {message.content}
-                     </p>
+                    <p key={index}>
+                      {message.content}
+                    </p>
                   ))}
                 </p>
               </div>
