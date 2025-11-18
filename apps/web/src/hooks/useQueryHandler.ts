@@ -1,17 +1,16 @@
 import { useState } from "react";
 
 export function useQueryHandler () {
-    const [query, setQuery] = useState("");
-    const [response, setResponse] = useState("");
+    const [queries, setQueries] = useState<string[]>([]);
+    const [responses, setResponses] = useState<string[]>([]);
 
 
     const handleUserQuery = (input: string) => {
-        setQuery(input);
+        setQueries(prev => [...prev, input]);
 
-        // bunch of api request back and forth
+        // bunch of api request back and fourth
         
-        setResponse("hard coded reposne from dev")
+        setResponses(prev => [...prev])
     }
-
-    return {query, response, handleUserQuery, setQuery}
+    return {queries, responses, handleUserQuery, setQueries}
 }
