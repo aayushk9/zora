@@ -7,10 +7,11 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     const [query, setQuery] = useState("")
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const textareaRef = useRef<HTMLTextAreaElement>(null)  
-    
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
     const isEmpty = query.trim() === ""
 
     // conditional logic behind how input box expands
@@ -19,7 +20,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     // some conditional logic behind how events can occur below inputbox wrapper when clicked on any event
 
     useEffect(() => {
-        if (isEmpty && document.activeElement === textareaRef.current) {
+        if (isEmpty && isFocused) {
             setIsExpanded(true)
         }
     }, [query, isEmpty])
@@ -46,10 +47,14 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 className={styles.textArea}
-                                onFocus={() => { setIsExpanded(true) }}
+                                onFocus={() => { 
+                                    setIsExpanded(true);
+                                    setIsFocused(true);
+                                }}
                                 onBlur={(e) => {
                                     if (!containerRef.current?.contains(e.relatedTarget as Node)) {
                                         setIsExpanded(false);
+                                        setIsFocused(false)
                                     }
                                 }}
                                 placeholder="Describe your trading strategy idea..."
