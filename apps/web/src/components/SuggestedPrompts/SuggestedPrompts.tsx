@@ -28,7 +28,7 @@ export function SuggestedPrompts({ onSelect }: any) {
                         display: "flex",
                         alignItems: "center",
                         gap: "12px",
-                        transition: "background 0.2s, color 0.2s"
+                       
                     }}
                     onMouseEnter={(e) => {
                         e.currentTarget.style.background = "rgba(255,255,255,0.05)";
