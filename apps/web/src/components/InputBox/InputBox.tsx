@@ -9,20 +9,20 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-
+    const textareaRef = useRef<HTMLTextAreaElement>(null)  
+    
     const isEmpty = query.trim() === ""
 
     // conditional logic behind how input box expands
     const showSuggestions = isExpanded && !noSuggestedPrompts && isEmpty
 
     // some conditional logic behind how events can occur below inputbox wrapper when clicked on any event
-     useEffect(() => {
 
-        if (isEmpty) {
+    useEffect(() => {
+        if (isEmpty && document.activeElement === textareaRef.current) {
             setIsExpanded(true)
         }
-
-    }, [query])
+    }, [query, isEmpty])
 
     const research = (e: React.FormEvent) => {
         e.preventDefault();
