@@ -1,135 +1,129 @@
 .container {
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 8px 14px;
-    width: 750px;
-    height: 110px;
-    margin: 0 auto;
-    position: relative;
+    border: 1px solid #333; 
+    border-radius: 16px;   
+    padding: 12px;           
+    width: 800px;
+    margin: 1.2rem auto 0;
     background: transparent;
-    margin-top: 1.2rem;
+    box-sizing: border-box; 
+    display: flex;
+    flex-direction: column;
+}
+
+.noBorder {
+    border: none;
+    padding: 0;
+}
+
+.wrapper {
+    border: 1px solid #333; 
+    border-radius: 12px;
+    width: 100%;
+    background: #141414;    
+    min-height: 100px;      
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.2s ease;
+    overflow: hidden;
 }
 
 .form {
-    position: absolute;
     display: flex;
     flex-direction: column;
-    width: 750px;
-    margin-top:0.3rem;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+}
+
+.inputSection {
+    position: relative;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
 }
 
 .textArea {
-    border: 1px solid #333;
-    background:  #141414;
+    background: transparent;
+    border: none;
     color: #fff;
-    font-size: 15px;
-    padding: 12px 48px 12px 16px;
-    border-radius: 10px;
+    font-size: 16px;
     width: 100%;
     resize: none;
-    box-sizing: border-box;
     font-family: sans-serif;
+    outline: none;
+    padding-right: 40px; 
+    min-height: 60px; 
 }
 
 .textArea::placeholder {
-  color: #777
-}
-
-.textArea:focus {
-    outline: none;
+  color: #666
 }
 
 .sendBtn {
-  position: absolute;
-  bottom: 8px;          
-  right: 8px;
-  width: 32px;
-  height: 32px;
-  background: #fff;
-  border: none;
-  border-radius: 8px;   
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s, opacity 0.2s;
+    position: absolute;
+    bottom: 12px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    background: #fff;
+    border: none;
+    border-radius: 8px;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+    z-index: 10;
 }
 
-.sendBtn:hover:not(:disabled) {
-  background: #f0f0f0;
+.sendBtn:hover:not(.disabled) {
+    background: #f0f0f0;
 }
 
-.sendBtn.disabled,
 .sendBtn.disabled {
     opacity: 0.4;
     cursor: not-allowed;
 }
 
 .sendIcon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
 }
 
-.expanded .textarea {
-  height: 100px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+.suggestionsArea {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.noBorder {
-    border: none;
+.divider {
+    height: 1px;
+    background-color: #333;
+    width: 100%;
+    margin: 0;
 }
+
 
 @media (max-width: 768px) {
-    .container {
-        width: 660px;
-    }
-    .form {
-        width: 660px;
-    }
+    .container { width: 660px; }
 }
-
 @media (max-width: 678px) {
-    .container {
-        width:490px;
-    }
-    .form {
-        width: 490px;
-    }
+    .container { width: 490px; }
 }
-
 @media (max-width: 540px) {
-    .container {
-        width: 430px;
-    }
-    .form {
-        width: 430px;
-    }
+    .container { width: 430px; }
 }
-
 @media (max-width: 470px) {
-    .container {
-        width: 340px;
-    }
-    .form {
-        width: 340px;
-    }
+    .container { width: 340px; }
 }
-
 @media (max-width: 390px) {
-    .container {
-        width: 300px;
-    }
-    .form {
-        width: 300px;
-    }
+    .container { width: 300px; }
 }
-
 @media (max-width: 360px) {
-    .container {
-        width: 290px;
-    }
-    .form {
-        width: 290px;
-    }
+    .container { width: 290px; }
 }
