@@ -62,7 +62,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #666;
+  color: #9c9898;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -71,13 +71,11 @@
   padding: 0;
   margin-left: 12px;
   transition: color 0.2s;
-
-  /* This is the magic line */
   transform: rotate(45deg);
 }
 
 .rightBtn:hover {
-  color: #fff; /* or whatever your hover color is */
+  color: #fff; 
 }
 
 .categoryButton {
