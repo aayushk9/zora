@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import styles from './Events.module.css'
 import clsx from "clsx"
 import { EventCard } from "../EventCard/EventCard"
-import type { EventCardProps } from "../../types/event"
+//import type { EventCardProps } from "../../types/event"
 
 
 type Category = "all" | "crypto" | "sports" | "politics"
@@ -18,14 +18,16 @@ export function Events() {
 
   const [searchInput, setSearchInput] = useState("");
   const [active, setActive] = useState<Category>("all");
-  const [events, setEvents] = useState<EventCardProps[]>([])
+  //const [events, setEvents] = useState<EventCardProps[]>([])
 
   useEffect(() => {
     // send a request to /api/eventcategory as a post request with active category and request for
-    // events with that active category
+    // events with that active category 
+    // for example if active catgeory is all send post request with body: active and backend return all catgery events
+    // if active category changes send post request with that active category and backend return those category events
   }, [active])
 
-  const searchForEventFromDB = () => {
+  const searchForEvent = () => {
     // send searchinput to server throigh post request
   }
 
@@ -53,7 +55,7 @@ export function Events() {
         <div className={styles.searchContainer}>
           <div className={styles.searchBar}>
             <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} className={styles.search} type="text" placeholder="Search events..." />
-            <button className={styles.submit} onClick={searchForEventFromDB}>send</button>
+            <button className={styles.submit} onClick={searchForEvent}>send</button>
           </div>
         </div>
         <div className={styles.eventCategories}>
