@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import styles from './InputBox.module.css'
 import sendIcon from '../../assets/send.png'
 import { SuggestedPrompts } from "../SuggestedPrompts/SuggestedPrompts"
@@ -12,6 +12,14 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     const isEmpty = query.trim() === ""
     const showSuggestions = isExpanded && !noSuggestedPrompts && isEmpty
+
+     useEffect(() => {
+
+        if (isEmpty) {
+            setIsExpanded(true)
+        }
+
+    }, [query])
 
     const research = (e: React.FormEvent) => {
         e.preventDefault();
