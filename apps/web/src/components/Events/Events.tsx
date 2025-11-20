@@ -53,11 +53,31 @@ export function Events() {
       <div className={styles.container}>
         <span className={styles.header}>Discover Market Events</span>
         <div className={styles.searchContainer}>
-          <div className={styles.searchBar}>
-            <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} className={styles.search} type="text" placeholder="Search events..." />
-            <button className={styles.submit} onClick={searchForEvent}>send</button>
-          </div>
+          <form className={styles.searchBar} onSubmit={searchForEvent}>
+            <div className={styles.leftIcon}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+
+            <input
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className={styles.search}
+              type="text"
+              placeholder="Search events..."
+            />
+
+            <button className={styles.rightBtn}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
         </div>
+        
         <div className={styles.eventCategories}>
           {Object.entries(categoryLabel).map(([value, label]) => (
             <button
@@ -74,15 +94,15 @@ export function Events() {
 
         <div className={styles.eventsGrid}>
           <EventCard
-              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
-              title="Burnley vs Chelsea"
+            imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
+            title="Burnley vs Chelsea"
 
-              outcomes={[
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ]}
-              totalVolume={25772}
+            outcomes={[
+              { title: "Chelsea", yesPercent: 65 },
+              { title: "Tie", yesPercent: 22 },
+              { title: "Burnley", yesPercent: 16 }
+            ]}
+            totalVolume={25772}
             />
 
              <EventCard

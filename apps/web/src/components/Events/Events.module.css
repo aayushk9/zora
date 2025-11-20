@@ -3,46 +3,81 @@
     display: flex;
     flex-direction: column;
     margin-left: 350px;
+    margin-right: 50px;
 }
 
 .header {
     color: #eff0eff3;
     font-size: 18px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    ;
-    margin-left: 7px;
     font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0.5px;
+    margin-left: 7px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .searchContainer {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px; 
     padding-top: 3px;
     padding-bottom: 3px;
-
-}
-
-.search {
-    margin-top: 20px;
-    background-color: rgba(0, 0, 0, 0.932);
-    border: 1px solid rgba(255, 255, 255, 0.11);
-    padding-right: 50px;
-    width: 100%;
-    padding: 10px 20px;
-    font-size: 12px;
-    color: white
-}
-
-.search:focus {
-    outline: none;
-    border: 2px solid rgba(255, 255, 255, 0.082);
 }
 
 .searchBar {
     display: flex;
-    flex-direction: row;
+    align-items: center;       
+    width: 100%;
+    background-color: #000;    
+    border: 1px solid #161616;   
+    border-radius: 6px;       
+    padding: 8px 10px;       
+    margin-top: 20px;
+    transition: border-color 0.2s ease;
+}
+
+.searchBar:focus-within {
+    border-color: #1a1a1a;        
+}
+
+.leftIcon {
+    display: flex;
+    align-items: center;
+    color: #666;               
+    margin-right: 12px;        
+}
+
+.search {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    width: 100%;
+    outline: none;
+    flex-grow: 1;              
+}
+
+.search::placeholder {
+    color: #5e5d5d;              
+}
+
+.rightBtn {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  margin-left: 12px;
+  transition: color 0.2s;
+
+  /* This is the magic line */
+  transform: rotate(45deg);
+}
+
+.rightBtn:hover {
+  color: #fff; /* or whatever your hover color is */
 }
 
 .categoryButton {
@@ -77,6 +112,21 @@
     width: 75%;
 }
 
+.searchButton {
+    background: transparent;
+    color: #aaa;
+    border: none;
+    cursor: pointer;
+    margin-right: 7rem;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 1.3rem;
+    margin-right: 2rem;
+}
+
+.submit {
+    background: transparent;
+    border: none
+}
 
 @media (max-width:1024px) {
     .container {
