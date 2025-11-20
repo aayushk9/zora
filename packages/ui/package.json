@@ -1,8 +1,8 @@
 {
   "name": "ui",
   "version": "1.0.0",
-  "main": "./dist/index.ts",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
