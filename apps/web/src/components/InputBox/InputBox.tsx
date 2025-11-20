@@ -11,8 +11,11 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     const isEmpty = query.trim() === ""
+
+    // conditional logic behind how input box expands
     const showSuggestions = isExpanded && !noSuggestedPrompts && isEmpty
 
+    // some conditional logic behind how events can occur below inputbox wrapper when clicked on any event
      useEffect(() => {
 
         if (isEmpty) {
