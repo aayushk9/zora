@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styles from './DesktopLayout.module.css'
 import { Sidebar } from "../../Sidebar/Sidebar";
 import { InputBox } from "../../InputBox/InputBox";
@@ -13,7 +13,18 @@ export function DesktopLayout() {
       handleUserQuery
    } = useQueryHandler();
 
-   console.log(messages)
+   const messagesEndRef: any = useRef(null);
+
+   // 3. This function scrolls the anchor into view
+   const scrollToBottom: any = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+   };
+
+   // 4. Triggers auto-scroll whenever messages changes
+   useEffect(() => {
+      scrollToBottom();
+   }, [messages]);
+   
    return (
       <React.Fragment>
          <div className={styles.parentContainer}>
@@ -28,12 +39,13 @@ export function DesktopLayout() {
                   <br />
                   <div className={styles.queryBorder}></div>
                   <div className={styles.userInterface}>
-                     <div>
+                     <div className={styles.messagesArea}>
                         {messages.map((message, index) => (
                            <p key={index} style={{
                               color: "white"
                            }}>{message.content}</p>
                         ))}
+                        
                      </div>
                   </div>
                   <div className={styles.inputBox}>

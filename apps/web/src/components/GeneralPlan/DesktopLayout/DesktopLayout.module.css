@@ -1,12 +1,14 @@
 .parentContainer {
-    margin-top: 7px;
+    margin-top: 12px;
     display: flex;
     flex-direction: row;
+    margin-right: 1rem;
+    padding-top: 1rem;
 }
 
 .queryExecutionBox {
     border-radius: 8px;
-    height: 93vh;
+    height: calc(100vh - 80px);
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -14,16 +16,17 @@
     border-left: 1px solid rgba(255, 255, 255, 0.089);
     border-top: 1px solid rgba(255, 255, 255, 0.089);
     border-bottom: 1px solid rgba(255, 255, 255, 0.068);
-    border-right: 1px solid rgba(255, 255, 255, 0.068);
+    border-right: 1px solid rgba(255, 255, 255, 0.089);
     border-radius: 6px;
-    padding-left: 0.7rem;
-     overflow: hidden;
+    overflow: hidden;
 }
 
 .inputBox {
-    margin-top: 38rem;
+   margin-top: 38rem;
     position: sticky;
     bottom: 0;
+    padding: 10px;
+    padding-bottom: 1rem;
 }
 
 .executionBox {
@@ -53,4 +56,8 @@
     flex: 1;
     overflow-y: auto;
     padding: 1rem;
+     word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    scroll-behavior: smooth;
 }
