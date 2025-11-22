@@ -11,24 +11,27 @@
     display: flex;
     flex-direction: row;
     background: transparent;
-    border-left: 1px solid rgba(255, 255, 255, 0.062);
+    border-left: 1px solid rgba(255, 255, 255, 0.089);
     border-top: 1px solid rgba(255, 255, 255, 0.089);
     border-bottom: 1px solid rgba(255, 255, 255, 0.068);
     border-right: 1px solid rgba(255, 255, 255, 0.068);
     border-radius: 6px;
+    padding-left: 0.7rem;
+     overflow: hidden;
 }
 
 .inputBox {
-    margin-top: 42rem;
-    width: 20%;
+    margin-top: 38rem;
+    position: sticky;
+    bottom: 0;
 }
 
 .executionBox {
     flex: 1;
     border-radius: 1px;
     border-left: 1px solid rgba(255, 255, 255, 0.096);
+   
 }
-
 
 .queryBorder {
     border-top: 1px solid rgba(255, 255, 255, 0.089);
@@ -44,4 +47,10 @@
     color: #ffffffef;
     margin-left: 10px;
     font-family: sans-serif;
+}
+
+.messagesArea {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
 }
