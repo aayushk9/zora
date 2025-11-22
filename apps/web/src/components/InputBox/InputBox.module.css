@@ -1,8 +1,9 @@
 .container {
     border: 1px solid #333; 
     border-radius: 16px;   
-    padding: 12px;           
-    width: 800px;
+    padding: 10px;   
+    padding-right:3px;   
+    width: 790px;
     margin: 1.2rem auto 0;
     background: transparent;
     box-sizing: border-box; 
@@ -18,7 +19,7 @@
 .wrapper {
     border: 1px solid #333; 
     border-radius: 12px;
-    width: 100%;
+    width: 99%;
     background: #141414;    
     min-height: 100px;      
     display: flex;
