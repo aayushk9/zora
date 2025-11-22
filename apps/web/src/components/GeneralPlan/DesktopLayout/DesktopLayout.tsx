@@ -21,7 +21,6 @@ export function DesktopLayout() {
                <Sidebar />
             </div>
             <div id="queryExecutionBox" className={styles.queryExecutionBox}>
-
                <div id="query" className={styles.queryBox}>
                   <br />
                   <span className={styles.queryHeader}>Query</span>
@@ -34,7 +33,6 @@ export function DesktopLayout() {
                            <p key={index} style={{
                               color: "white"
                            }}>{message.content}</p>
-
                         ))}
                      </div>
                   </div>
