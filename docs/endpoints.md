@@ -3,11 +3,8 @@
 ## GET
 
 1) `/api/event-categories` [fetch existing/available event categories from server]  
-2) `/api/mentioned-words` [fetch mentioned words among specific categories from server]  
-3) `/api/events` [fetch recent events from server]  
-4) `/api/prompts` [fetch some prompts when user press on i/p on i/p box without selected events from server]  
-5) `/api/selectedEvents-prompts` [fetch prompts related to selected events from server]  
-6) `/api/agents` [fetch existing agents if any]  
+2) `/api/events` [fetch recent events from server]  
+3) `/api/selectedEvents-prompts` [fetch prompts related to selected events from server]  
 
 ## POST
 
