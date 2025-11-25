@@ -1,4 +1,3 @@
-import React from "react";
 import { Navbar } from "../../components/Navbar/Navbar.tsx"
 import { InputBox } from '../../components/InputBox/InputBox.tsx'
 import { Events } from "../../components/Events/Events.tsx"
@@ -14,7 +13,7 @@ export default function Zora() {
     }
 
     return (
-        <React.Fragment>
+        <div className={styles.body}>
             <Navbar />
             <div className={styles.parentContainer}>
                 <div className={styles.childContainer}>
@@ -35,6 +34,6 @@ export default function Zora() {
                 <InputBox onSend={handleLandingSend} />
                 <Events />
             </div>
-        </React.Fragment>
+        </div>
     )
 }
