@@ -1,6 +1,6 @@
 import Zora from './pages/Zora/Zora';
 import Query from './pages/Query';
-import Agents from './pages/Agents';
+import Agents from './pages/Agents/Agents';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
