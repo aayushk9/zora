@@ -1,6 +1,7 @@
 .navbar {
     display: flex;
     justify-content: space-between;
+    padding-top: 12px;
 }
 
 .zora {
@@ -16,7 +17,7 @@
   background-color:deepskyblue;
   color:white;
   font-size: 14px;
-  border-radius: 15%;
+  border-radius: 17%;
   padding-left: 12px;
   padding-right:12px;
   padding-top:8px;
