@@ -1,2 +1,2 @@
-Ask Zora to Trade Prediction Markets (under developement)
+Ask Zora to Trade Prediction Markets 
 currently supporting jupiter prediction market
