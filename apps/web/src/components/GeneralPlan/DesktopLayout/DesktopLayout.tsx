@@ -28,7 +28,7 @@ export function DesktopLayout() {
    return (
       <React.Fragment>
          <div className={styles.parentContainer}>
-            <div id="sidebar">
+            <div>
                <Sidebar />
             </div>
             <div id="queryExecutionBox" className={styles.queryExecutionBox}>

@@ -3,7 +3,7 @@
     width: 22vw;
     display: flex;
     flex-direction: column;
-    margin-top: 40px;
+    margin-top: 0.5rem;
     gap: 10rem;
     margin-left: 1rem;
 }
