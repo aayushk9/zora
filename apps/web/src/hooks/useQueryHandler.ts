@@ -46,7 +46,7 @@ export function useQueryHandler() {
             //const data = await res.json();
             // store data in agent message as
             // data.reply => agentMessage = {role: "agent", content: data.reply}
-
+         console.log(res)
         } catch (err) {
             console.log(err)
         }
