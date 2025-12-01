@@ -101,7 +101,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                                   how can we store those selected events from events component in local event state
                                   -> import selected event here
                                   -> store those imported selected events in local event state
-                                  -> iterate through that event state
+                                  -> iterate through that event state and display events 
                                 */}
                             <h3 style={{color: 'white'}}>Events</h3>  
                             </div>
