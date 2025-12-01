@@ -79,6 +79,13 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                         )}
                     </form>
                 </div>
+                <div>
+                    <div>
+                      {/*
+                        some logic to display events
+                      */}
+                    </div>
+                </div>
             </div>
         </React.Fragment>
     )
