@@ -83,7 +83,30 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                     <div>
                       {/*
                         some logic to display events
+
+                        if event selected than show this division
+
+                        <div>
+                          import selected event from user and display it here
+                        </div>
                       */}
+                      {/* instead of showsuggestions replace it with condition of event selected */}
+                      {showSuggestions && (
+                        <div>
+                            <h2 style={{color: 'white'}}>Selected Events</h2>
+                            <div>
+                                {
+                                /* store events in events state and than iterate those events here 
+                                   
+                                  how can we store those selected events from events component in local event state
+                                  -> import selected event here
+                                  -> store those imported selected events in local event state
+                                  -> iterate through that event state
+                                */}
+                            <h3 style={{color: 'white'}}>Events</h3>  
+                            </div>
+                        </div>
+                      )}
                     </div>
                 </div>
             </div>
