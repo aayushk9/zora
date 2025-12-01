@@ -5,13 +5,11 @@ import { SuggestedPrompts } from "../SuggestedPrompts/SuggestedPrompts"
 
 export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
-    const [query, setQuery] = useState("")
+    const [query, setQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-
     const isEmpty = query.trim() === ""
 
     // conditional logic behind how input box expands
