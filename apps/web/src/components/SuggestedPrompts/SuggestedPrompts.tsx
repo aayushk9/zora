@@ -2,8 +2,8 @@ export function SuggestedPrompts({ onSelect }: any) {
 
   const prompts = [
         "Predict the outcome of the next Solana price event and explain your reasoning",
-        "Analyze which side (YES/NO) has a better risk-to-reward ratio for this market",
-        "Suggest a trading strategy for low-volume but high-confidence markets",
+        "Analyze which side (YES/NO) has a better risk to reward ratio for this market",
+        "Suggest a trading strategy for low volume but high confidence markets",
         "Estimate the probability of this event resolving as YES based on current liquidity",
         "Summarize key signals that might affect the market outcome over the next 24 hours"
     ]
