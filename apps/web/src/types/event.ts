@@ -10,4 +10,6 @@ export type EventCardProps = {
     title: string;
     outcomes: Outcome[]
     totalVolume: number;
+    isSelected?: boolean;
+    onClick?: () => void;
 }
