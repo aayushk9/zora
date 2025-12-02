@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import styles from './Events.module.css'
 import clsx from "clsx"
 import { EventCard } from "../EventCard/EventCard"
-//import type { EventCardProps } from "../../types/event"
+import type { EventCardProps } from "../../types/event"
 
 
 type Category = "all" | "crypto" | "sports" | "politics"
@@ -18,7 +18,42 @@ export function Events() {
 
   const [searchInput, setSearchInput] = useState("");
   const [active, setActive] = useState<Category>("all");
-  //const [events, setEvents] = useState<EventCardProps[]>([])
+  const [events, setEvents] = useState<EventCardProps[]>(
+    [
+      {
+        imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
+        title:"Burnley vs Chelsea",
+        outcomes : [
+                { title: "Chelsea", yesPercent: 65 },
+                { title: "Tie", yesPercent: 22 },
+                { title: "Burnley", yesPercent: 16 }
+              ],
+        totalVolume: 25772
+      },
+
+       {
+        imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
+        title:"Burnley vs Chelsea",
+        outcomes : [
+                { title: "Chelsea", yesPercent: 65 },
+                { title: "Tie", yesPercent: 22 },
+                { title: "Burnley", yesPercent: 16 }
+              ],
+        totalVolume: 25772
+      },
+
+       {
+        imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
+        title:"Burnley vs Chelsea",
+        outcomes : [
+                { title: "Chelsea", yesPercent: 65 },
+                { title: "Tie", yesPercent: 22 },
+                { title: "Burnley", yesPercent: 16 }
+              ],
+        totalVolume: 25772
+      },
+    ]
+)
 
   useEffect(() => {
     // send a request to /api/eventcategory as a post request with active category and request for
@@ -28,7 +63,7 @@ export function Events() {
   }, [active])
 
   const searchForEvent = () => {
-    // send searchinput to server throigh post request
+    // send searchinput to server through post request
   }
 
   // we are supposed to fetch lots of things from here
@@ -38,7 +73,7 @@ export function Events() {
   // use side effect to fetch or send get request from events division from server
 
   // FETCH EVENTS ONLY ONCE AS THE COMPONENT MOUNTS I.E EMPTY DEPENDENCY []
-  // FETCH -> GET -> RESPONSE -> PUT RESPONSE IN STATE -> DISPLAY STATE
+  // FETCH -> GET -> RESPONSE -> PUT RESPONSE IN EVENT STATE -> DISPLAY EVENT STATE
 
   // send search data to backend (user i/p collected from frontend store it in state var and send to an api endpoint)
 
@@ -92,62 +127,31 @@ export function Events() {
           ))}
         </div>
 
-        <div className={styles.eventsGrid}>
-          <EventCard
-            imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
-            title="Burnley vs Chelsea"
+        <div className={styles.eventsGrid} onClick={() => {
+          alert("event selected")
+        }}>
 
-            outcomes={[
-              { title: "Chelsea", yesPercent: 65 },
-              { title: "Tie", yesPercent: 22 },
-              { title: "Burnley", yesPercent: 16 }
-            ]}
-            totalVolume={25772}
-            />
+          {/*
+           after server is activated we nned to send request to backend server to fetch events when component mounts
 
-             <EventCard
-              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
-              title="Burnley vs Chelsea"
-              outcomes={[
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ]}
-              totalVolume={25772}
-            />
+           -> events fetched from server and than -> setEvents(res) now as we have events in our local events state
+           -> 1) onClick/onSelect highlight the selected event 
+           -> 2) we need to export the selected events from here to inputbox
+           -> 3) only export selected events's img, title, volume and if possible count of outcomes
+           
+              How to achieve this?
+              -> 
+          */}
 
-             <EventCard
-              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
-              title="Burnley vs Chelsea"
-              outcomes={[
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ]}
-              totalVolume={25772}
-            />
-
-             <EventCard
-              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
-              title="Burnley vs Chelsea"
-              outcomes={[
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ]}
-              totalVolume={25772}
-            />
-
-             <EventCard
-              imgUrl="https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp"
-              title="Burnley vs Chelsea"
-              outcomes={[
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ]}
-              totalVolume={25772}
-            />
+          {events.map((event, index) => (
+             <EventCard 
+              key={index}
+              imgUrl={event.imgUrl}
+              title={event.title}
+              outcomes={event.outcomes}
+              totalVolume={event.totalVolume}
+             />
+            ))}
         </div>
       </div>
     </React.Fragment>
