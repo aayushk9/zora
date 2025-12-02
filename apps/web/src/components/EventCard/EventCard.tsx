@@ -2,7 +2,7 @@ import React from "react"
 import styles from './EventCard.module.css'
 import type { EventCardProps } from "../../types/event"
 
-export function EventCard({ imgUrl, title, outcomes, totalVolume }: EventCardProps) {
+export function EventCard({ imgUrl, title, outcomes, totalVolume}: EventCardProps) {
     return (
         <React.Fragment>
             <div className={styles.parentContainer}>
