@@ -19,6 +19,7 @@ export function Events() {
   const [searchInput, setSearchInput] = useState("");
   const [active, setActive] = useState<Category>("all");
   const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(null)
+  const [exportSelectedEvent, setExportSelectedEvent] = useState<EventCardProps[]>([]) 
   const [events, setEvents] = useState<EventCardProps[]>(
     [
       {
