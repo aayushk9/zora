@@ -18,6 +18,7 @@ export function Events() {
 
   const [searchInput, setSearchInput] = useState("");
   const [active, setActive] = useState<Category>("all");
+  const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(null)
   const [events, setEvents] = useState<EventCardProps[]>(
     [
       {
@@ -72,17 +73,25 @@ export function Events() {
   // how do we fetch events and display here
   // use side effect to fetch or send get request from events division from server
 
-  // FETCH EVENTS ONLY ONCE AS THE COMPONENT MOUNTS I.E EMPTY DEPENDENCY []
-  // FETCH -> GET -> RESPONSE -> PUT RESPONSE IN EVENT STATE -> DISPLAY EVENT STATE
+  useEffect(() => {
+     const fetchEvents = async() => {
+      try {
+       const res = await fetch("http://localhost:3000/api/events") // GET Endpoint
+       const data: EventCardProps[] = await res.json();
+       setEvents(data)
+      } catch(err) {
+        console.error(`err: ${err}`)
+      }
+     }
+     fetchEvents()
+  }, [])
+
 
   // send search data to backend (user i/p collected from frontend store it in state var and send to an api endpoint)
 
   // events will be coming from backend for that we need to create event card component which should accept 
   // certain props ie whatever resposne coming from backend such as imgyrl, title, description, options, etc
-  // style that box in certain manner and import that card component here 
-  // at frontend those props == state 
-  // such as prop imgurl = state imgurl
-  // setImageURL(res.data.imgURL)
+
   return (
     <React.Fragment>
       <div className={styles.container}>
@@ -128,13 +137,13 @@ export function Events() {
         </div>
 
         <div className={styles.eventsGrid} onClick={() => {
-          alert("event selected")
+          
         }}>
 
           {/*
-           after server is activated we nned to send request to backend server to fetch events when component mounts
+           after server is activated we need to send request to backend server to fetch events when the component mounts
 
-           -> events fetched from server and than -> setEvents(res) now as we have events in our local events state
+           -> events fetched from server and than -> setEvents(response from server) now as we have events in our local events state
            -> 1) onClick/onSelect highlight the selected event 
            -> 2) we need to export the selected events from here to inputbox
            -> 3) only export selected events's img, title, volume and if possible count of outcomes
@@ -150,8 +159,11 @@ export function Events() {
               title={event.title}
               outcomes={event.outcomes}
               totalVolume={event.totalVolume}
+              isSelected={selectedEventIndex == index}
+              onClick={() => setSelectedEventIndex(index)}
              />
             ))}
+
         </div>
       </div>
     </React.Fragment>
