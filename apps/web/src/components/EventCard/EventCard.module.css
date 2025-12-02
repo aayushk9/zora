@@ -11,6 +11,19 @@
     margin-top: 15px;
 }
 
+.selectedEvent {
+    border-radius: 8px;
+    padding: 16px;
+    height: 210px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    cursor: pointer;
+    border: 0.1px solid #3366FF;
+    background-color: #0f0e0e;
+    margin-top: 15px;
+}
+
 .parentContainer:hover {
     border: 0.6px solid #3366FF;
 }

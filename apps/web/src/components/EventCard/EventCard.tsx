@@ -2,10 +2,10 @@ import React from "react"
 import styles from './EventCard.module.css'
 import type { EventCardProps } from "../../types/event"
 
-export function EventCard({ imgUrl, title, outcomes, totalVolume}: EventCardProps) {
+export function EventCard({ imgUrl, title, outcomes, totalVolume, isSelected, onClick}: EventCardProps) {
     return (
         <React.Fragment>
-            <div className={styles.parentContainer}>
+            <div onClick={onClick} className={`${styles.parentContainer} ${isSelected? styles.selectedEvent: ""}`}>
                 <div className={styles.header}>
                     <img src={imgUrl} alt="event icon" className={styles.icon} />
                     <span className={styles.title}>{title}</span>
