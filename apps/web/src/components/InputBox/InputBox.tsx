@@ -2,12 +2,16 @@ import React, { useState, useRef, useEffect } from "react"
 import styles from './InputBox.module.css'
 import sendIcon from '../../assets/send.png'
 import { SuggestedPrompts } from "../SuggestedPrompts/SuggestedPrompts"
+import { useEventStore } from "../../store/useSelectedEventStore"
+
 
 export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     const [query, setQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
+    const selectedEvents = useEventStore((s) => s.selectedEvents);
+    const removeEvents = useEventStore((s) => s.removeEvent);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const isEmpty = query.trim() === ""
@@ -81,29 +85,19 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                 </div>
                 <div>
                     <div>
-                      {/*
-                        some logic to display events
-
-                        if event selected than show this division
-
-                        <div>
-                          import selected event from user and display it here
-                        </div>
-                      */}
-                      {/* instead of showsuggestions replace it with condition of event selected */}
-                      {showSuggestions && (
+                      {selectedEvents.length > 0 && (
                         <div>
                             <h2 style={{color: 'white'}}>Selected Events</h2>
                             <div>
-                                {
-                                /* store events in events state and than iterate those events here 
-                                   
-                                  how can we store those selected events from events component in local event state
-                                  -> import selected event here
-                                  -> store those imported selected events in local event state
-                                  -> iterate through that event state and display events 
-                                */}
                             <h3 style={{color: 'white'}}>Events</h3>  
+                            {selectedEvents.map((ev) => (
+                                <div key={ev.title} className={styles.selectedEvent}>
+                                  <img className={styles.img} src={ev.imgUrl}/>
+                                  <span className={styles.title}>{ev.title}</span>
+                                  <span className={styles.totalVolume}>{ev.totalVolume}</span>
+                                  <button onClick={() => removeEvents(ev.title)}>x</button>
+                                </div>
+                            ))}
                             </div>
                         </div>
                       )}
