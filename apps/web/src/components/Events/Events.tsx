@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react"
 import styles from './Events.module.css'
 import clsx from "clsx"
 import { EventCard } from "../EventCard/EventCard"
-import type { EventCardProps } from "../../types/event"
+import type { EventCardProps, SelectedEventProps } from "../../types/event"
 
 
 type Category = "all" | "crypto" | "sports" | "politics"
+
+type EventsProps = {
+  onEventSelect: (event: SelectedEventProps) => void;
+};
 
 const categoryLabel: Record<Category, string> = {
   all: "All",
@@ -14,12 +18,11 @@ const categoryLabel: Record<Category, string> = {
   politics: "Politics"
 }
 
-export function Events() {
+export function Events({onEventSelect}: EventsProps) {
 
   const [searchInput, setSearchInput] = useState("");
   const [active, setActive] = useState<Category>("all");
-  const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(null)
-  const [exportSelectedEvent, setExportSelectedEvent] = useState<EventCardProps[]>([]) 
+  const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(null) 
   const [events, setEvents] = useState<EventCardProps[]>(
     [
       {
@@ -150,7 +153,9 @@ export function Events() {
            -> 3) only export selected events's img, title, volume and if possible count of outcomes
            
               How to achieve this?
-              -> 
+              -> onClicking on certain events add that event's properties such as imgUrl, title and totalVolume to our exportSelectedEvents
+              -> export that state from this file to inputbox file
+              -> display the exported state on inputbox on certain condition
           */}
 
           {events.map((event, index) => (
@@ -161,10 +166,19 @@ export function Events() {
               outcomes={event.outcomes}
               totalVolume={event.totalVolume}
               isSelected={selectedEventIndex == index}
-              onClick={() => setSelectedEventIndex(index)}
+              onClick={() => {
+                setSelectedEventIndex(index);
+                // append selected event to exportEvents array
+                onEventSelect({
+                  imgUrl: event.imgUrl,
+                  title: event.title,
+                  totalVolume: event.totalVolume
+                })
+              }}
              />
             ))}
-
+        </div>
+        <div>
         </div>
       </div>
     </React.Fragment>
