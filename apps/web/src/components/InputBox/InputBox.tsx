@@ -84,7 +84,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                     </form>
                 </div>
                 <div>
-                    <div>
+                    
                       {selectedEvents.length > 0 && (
                         <div>
                             <h2 style={{color: 'white'}}>Selected Events</h2>
@@ -101,7 +101,6 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                             </div>
                         </div>
                       )}
-                    </div>
                 </div>
             </div>
         </React.Fragment>
