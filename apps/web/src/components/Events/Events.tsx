@@ -2,14 +2,10 @@ import React, { useEffect, useState } from "react"
 import styles from './Events.module.css'
 import clsx from "clsx"
 import { EventCard } from "../EventCard/EventCard"
-import type { EventCardProps, SelectedEventProps } from "../../types/event"
-
+import type { EventCardProps } from "../../types/event"
+import { useEventStore } from "../../store/useSelectedEventStore"
 
 type Category = "all" | "crypto" | "sports" | "politics"
-
-type EventsProps = {
-  onEventSelect: (event: SelectedEventProps) => void;
-};
 
 const categoryLabel: Record<Category, string> = {
   all: "All",
@@ -18,22 +14,23 @@ const categoryLabel: Record<Category, string> = {
   politics: "Politics"
 }
 
-export function Events({onEventSelect}: EventsProps) {
+export function Events() {
 
   const [searchInput, setSearchInput] = useState("");
   const [active, setActive] = useState<Category>("all");
-  const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(null) 
+  const addEvent = useEventStore((s) => s.addEvent);
+  const selectedEvents = useEventStore((s) => s.selectedEvents)
   const [events, setEvents] = useState<EventCardProps[]>(
     [
       {
         imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
-        title:"Burnley vs Chelsea",
+        title:"right vs wrong",
         outcomes : [
                 { title: "Chelsea", yesPercent: 65 },
                 { title: "Tie", yesPercent: 22 },
                 { title: "Burnley", yesPercent: 16 }
               ],
-        totalVolume: 25772
+        totalVolume: 272
       },
 
        {
@@ -44,18 +41,28 @@ export function Events({onEventSelect}: EventsProps) {
                 { title: "Tie", yesPercent: 22 },
                 { title: "Burnley", yesPercent: 16 }
               ],
-        totalVolume: 25772
+        totalVolume: 772
       },
 
        {
         imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
-        title:"Burnley vs Chelsea",
+        title:"ind vs sa",
         outcomes : [
                 { title: "Chelsea", yesPercent: 65 },
                 { title: "Tie", yesPercent: 22 },
                 { title: "Burnley", yesPercent: 16 }
               ],
-        totalVolume: 25772
+        totalVolume: 2577
+      },
+        {
+        imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
+        title:"no vs yes",
+        outcomes : [
+                { title: "Chelsea", yesPercent: 65 },
+                { title: "Tie", yesPercent: 22 },
+                { title: "Burnley", yesPercent: 16 }
+              ],
+        totalVolume: 2772
       },
     ]
 )
@@ -140,9 +147,7 @@ export function Events({onEventSelect}: EventsProps) {
           ))}
         </div>
 
-        <div className={styles.eventsGrid} onClick={() => {
-          
-        }}>
+        <div className={styles.eventsGrid}>
 
           {/*
            after server is activated we need to send request to backend server to fetch events when the component mounts
@@ -165,11 +170,9 @@ export function Events({onEventSelect}: EventsProps) {
               title={event.title}
               outcomes={event.outcomes}
               totalVolume={event.totalVolume}
-              isSelected={selectedEventIndex == index}
+              isSelected={selectedEvents.some(e => e.title === event.title)}
               onClick={() => {
-                setSelectedEventIndex(index);
-                // append selected event to exportEvents array
-                onEventSelect({
+                addEvent({
                   imgUrl: event.imgUrl,
                   title: event.title,
                   totalVolume: event.totalVolume
