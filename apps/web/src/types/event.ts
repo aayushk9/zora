@@ -13,3 +13,9 @@ export type EventCardProps = {
     isSelected?: boolean;
     onClick?: () => void;
 }
+
+export type SelectedEventProps = {
+    imgUrl: string;
+    title: string;
+    totalVolume: number;
+}
