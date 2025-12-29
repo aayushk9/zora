@@ -87,9 +87,8 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                     
                       {selectedEvents.length > 0 && (
                         <div>
-                            <h2 style={{color: 'white'}}>Selected Events</h2>
+                            <h3 style={{color: 'white'}}>Selected Events</h3>
                             <div>
-                            <h3 style={{color: 'white'}}>Events</h3>  
                             {selectedEvents.map((ev) => (
                                 <div key={ev.title} className={styles.selectedEvent}>
                                   <img className={styles.img} src={ev.imgUrl}/>
