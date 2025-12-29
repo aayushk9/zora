@@ -13,55 +13,78 @@
     display: flex;
     flex-direction: row;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.089);
+    border: 1px solid rgba(255, 255, 255, 0.137);
     border-radius: 6px;
     overflow: hidden;
 }
 
 .inputBox {
-    margin-top: 38rem;
-    position: sticky;
-    bottom: 0;
-    padding-left: 1rem;
-    padding-right: 0.5rem;
-    padding-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.089);
+    flex-shrink: 0;
 }
 
 .executionBox {
     flex: 1;
     border-radius: 1px;
-    border-left: 1px solid rgba(255, 255, 255, 0.096);
-   
+    border-left: 1px solid rgba(255, 255, 255, 0.11);
 }
 
 .queryBorder {
-    border-top: 1px solid rgba(255, 255, 255, 0.089);
+    border-top: 1px solid rgba(255, 255, 255, 0.144);
     border-radius: 1px;
 }
 
 .executionBorder {
-    border-top: 1px solid rgba(255, 255, 255, 0.089);
+    border-top: 1px solid rgba(255, 255, 255, 0.144);
     border-radius: 1px;
+}
+
+.headerSection {
+    padding: 1rem 0;
+    flex-shrink: 0;
 }
 
 .queryHeader, .executionHeader {
     color: #ffffffef;
     margin-left: 10px;
     font-family: sans-serif;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .messagesArea {
     flex: 1;
     overflow-y: auto;
     padding: 1rem;
-     word-wrap: break-word;
+    word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
     scroll-behavior: smooth;
+    min-height: 0;
 }
 
 .queryBox {
-    overflow: hidden;
-    
-    overflow-y: auto; 
+    flex: 1.3;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+}
+
+.userInterface {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    min-height: 0; 
+}
+
+.userMessage {
+    background-color: #2d2d2d;
+    border-radius: 10px;
+    align-self: flex-end
+}
+
+.agentMessage {
+    align-self: flex-start;
 }

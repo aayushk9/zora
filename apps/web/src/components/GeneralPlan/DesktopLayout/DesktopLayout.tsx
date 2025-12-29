@@ -14,17 +14,17 @@ export function DesktopLayout() {
    } = useQueryHandler();
 
    const messagesEndRef: any = useRef(null);
-
-   // 3. This function scrolls the anchor into view
-   const scrollToBottom: any = () => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+   const messagesAreaRef = useRef<HTMLDivElement>(null);
+   const scrollToBottom = () => {
+      if (messagesEndRef.current) {
+         messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }
    };
 
-   // 4. Triggers auto-scroll whenever messages changes
    useEffect(() => {
       scrollToBottom();
    }, [messages]);
-   
+
    return (
       <React.Fragment>
          <div className={styles.parentContainer}>
@@ -33,18 +33,28 @@ export function DesktopLayout() {
             </div>
             <div id="queryExecutionBox" className={styles.queryExecutionBox}>
                <div id="query" className={styles.queryBox}>
-                  <br />
-                  <span className={styles.queryHeader}>Query</span>
-                  <br />
-                  <br />
+                  <div className={styles.headerSection}>
+                     <span className={styles.queryHeader}>Query</span>
+                  </div>
+
                   <div className={styles.queryBorder}></div>
                   <div className={styles.userInterface}>
-                     <div className={styles.messagesArea}>
+                     <div className={styles.messagesArea} ref={messagesAreaRef}>
                         {messages.map((message, index) => (
                            <p key={index} style={{
                               color: "white"
-                           }}>{message.content}</p>
+                           }}>
+                              {message.role == "user" ? 
+                              <div className={styles.userMessage}>
+                                <p>{message.content}</p>
+                              </div> 
+                              : 
+                              <div className={styles.agentMessage}>
+                                 <p>{message.content}</p>
+                              </div>}
+                          </p>
                         ))}
+                        <div ref={messagesEndRef} />
                      </div>
                   </div>
                   <div className={styles.inputBox}>
@@ -53,10 +63,9 @@ export function DesktopLayout() {
                </div>
 
                <div id="execution" className={styles.executionBox}>
-                  <br />
-                  <span className={styles.executionHeader}>Execution</span>
-                  <br />
-                  <br />
+                  <div className={styles.headerSection}>
+                     <span className={styles.executionHeader}>Execution</span>
+                  </div>
                   <div className={styles.executionBorder}></div>
                   <div className={styles.executionBody}>
                      <DottedBackground />
