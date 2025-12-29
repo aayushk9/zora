@@ -18,7 +18,7 @@ const categoryLabel: Record<Category, string> = {
 export function Events() {
 
   const [searchInput, setSearchInput] = useState("");
-  const [active, setActive] = useState<Category>("all");
+  const [activeCategory, setActiveCategory] = useState<Category>("all");
   const addEvent = useEventStore((s) => s.addEvent);
   const selectedEvents = useEventStore((s) => s.selectedEvents)
   const [events, setEvents] = useState<EventCardProps[]>([])
@@ -37,15 +37,13 @@ export function Events() {
       }
 
       try {
-        const res = await fetch("https://prediction-market-api.jup.ag/api/v1/events") // GET Endpoint
+        const res = await fetch("https://prediction-market-api.jup.ag/api/v1/events") 
 
         if (!res.ok) {
           throw new Error("failed to fetch events");
         }
 
         const eventsInJSON = await res.json();
-        // customized data according to eventCardProps i.e making sure the data we are fetching from market is not random. we are sorting it by making sure that only
-        // certain props are inserted inside event state
         const data: EventCardProps[] = eventsInJSON.data.map((event: any) => ({
           metaData: {
             title: event.metadata?.title || "",
@@ -57,12 +55,12 @@ export function Events() {
               title: market.metadata?.title || ""
             },
             pricing: {
-              buyYesPriceUsd: market.pricing?.buyYesPriceUsd || 0, // conver this yes price usd to yes percent 
+              buyYesPriceUsd: market.pricing?.buyYesPriceUsd || 0, 
               buyNoPriceUsd: market.pricing?.buyNoPriceUsd || 0,
               yesPercent: calcYesPercent(
                 market.pricing?.buyYesPriceUsd,
                 market.pricing?.buyNoPriceUsd
-              )
+              ),
             }
           }))
         }))
@@ -75,6 +73,15 @@ export function Events() {
     }
     fetchEvents()
   }, [])
+
+  useEffect(() => {
+   // initially its all so no chnage needed when category chnages send request to api and fetch events from selected category
+   // make a comparison with activeCategory and categories which match push them inside event state and display
+   const fetchSelectedCategoryEvents = async () => {
+    
+   }
+   fetchSelectedCategoryEvents();
+  }, [activeCategory])
 
   const searchForEvent = () => {
     // send searchinput to server through post request
@@ -114,9 +121,9 @@ export function Events() {
           {Object.entries(categoryLabel).map(([value, label]) => (
             <button
               key={value}
-              onClick={() => setActive(value as Category)}
+              onClick={() => setActiveCategory(value as Category)}
               className={clsx(styles.categoryButton, {
-                [styles.active]: active == value,
+                [styles.active]: activeCategory == value,
               })}
             >
               {label}
