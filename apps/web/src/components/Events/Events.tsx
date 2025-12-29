@@ -20,59 +20,46 @@ export function Events() {
   const [active, setActive] = useState<Category>("all");
   const addEvent = useEventStore((s) => s.addEvent);
   const selectedEvents = useEventStore((s) => s.selectedEvents)
-  const [events, setEvents] = useState<EventCardProps[]>(
-    [
-      {
-        imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
-        title:"right vs wrong",
-        outcomes : [
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ],
-        totalVolume: 272
-      },
-
-       {
-        imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
-        title:"Burnley vs Chelsea",
-        outcomes : [
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ],
-        totalVolume: 772
-      },
-
-       {
-        imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
-        title:"ind vs sa",
-        outcomes : [
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ],
-        totalVolume: 2577
-      },
-        {
-        imgUrl : "https://kalshi-public-docs.s3.amazonaws.com/series-images-webp/KXEPLGAME.webp",
-        title:"no vs yes",
-        outcomes : [
-                { title: "Chelsea", yesPercent: 65 },
-                { title: "Tie", yesPercent: 22 },
-                { title: "Burnley", yesPercent: 16 }
-              ],
-        totalVolume: 2772
-      },
-    ]
-)
+  const [events, setEvents] = useState<EventCardProps[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // send a request to /api/eventcategory as a post request with active category and request for
     // events with that active category 
     // for example if active catgeory is all send post request with body: active and backend return all catgery events
     // if active category changes send post request with that active category and backend return those category events
-  }, [active])
+
+    const fetchEvents = async() => {
+      try {
+       const res = await fetch("https://prediction-market-api.jup.ag/api/v1/events") // GET Endpoint
+
+       if(!res.ok) {
+        throw new Error("failed to fetch events");
+       }
+
+       const jsonEvents = await res.json();
+       const data = jsonEvents.data
+       setEvents(data)
+      } catch(err) {
+        console.error(`err: ${err}`)
+      } finally {
+        setLoading(false)
+      }
+     }
+     fetchEvents()
+     // we need to fetch event data such as event imgUrl, event title, market titles, each markets yes % and no % 
+     // for percent we will need to do some computation as we are going to have following data for each market
+     /**  pricing": {
+            "buyYesPriceUsd": 180000,
+            "buyNoPriceUsd": 840000,
+            "sellYesPriceUsd": 160000,
+            "sellNoPriceUsd": 820000,
+            "volume": 5870321,
+            "volume24h": 118852,
+            "openInterest": 4387443
+          } **/ 
+      // after having this data we need to do computation on this data and calculate yes and no %
+  }, [])
 
   const searchForEvent = () => {
     // send searchinput to server through post request
@@ -84,24 +71,7 @@ export function Events() {
   // how do we fetch events and display here
   // use side effect to fetch or send get request from events division from server
 
-  useEffect(() => {
-     const fetchEvents = async() => {
-      try {
-       const res = await fetch("http://localhost:3000/api/events") // GET Endpoint
-       const data: EventCardProps[] = await res.json();
-       setEvents(data)
-      } catch(err) {
-        console.error(`err: ${err}`)
-      }
-     }
-     fetchEvents()
-  }, [])
-
-
   // send search data to backend (user i/p collected from frontend store it in state var and send to an api endpoint)
-
-  // events will be coming from backend for that we need to create event card component which should accept 
-  // certain props ie whatever resposne coming from backend such as imgyrl, title, description, options, etc
 
   return (
     <React.Fragment>
@@ -149,34 +119,22 @@ export function Events() {
 
         <div className={styles.eventsGrid}>
 
-          {/*
-           after server is activated we need to send request to backend server to fetch events when the component mounts
-
-           -> events fetched from server and than -> setEvents(response from server) now as we have events in our local events state
-           -> 1) onClick/onSelect highlight the selected event 
-           -> 2) we need to export the selected events from here to inputbox
-           -> 3) only export selected events's img, title, volume and if possible count of outcomes
-           
-              How to achieve this?
-              -> onClicking on certain events add that event's properties such as imgUrl, title and totalVolume to our exportSelectedEvents
-              -> export that state from this file to inputbox file
-              -> display the exported state on inputbox on certain condition
-          */}
-
-          {events.map((event, index) => (
+          {events.map((event) => (
              <EventCard 
-              key={index}
-              imgUrl={event.imgUrl}
-              title={event.title}
-              outcomes={event.outcomes}
+              key={event.eventId}
+              eventId={event.eventId}
+              metaData={{
+                title: event.metaData?.title || "",
+                imgUrl: event.metaData?.imgUrl || ""
+              }}
               totalVolume={event.totalVolume}
-              isSelected={selectedEvents.some(e => e.title === event.title)}
+              isSelected={selectedEvents.some(e => e.title === event.metaData?.title)}
               onClick={() => {
-                addEvent({
-                  imgUrl: event.imgUrl,
-                  title: event.title,
-                  totalVolume: event.totalVolume
-                })
+               addEvent({
+                imgUrl: event.metaData?.imgUrl || "",
+                title: event.metaData?.title || "",
+                totalVolume: event.totalVolume
+               })
               }}
              />
             ))}
