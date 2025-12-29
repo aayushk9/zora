@@ -59,3 +59,9 @@
     white-space: pre-wrap;
     scroll-behavior: smooth;
 }
+
+.queryBox {
+    overflow: hidden;
+    
+    overflow-y: auto; 
+}

@@ -45,7 +45,6 @@ export function DesktopLayout() {
                               color: "white"
                            }}>{message.content}</p>
                         ))}
-                        
                      </div>
                   </div>
                   <div className={styles.inputBox}>
