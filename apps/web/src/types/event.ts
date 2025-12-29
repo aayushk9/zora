@@ -1,23 +1,21 @@
 type Markets = {
-    marketId?: string;
-    metaData: {
+    metaData?: {
         title: string;
     };
     pricing?: {
-        buyYesPriceUsd: string
-        buyNoPriceUsd: string
+        buyYesPriceUsd?: number;
+        buyNoPriceUsd?: number;
+        yesPercent: number;
     }
 } 
 
 export type EventCardProps = {
-    eventId?: string;
-    category?: string;
     metaData?: {
       imgUrl: string;
       title: string;
     }
-    markets?: Markets[]
-    totalVolume: string;
+    markets: Markets[];
+    totalVolume: number;
     isSelected?: boolean;
     onClick?: () => void;
 }
@@ -25,5 +23,5 @@ export type EventCardProps = {
 export type SelectedEventProps = {
     imgUrl: string;
     title: string;
-    totalVolume: string;
+    totalVolume: number;
 }
