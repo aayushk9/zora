@@ -10,7 +10,7 @@ type Markets = {
 } 
 
 export type EventCardProps = {
-    eventId: string;
+    eventId?: string;
     category?: string;
     metaData?: {
       imgUrl: string;
@@ -25,5 +25,5 @@ export type EventCardProps = {
 export type SelectedEventProps = {
     imgUrl: string;
     title: string;
-    totalVolume: number;
+    totalVolume: string;
 }
