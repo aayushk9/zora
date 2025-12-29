@@ -1,0 +1,54 @@
+.card {
+  background: #0d0d0d;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  padding: 14px;
+  height: 160px;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.image {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+}
+
+.title {
+  height: 14px;
+  width: 70%;
+  border-radius: 4px;
+}
+
+.lines {
+  margin-top: 14px;
+}
+
+.lines div {
+  height: 10px;
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.image,
+.title,
+.lines div {
+  background: linear-gradient(
+    90deg,
+    #1a1a1a 25%,
+    #2a2a2a 37%,
+    #1a1a1a 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
