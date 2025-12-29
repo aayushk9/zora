@@ -4,6 +4,7 @@ import clsx from "clsx"
 import { EventCard } from "../EventCard/EventCard"
 import type { EventCardProps } from "../../types/event"
 import { useEventStore } from "../../store/useSelectedEventStore"
+import { EventSkeleton } from "../EventSkeleton/EventSkeleton"
 
 type Category = "all" | "crypto" | "sports" | "politics"
 
@@ -29,54 +30,60 @@ export function Events() {
     // for example if active catgeory is all send post request with body: active and backend return all catgery events
     // if active category changes send post request with that active category and backend return those category events
 
-    const fetchEvents = async() => {
+    const fetchEvents = async () => {
+      const calcYesPercent = (yes: number, no: number) => {
+        if (!yes && !no) return 0;
+        return Math.round((yes / (yes + no)) * 100)
+      }
+
       try {
-       const res = await fetch("https://prediction-market-api.jup.ag/api/v1/events") // GET Endpoint
+        const res = await fetch("https://prediction-market-api.jup.ag/api/v1/events") // GET Endpoint
 
-       if(!res.ok) {
-        throw new Error("failed to fetch events");
-       }
+        if (!res.ok) {
+          throw new Error("failed to fetch events");
+        }
 
-       const jsonEvents = await res.json();
-       const data = jsonEvents.data
-       setEvents(data)
-      } catch(err) {
+        const eventsInJSON = await res.json();
+        // customized data according to eventCardProps i.e making sure the data we are fetching from market is not random. we are sorting it by making sure that only
+        // certain props are inserted inside event state
+        const data: EventCardProps[] = eventsInJSON.data.map((event: any) => ({
+          metaData: {
+            title: event.metadata?.title || "",
+            imgUrl: event.metadata?.imageUrl || ""
+          },
+          totalVolume: event.volumeUsd || 0,
+          markets: event.markets?.map((market: any) => ({
+            metaData: {
+              title: market.metadata?.title || ""
+            },
+            pricing: {
+              buyYesPriceUsd: market.pricing?.buyYesPriceUsd || 0, // conver this yes price usd to yes percent 
+              buyNoPriceUsd: market.pricing?.buyNoPriceUsd || 0,
+              yesPercent: calcYesPercent(
+                market.pricing?.buyYesPriceUsd,
+                market.pricing?.buyNoPriceUsd
+              )
+            }
+          }))
+        }))
+        setEvents(data)
+      } catch (err) {
         console.error(`err: ${err}`)
       } finally {
         setLoading(false)
       }
-     }
-     fetchEvents()
-     // we need to fetch event data such as event imgUrl, event title, market titles, each markets yes % and no % 
-     // for percent we will need to do some computation as we are going to have following data for each market
-     /**  pricing": {
-            "buyYesPriceUsd": 180000,
-            "buyNoPriceUsd": 840000,
-            "sellYesPriceUsd": 160000,
-            "sellNoPriceUsd": 820000,
-            "volume": 5870321,
-            "volume24h": 118852,
-            "openInterest": 4387443
-          } **/ 
-      // after having this data we need to do computation on this data and calculate yes and no %
+    }
+    fetchEvents()
   }, [])
 
   const searchForEvent = () => {
     // send searchinput to server through post request
   }
 
-  // we are supposed to fetch lots of things from here
-  // search bar needs to search within existing evnts and return matching ones
-
-  // how do we fetch events and display here
-  // use side effect to fetch or send get request from events division from server
-
-  // send search data to backend (user i/p collected from frontend store it in state var and send to an api endpoint)
-
   return (
     <React.Fragment>
       <div className={styles.container}>
-        <span className={styles.header}>Discover Market Events</span>
+        <span className={styles.header}>Discover Live Market Events</span>
         <div className={styles.searchContainer}>
           <div className={styles.searchBar}>
             <div className={styles.leftIcon}>
@@ -119,25 +126,31 @@ export function Events() {
 
         <div className={styles.eventsGrid}>
 
-          {events.map((event) => (
-             <EventCard 
-              key={event.eventId}
-              eventId={event.eventId}
-              metaData={{
-                title: event.metaData?.title || "",
-                imgUrl: event.metaData?.imgUrl || ""
-              }}
-              totalVolume={event.totalVolume}
-              isSelected={selectedEvents.some(e => e.title === event.metaData?.title)}
-              onClick={() => {
-               addEvent({
-                imgUrl: event.metaData?.imgUrl || "",
-                title: event.metaData?.title || "",
-                totalVolume: event.totalVolume
-               })
-              }}
-             />
-            ))}
+          {loading ?
+            Array.from({ length: 6 }).map((_, i) => (
+              <EventSkeleton key={i} />
+            ))
+            :
+            events.map((event, index) => (
+              <EventCard
+                key={index}
+                metaData={{
+                  title: event.metaData?.title || "",
+                  imgUrl: event.metaData?.imgUrl || ""
+                }}
+                markets={event.markets}
+                totalVolume={event.totalVolume}
+                isSelected={selectedEvents.some(e => e.title === event.metaData?.title)}
+                onClick={() => {
+                  addEvent({
+                    imgUrl: event.metaData?.imgUrl || "",
+                    title: event.metaData?.title || "",
+                    totalVolume: event.totalVolume
+                  })
+                }}
+              />
+            ))
+          }
         </div>
         <div>
         </div>
