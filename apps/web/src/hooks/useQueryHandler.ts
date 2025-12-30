@@ -52,9 +52,8 @@ export function useQueryHandler() {
         }
 
         // hard coding agent response as of now until server is up
-        const agentMessage: Message = { role: 'agent', content: "hard coded for now instead of server message" }
+        const agentMessage: Message = { role: 'agent', content: "hard coded for now instead of server message"}
         setMessages(prev => [...prev, agentMessage])
-
     }
 
     return {
