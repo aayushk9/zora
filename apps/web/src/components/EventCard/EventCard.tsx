@@ -1,23 +1,10 @@
 import React from "react"
 import styles from './EventCard.module.css'
 import type { EventCardProps } from "../../types/event"
-
-const formatVolumeUsd = (value: number) => {
-  const format = (num: number, suffix: string) =>
-    `$${num.toFixed(1).replace(/\.0$/, "")}${suffix}`;
-
-  if (value >= 1e12) return format(value / 1e12, "T");
-  if (value >= 1e9)  return format(value / 1e9, "B");
-  if (value >= 1e6)  return format(value / 1e6, "M");
-  if (value >= 1e3)  return format(value / 1e3, "K");
-  return `$${Math.round(value)}`;
-}
+import { useFormatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
 
 export function EventCard({ metaData, markets, totalVolume, isSelected, onClick}: EventCardProps) {
     const volumeUsd = totalVolume / 1e6;
-
-     // YES% = buyYesPrice / (buyYesPrice + buyNoPrice) * 100
-
     return (
         <React.Fragment>
             <div onClick={onClick} className={`${styles.parentContainer} ${isSelected? styles.selectedEvent: ""}`}>
@@ -38,7 +25,7 @@ export function EventCard({ metaData, markets, totalVolume, isSelected, onClick}
                 </div>
 
                 <div className={styles.footer}>
-                    <span className={styles.volume}>{formatVolumeUsd(volumeUsd)} vol</span>
+                    <span className={styles.volume}>{useFormatVolumeUsd(volumeUsd)} vol</span>
                 </div>
             </div>
         </React.Fragment>
