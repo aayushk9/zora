@@ -62,17 +62,14 @@ export function MobileLayout() {
         </div>
 
         <div className={styles.queryExecutionPanel}>
-
           {stagQuery && (
             <div className={styles.queryPanel}>
-              <div>
-                <p style={{ color: "white" }}>
+              <div className={styles.messageArea}>   
                   {messages.map((message, index) => (
-                    <p key={index}>
+                    <p key={index} className={`${message.role == "user" ? styles.userQuery : styles.agentResponse}`}>
                       {message.content}
                     </p>
                   ))}
-                </p>
               </div>
               <div className={styles.inputBox}><InputBox noSuggestedPrompts noOuterBorder onSend={handleUserQuery} /></div>
             </div>
