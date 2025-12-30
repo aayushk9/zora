@@ -49,6 +49,11 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 className={styles.textArea}
+                                onKeyDown={(e) => {
+                                    if(e.key == "enter") {
+                                      research
+                                    }
+                                }}
                                 onFocus={() => { 
                                     setIsExpanded(true);
                                     setIsFocused(true);
@@ -102,7 +107,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                                                     <svg className={styles.chartIcon} width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                         <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                     </svg>
-                                                    {ev.marketCount}
+                                                    {ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}
                                                 </span>
                                             </div>
                                         </div>
