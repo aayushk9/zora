@@ -64,6 +64,7 @@ export function Events() {
             }
           }))
         }))
+        console.log(data)
         setEvents(data)
       } catch (err) {
         console.error(`err: ${err}`)
@@ -152,7 +153,8 @@ export function Events() {
                   addEvent({
                     imgUrl: event.metaData?.imgUrl || "",
                     title: event.metaData?.title || "",
-                    totalVolume: event.totalVolume
+                    totalVolume: event.totalVolume,
+                    marketCount: event.markets?.length || 0
                   })
                 }}
               />
