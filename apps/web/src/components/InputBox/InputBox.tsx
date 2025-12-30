@@ -3,7 +3,7 @@ import styles from './InputBox.module.css'
 import sendIcon from '../../assets/send.png'
 import { SuggestedPrompts } from "../SuggestedPrompts/SuggestedPrompts"
 import { useEventStore } from "../../store/useSelectedEventStore"
-
+import { useFormatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
 
 export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
@@ -84,22 +84,33 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                     </form>
                 </div>
                 <div>
-                    
-                      {selectedEvents.length > 0 && (
+                    {selectedEvents.length > 0 && (
                         <div>
-                            <h3 style={{color: 'white'}}>Selected Events</h3>
-                            <div>
-                            {selectedEvents.map((ev) => (
-                                <div key={ev.title} className={styles.selectedEvent}>
-                                  <img className={styles.img} src={ev.imgUrl}/>
-                                  <span className={styles.title}>{ev.title}</span>
-                                  <span className={styles.totalVolume}>{ev.totalVolume}</span>
-                                  <button onClick={() => removeEvents(ev.title)}>x</button>
-                                </div>
-                            ))}
+                            <p className={styles.header}>Selected Events</p>
+                            <div className={styles.events}>
+                                {selectedEvents.map((ev) => (
+                                    <div key={ev.title} className={styles.selectedEvent}>
+                                        <div className={styles.contest}>
+                                            <div className={styles.subSection}>
+                                                <img className={styles.img} src={ev.imgUrl} />
+                                                <span className={styles.title}>{ev.title}</span>
+                                                <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
+                                            </div>
+                                            <div className={styles.stats}>
+                                                <span className={styles.volume}>{useFormatVolumeUsd(ev.totalVolume / 1e6)}</span>
+                                                <span className={styles.markets}>
+                                                    <svg className={styles.chartIcon} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                        <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                    </svg>
+                                                    {ev.marketCount}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                      )}
+                    )}
                 </div>
             </div>
         </React.Fragment>
