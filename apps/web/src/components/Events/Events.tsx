@@ -6,13 +6,17 @@ import type { EventCardProps } from "../../types/event"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import { EventSkeleton } from "../EventSkeleton/EventSkeleton"
 
-type Category = "all" | "crypto" | "sports" | "politics"
+type Category = "all" | "crypto" | "sports" | "politics" | "esports" | "culture" | "economics" | "tech"
 
 const categoryLabel: Record<Category, string> = {
   all: "All",
   crypto: "Crypto",
   sports: "Sports",
-  politics: "Politics"
+  politics: "Politics",
+  esports: "Esports",
+  culture: "Culture",
+  economics: "Economics",
+  tech: "Tech"
 }
 
 export function Events() {
@@ -25,11 +29,6 @@ export function Events() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // send a request to /api/eventcategory as a post request with active category and request for
-    // events with that active category 
-    // for example if active catgeory is all send post request with body: active and backend return all catgery events
-    // if active category changes send post request with that active category and backend return those category events
-
     const fetchEvents = async () => {
       const calcYesPercent = (yes: number, no: number) => {
         if (!yes && !no) return 0;
@@ -37,7 +36,12 @@ export function Events() {
       }
 
       try {
-        const res = await fetch("https://prediction-market-api.jup.ag/api/v1/events") 
+        const res = await fetch(`https://prediction-market-api.jup.ag/api/v1/events?category=${activeCategory}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        })
 
         if (!res.ok) {
           throw new Error("failed to fetch events");
@@ -55,7 +59,7 @@ export function Events() {
               title: market.metadata?.title || ""
             },
             pricing: {
-              buyYesPriceUsd: market.pricing?.buyYesPriceUsd || 0, 
+              buyYesPriceUsd: market.pricing?.buyYesPriceUsd || 0,
               buyNoPriceUsd: market.pricing?.buyNoPriceUsd || 0,
               yesPercent: calcYesPercent(
                 market.pricing?.buyYesPriceUsd,
@@ -64,24 +68,16 @@ export function Events() {
             }
           }))
         }))
-        console.log(data)
         setEvents(data)
+        console.log(data)
+
       } catch (err) {
-        console.error(`err: ${err}`)
+        console.log(`err: ${err}`)
       } finally {
         setLoading(false)
       }
     }
     fetchEvents()
-  }, [])
-
-  useEffect(() => {
-   // initially its all so no chnage needed when category chnages send request to api and fetch events from selected category
-   // make a comparison with activeCategory and categories which match push them inside event state and display
-   const fetchSelectedCategoryEvents = async () => {
-    
-   }
-   fetchSelectedCategoryEvents();
   }, [activeCategory])
 
   const searchForEvent = () => {
@@ -122,7 +118,10 @@ export function Events() {
           {Object.entries(categoryLabel).map(([value, label]) => (
             <button
               key={value}
-              onClick={() => setActiveCategory(value as Category)}
+              onClick={() => {
+                setActiveCategory(value as Category)
+                setLoading(true)
+              }}
               className={clsx(styles.categoryButton, {
                 [styles.active]: activeCategory == value,
               })}
