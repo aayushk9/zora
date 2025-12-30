@@ -41,17 +41,8 @@ export function DesktopLayout() {
                   <div className={styles.userInterface}>
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
                         {messages.map((message, index) => (
-                           <p key={index} style={{
-                              color: "white"
-                           }}>
-                              {message.role == "user" ? 
-                              <div className={styles.userMessage}>
-                                <p>{message.content}</p>
-                              </div> 
-                              : 
-                              <div className={styles.agentMessage}>
-                                 <p>{message.content}</p>
-                              </div>}
+                           <p key={index} className={`${message.role == "user" ? styles.userQuery : styles.agentResponse}`}>
+                            {message.content}
                           </p>
                         ))}
                         <div ref={messagesEndRef} />
