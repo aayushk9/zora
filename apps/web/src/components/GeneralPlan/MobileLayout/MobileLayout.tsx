@@ -4,13 +4,16 @@ import { InputBox } from "../../InputBox/InputBox";
 import { MobileNavbar } from "../../MobileNavbar/MobileNavbar";
 import { useLocation } from "react-router-dom";
 import { useQueryHandler } from "../../../hooks/useQueryHandler"
-
+import { useEventStore } from "../../../store/useSelectedEventStore";
+import { useFormatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
 
 export function MobileLayout() {
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const incomingText = params.get("c");
+  const selectedEvents = useEventStore((s) => s.selectedEvents)
+  const removeEvents = useEventStore((s) => s.removeEvent)
 
   const [stagQuery, setStagQuery] = useState(true);
   const [execution, setExecution] = useState(false);
@@ -64,12 +67,36 @@ export function MobileLayout() {
         <div className={styles.queryExecutionPanel}>
           {stagQuery && (
             <div className={styles.queryPanel}>
-              <div className={styles.messageArea}>   
-                  {messages.map((message, index) => (
-                    <p key={index} className={`${message.role == "user" ? styles.userQuery : styles.agentResponse}`}>
-                      {message.content}
-                    </p>
-                  ))}
+              <div className={styles.messageArea}>
+                {messages.map((message, index) => (
+                  <p key={index} className={`${message.role == "user" ? styles.userQuery : styles.agentResponse}`}>
+                    {message.content}
+                    {selectedEvents.length > 0 && message.role == "user" && index == 0 && (
+                      <div className={styles.events}>
+                        {selectedEvents.map((ev) => (
+                          <div key={ev.title}>
+                            <div className={styles.contest}>
+                              <div className={styles.subSection}>
+                                <img className={styles.img} src={ev.imgUrl} />
+                                <span className={styles.title}>{ev.title}</span>
+                                <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
+                              </div>
+                              <div className={styles.stats}>
+                                <span className={styles.volume}>{useFormatVolumeUsd(ev.totalVolume / 1e6)}</span>
+                                <span className={styles.markets}>
+                                  <svg className={styles.chartIcon} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                  </svg>
+                                  {ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </p>
+                ))}
               </div>
               <div className={styles.inputBox}><InputBox noSuggestedPrompts noOuterBorder onSend={handleUserQuery} /></div>
             </div>
