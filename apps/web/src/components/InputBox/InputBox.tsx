@@ -49,11 +49,6 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 className={styles.textArea}
-                                onKeyDown={(e) => {
-                                    if(e.key == "enter") {
-                                      research
-                                    }
-                                }}
                                 onFocus={() => { 
                                     setIsExpanded(true);
                                     setIsFocused(true);
@@ -89,7 +84,9 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                     </form>
                 </div>
                 <div>
-                    {selectedEvents.length > 0 && (
+
+                    {/* add one more condition to make sure that selected event is displayed with i/p box when only on / route*/}
+                    {selectedEvents.length > 0 && location.pathname == "/" && (
                         <div>
                             <p className={styles.header}>Selected Events</p>
                             <div className={styles.events}>
