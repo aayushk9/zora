@@ -163,10 +163,10 @@
     font-family: sans-serif;
     margin-top: 10px;
     letter-spacing: 0.3px ;
-    display: inline-flex; /* Added */
-    align-items: center; /* Added */
-    height: 10px; /* Added fixed height */
-    white-space: nowrap; /* Prevent wrapping */
+    display: inline-flex; 
+    align-items: center; 
+    height: 10px; 
+    white-space: nowrap; 
 }
 
 .markets {
@@ -182,8 +182,8 @@
     border-radius: 12px;
     padding: 6px 12px;
     margin-top: 10px;
-    height: 10px; /* Added fixed height */
-    white-space: nowrap; /* Prevent wrapping */
+    height: 10px; 
+    white-space: nowrap; 
 }
 
 .chartIcon {

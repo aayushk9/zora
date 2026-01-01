@@ -74,10 +74,9 @@ export default function MobileLayout() {
                     {selectedEvents.length > 0 && message.role == "user" && index == 0 && (
                       <div className={styles.events}>
                         {selectedEvents.map((ev) => (
-                          <div key={ev.title}>
+                          <div key={ev.title} className={styles.selectedEvent}>
                             <div className={styles.contest}>
                               <div className={styles.subSection}>
-                                <img className={styles.img} src={ev.imgUrl} />
                                 <span className={styles.title}>{ev.title}</span>
                                 <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
                               </div>
@@ -87,7 +86,7 @@ export default function MobileLayout() {
                                   <svg className={styles.chartIcon} width="16" height="16" viewBox="0 0 16 16" fill="none">
                                     <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                   </svg>
-                                  {ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}
+                                  <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
                                 </span>
                               </div>
                             </div>

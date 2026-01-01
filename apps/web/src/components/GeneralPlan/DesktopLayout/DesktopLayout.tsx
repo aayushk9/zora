@@ -21,8 +21,8 @@ export default function DesktopLayout() {
          messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
       }
    };
-   const selectedEvents = useEventStore((s) => s.selectedEvents); // store selected events
-   const removeEvents = useEventStore((s) => s.removeEvent) // to remove event
+   const selectedEvents = useEventStore((s) => s.selectedEvents); 
+   const removeEvents = useEventStore((s) => s.removeEvent) 
 
    useEffect(() => {
       scrollToBottom();
@@ -69,34 +69,6 @@ export default function DesktopLayout() {
                                 ))}
                             </div>
                             )}
-                            {/* currently if we are selecting event and navigating to query page the selected event is attached to 
-                                query, but it does not look good with i/p box, instead we can attach selected event below the first 
-                                user query
-
-                                // how do we achive it?
-                                1. we will be using useSelectedEvent store here
-                                2. as we redirect from / to /query, we will be removing selected event from inputbox
-                                3. add selected event to first message by the user
-
-                                loader?
-                                currenlty we are hard coding message on behalf of agent, but when the server will be activated the repsone time
-                                will be increased, therefore loader is needed
-
-                                how do we add a loader?
-                                1. add a loader state
-                                2. give a default value of false
-                                3. when the user sends query change state value to true
-                                4. when loader -> show loader else -> response
-
-                                5. if message.role == "user" && message.content == input -> setLoader(true)
-                                6. as loader is true display loader 
-                                7. when agent response is ready set loader to false and show agent response
-
-                                now we have removed selected event from getting displayed alongside inputbox when on /query path 
-                                we need to manually display event inside query page
-                                // addd 2 conditions to display an event along user's first query
-                                  1) if selected event.length ? 0 && message.role == user and its their first request in current conversation
-                            */}
                           </p>
                         ))}
                         <div ref={messagesEndRef} />
