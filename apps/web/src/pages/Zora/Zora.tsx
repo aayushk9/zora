@@ -1,4 +1,4 @@
-import Navbar from "../../components/Navbar/Navbar.tsx"
+import {Navbar} from "../../components/Navbar/Navbar.tsx"
 import { InputBox } from '../../components/InputBox/InputBox.tsx'
 import { Events } from "../../components/Events/Events.tsx"
 import styles from './Zora.module.css'

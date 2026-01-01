@@ -27,8 +27,7 @@ const AgentCard = ({ title, description, image}: {
     );
 }
 
-
-export default function AgentNetwork() {
+export function AgentNetwork() {
     const [searchInput, setSearchInput] = useState("");
     
     return (

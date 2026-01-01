@@ -7,7 +7,7 @@ import { useQueryHandler } from "../../../hooks/useQueryHandler";
 import { useEventStore } from "../../../store/useSelectedEventStore";
 import { useFormatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
 
-export default function DesktopLayout() {
+export function DesktopLayout() {
 
    const {
       messages,

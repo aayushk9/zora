@@ -7,7 +7,7 @@ import { useQueryHandler } from "../../../hooks/useQueryHandler"
 import { useEventStore } from "../../../store/useSelectedEventStore";
 import { useFormatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
 
-export default function MobileLayout() {
+export function MobileLayout() {
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);

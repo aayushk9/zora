@@ -138,9 +138,9 @@ export function Events() {
               <EventSkeleton key={i} />
             ))
             :
-            events.map((event, index) => (
+            events.map((event) => (
               <EventCard
-                key={index}
+                key={event.metaData?.title}
                 metaData={{
                   title: event.metaData?.title || "",
                   imgUrl: event.metaData?.imgUrl || ""
@@ -153,7 +153,7 @@ export function Events() {
                     imgUrl: event.metaData?.imgUrl || "",
                     title: event.metaData?.title || "",
                     totalVolume: event.totalVolume,
-                    marketCount: event.markets?.length || 0
+                    marketCount: event.markets.length || 0
                   })
                 }}
               />

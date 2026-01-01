@@ -1,7 +1,7 @@
-import React, { lazy, Suspense } from "react"
+import React from "react"
 import { useIsMobile } from "../useIsMobile/useIsMobile"
-const DesktopLayout = lazy(() => import("./DesktopLayout/DesktopLayout"))
-const MobileLayout = lazy(() => import("./MobileLayout/MobileLayout"))
+import { DesktopLayout } from "./DesktopLayout/DesktopLayout";
+import { MobileLayout } from "./MobileLayout/MobileLayout";
 
 export function GeneralPlan() {
 
@@ -10,13 +10,9 @@ export function GeneralPlan() {
    return (
       <React.Fragment>
          {isMobile ? (
-            <Suspense fallback={<div>loading...</div>}>
-               <MobileLayout />
-            </Suspense>
+            <MobileLayout />
          ) : (
-            <Suspense fallback={<div>loading...</div>}>
-               <DesktopLayout />
-            </Suspense>
+            <DesktopLayout />
          )}
       </React.Fragment>
    )
