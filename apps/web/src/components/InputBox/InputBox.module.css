@@ -154,6 +154,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-top: 8px;
 }
 
 .volume {
@@ -162,13 +163,14 @@
     font-weight: 600;
     background-color: #04301c;
     border-radius: 12px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 6px 12px;
     font-family: sans-serif;
     margin-top: 10px;
     letter-spacing: 0.3px ;
+    display: inline-flex; /* Added */
+    align-items: center; /* Added */
+    height: 10px; /* Added fixed height */
+    white-space: nowrap; /* Prevent wrapping */
 }
 
 .markets {
@@ -182,15 +184,14 @@
     font-family: sans-serif;
     background-color: #07213f;
     border-radius: 12px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 6px 12px;
     margin-top: 10px;
+    height: 10px; /* Added fixed height */
+    white-space: nowrap; /* Prevent wrapping */
 }
 
 .chartIcon {
-    color: #277ce4;
+    color: #64aaff;
 }
 
 .closeBtn {
@@ -223,6 +224,11 @@
     color: rgba(255, 255, 255, 0.884);
     font-family: sans-serif;
     font-weight: 500;
+}
+
+.marketCount {
+    line-height: 1;
+    margin-top: 3px;
 }
 
 @media (max-width: 768px) {
