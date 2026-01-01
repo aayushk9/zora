@@ -17,7 +17,7 @@ export type EventCardProps = {
     markets: Markets[];
     totalVolume: number;
     isSelected?: boolean;
-    onClick?: () => void;
+    onClick?: (events: SelectedEventProps) => void;
 }
 
 export type SelectedEventProps = {
