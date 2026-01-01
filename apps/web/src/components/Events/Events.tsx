@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import styles from './Events.module.css'
 import clsx from "clsx"
 import { EventCard } from "../EventCard/EventCard"
@@ -84,14 +84,14 @@ export function Events() {
     // send searchinput to server through post request
   }
 
-  const addEvents = (event: SelectedEventProps) => {
+  const addEvents = useCallback((event: SelectedEventProps) => {
      addEvent({
       imgUrl: event.imgUrl,
       title: event.title,
       totalVolume: event.totalVolume,
       marketCount: event.marketCount
      })
-  }
+  }, [addEvent])
 
   return (
     <React.Fragment>

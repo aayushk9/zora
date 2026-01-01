@@ -5,11 +5,21 @@ import { useFormatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
 
 export function EventCard({ metaData, markets, totalVolume, isSelected, onClick}: EventCardProps) {
     const volumeUsd = totalVolume / 1e6;
+
+       const handleClick = () => {
+        if (onClick) {
+            onClick({
+                imgUrl: metaData?.imgUrl || "",
+                title: metaData?.title || "",
+                totalVolume: totalVolume,
+                marketCount: markets.length
+            });
+        }
+    };
+    
     return (
         <React.Fragment>
-            <div onClick={() => {
-                onClick
-            }} className={`${styles.parentContainer} ${isSelected? styles.selectedEvent: ""}`}>
+            <div onClick={handleClick} className={`${styles.parentContainer} ${isSelected? styles.selectedEvent: ""}`}>
                 <div className={styles.header}>
                     <img src={metaData?.imgUrl} alt="event icon" className={styles.icon} />
                     <span className={styles.title}>{metaData?.title}</span>
