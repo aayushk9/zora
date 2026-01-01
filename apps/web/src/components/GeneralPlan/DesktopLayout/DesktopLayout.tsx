@@ -52,17 +52,16 @@ export function DesktopLayout() {
                                     <div key={ev.title} className={styles.selectedEvent}>
                                         <div className={styles.contest}>
                                             <div className={styles.subSection}>
-                                                <img className={styles.img} src={ev.imgUrl} />
                                                 <span className={styles.title}>{ev.title}</span>
                                                 <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
                                             </div>
                                             <div className={styles.stats}>
                                                 <span className={styles.volume}>{useFormatVolumeUsd(ev.totalVolume / 1e6)}</span>
                                                 <span className={styles.markets}>
-                                                    <svg className={styles.chartIcon} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                    <svg className={styles.chartIcon} width="12" height="12" viewBox="0 0 16 16" fill="none">
                                                         <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                     </svg>
-                                                    {ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}
+                                                    <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
                                                 </span>
                                             </div>
                                         </div>
