@@ -1,7 +1,7 @@
-import React from "react";
-import { Navbar } from "../components/Navbar/Navbar";
+import React, {lazy, Suspense} from "react";
 import { GeneralPlan } from "../components/GeneralPlan/GeneralPlan";
 import { useIsMobile } from "../components/useIsMobile/useIsMobile";
+const Navbar = lazy(() => import("../components/Navbar/Navbar"))
 
 export default function Query() {
     const isMobile = useIsMobile(768);
@@ -11,7 +11,9 @@ export default function Query() {
                 <GeneralPlan />
             ) : (
                 <>
-                    <Navbar />
+                    <Suspense fallback={<div>loading..</div>}>
+                      <Navbar/>
+                    </Suspense>
                     <GeneralPlan />
                 </>
             )}

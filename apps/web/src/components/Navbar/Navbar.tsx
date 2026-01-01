@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import styles from './Navbar.module.css'
 import React from 'react'
 
-export function Navbar() {
+export default function Navbar() {
 
     return (
         <React.Fragment>
