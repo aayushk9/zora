@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import styles from './Events.module.css'
 import clsx from "clsx"
 import { EventCard } from "../EventCard/EventCard"
-import type { EventCardProps } from "../../types/event"
+import type { EventCardProps, SelectedEventProps } from "../../types/event"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import { EventSkeleton } from "../EventSkeleton/EventSkeleton"
 
@@ -84,6 +84,15 @@ export function Events() {
     // send searchinput to server through post request
   }
 
+  const addEvents = (event: SelectedEventProps) => {
+     addEvent({
+      imgUrl: event.imgUrl,
+      title: event.title,
+      totalVolume: event.totalVolume,
+      marketCount: event.marketCount
+     })
+  }
+
   return (
     <React.Fragment>
       <div className={styles.container}>
@@ -148,14 +157,7 @@ export function Events() {
                 markets={event.markets}
                 totalVolume={event.totalVolume}
                 isSelected={selectedEvents.some(e => e.title === event.metaData?.title)}
-                onClick={() => {
-                  addEvent({
-                    imgUrl: event.metaData?.imgUrl || "",
-                    title: event.metaData?.title || "",
-                    totalVolume: event.totalVolume,
-                    marketCount: event.markets.length || 0
-                  })
-                }}
+                onClick={addEvents}
               />
             ))
           }
