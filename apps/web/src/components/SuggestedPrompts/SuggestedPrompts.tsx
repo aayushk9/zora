@@ -1,6 +1,6 @@
 import styles from './SuggestedPrompts.module.css'
 
-export function SuggestedPrompts({ onSelect }: any) {
+export default function SuggestedPrompts({ onSelect }: any) {
 
   const prompts = [
         "Predict the outcome of the next Solana price event and explain your reasoning",

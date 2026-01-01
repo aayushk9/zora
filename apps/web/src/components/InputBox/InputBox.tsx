@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, lazy, Suspense } from "react"
 import styles from './InputBox.module.css'
 import sendIcon from '../../assets/send.png'
-import { SuggestedPrompts } from "../SuggestedPrompts/SuggestedPrompts"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import { useFormatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
+const SuggestedPrompts = lazy(() => import("../SuggestedPrompts/SuggestedPrompts"))
 
 export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
@@ -74,11 +74,13 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                         {showSuggestions && (
                             <div className={styles.suggestions}>
                                 <div className={styles.divider}></div>
+                                <Suspense fallback={<div>loading..</div>}>
                                 <SuggestedPrompts onSelect={(text: string) => {
                                     setQuery(text);
                                     setIsExpanded(false)
                                 }}
                                 />
+                                </Suspense>
                             </div>
                         )}
                     </form>
