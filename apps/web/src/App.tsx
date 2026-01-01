@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
 import Zora from './pages/Zora/Zora';
-const Agents = lazy(() => import("./pages/Agents/Agents"))
-const Query = lazy(() => import("./pages/Query"))
+import Query from './pages/Query';
+import Agents from './pages/Agents/Agents';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
@@ -10,21 +10,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Zora/>} />
-          <Route path="/query" element={
-            <Suspense fallback={<div>loading...</div>}>
-               <Query/>
-            </Suspense>
-          } />
-          <Route path='/query/:id' element={
-            <Suspense fallback={<div>loading...</div>}>
-               <Query/>
-            </Suspense>
-          } />
-          <Route path="/agents" element={
-            <Suspense fallback={<div>loading...</div>}>
-              <Agents/>
-            </Suspense>
-          } />
+          <Route path="/query" element={<Query/>} />
+          <Route path='/query/:id' element={<Query/>} />
+          <Route path="/agents" element={<Agents/>} />
         </Routes>
       </BrowserRouter>
     </div>
