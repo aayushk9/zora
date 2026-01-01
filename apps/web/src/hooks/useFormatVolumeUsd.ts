@@ -1,5 +1,5 @@
 
-export function useFormatVolumeUsd (value: number) {
+export function useFormatVolumeUsd (value: number)  {
  const format = (num: number, suffix: string) =>
     `$${num.toFixed(1).replace(/\.0$/, "")}${suffix}`;
 
