@@ -9,10 +9,11 @@ export function Events() {
 
   const [searchInput, setSearchInput] = useState("");
   const [activeCategory, setActiveCategory] = useState<Category>("all");
+  const [events, setEvents] = useState<EventCardProps[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const addEvent = useEventStore((s) => s.addEvent);
   const selectedEvents = useEventStore((s) => s.selectedEvents)
-  const [events, setEvents] = useState<EventCardProps[]>([])
-  const [loading, setLoading] = useState(true)
 
   const categories: Record<Category, string> = {
     all: "All",
@@ -66,9 +67,7 @@ export function Events() {
             }
           }))
         }))
-        
         setEvents(data)
-        console.log(data)
       } catch (err) {
         console.log(`err: ${err}`)
       } finally {
@@ -95,8 +94,6 @@ export function Events() {
       marketCount: event.marketCount
     })
   }, [addEvent])
-
-  const emptySearchInput = searchInput.trim() === ""
 
   return (
     <React.Fragment>
@@ -142,7 +139,7 @@ export function Events() {
         
           {Object.entries(categories).map(([value, category]) => (
             <button
-              key={value}
+              key={category}
               onClick={() => {
                 setActiveCategory(value as Category)
                 setLoading(true)

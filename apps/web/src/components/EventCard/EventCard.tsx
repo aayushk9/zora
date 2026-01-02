@@ -1,12 +1,12 @@
-import React from "react"
+import React, { useCallback } from "react"
 import styles from './EventCard.module.css'
 import type { EventCardProps } from "../../types/event"
-import { useFormatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
+import { formatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
 
-export function EventCard({ metaData, markets, totalVolume, isSelected, onClick}: EventCardProps) {
+export const EventCard = React.memo(function EventCard({ metaData, markets, totalVolume, isSelected, onClick}: EventCardProps) {
     const volumeUsd = totalVolume / 1e6;
 
-       const handleClick = () => {
+    const handleClick = useCallback(() => {
         if (onClick) {
             onClick({
                 imgUrl: metaData?.imgUrl || "",
@@ -15,7 +15,7 @@ export function EventCard({ metaData, markets, totalVolume, isSelected, onClick}
                 marketCount: markets.length
             });
         }
-    };
+    }, [onClick, metaData, markets.length, totalVolume]);
     
     return (
         <React.Fragment>
@@ -37,9 +37,9 @@ export function EventCard({ metaData, markets, totalVolume, isSelected, onClick}
                 </div>
 
                 <div className={styles.footer}>
-                    <span className={styles.volume}>{useFormatVolumeUsd(volumeUsd)} vol</span>
+                    <span className={styles.volume}>{formatVolumeUsd(volumeUsd)} vol</span>
                 </div>
             </div>
         </React.Fragment>
     )
-}
+})
