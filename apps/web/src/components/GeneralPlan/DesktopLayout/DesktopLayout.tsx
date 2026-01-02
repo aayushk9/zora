@@ -5,7 +5,7 @@ import { InputBox } from "../../InputBox/InputBox";
 import DottedBackground from "../../DottedBackground/DottedBackground";
 import { useQueryHandler } from "../../../hooks/useQueryHandler";
 import { useEventStore } from "../../../store/useSelectedEventStore";
-import { useFormatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
+import { formatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
 
 export function DesktopLayout() {
 
@@ -56,7 +56,7 @@ export function DesktopLayout() {
                                                 <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
                                             </div>
                                             <div className={styles.stats}>
-                                                <span className={styles.volume}>{useFormatVolumeUsd(ev.totalVolume / 1e6)}</span>
+                                                <span className={styles.volume}>{formatVolumeUsd(ev.totalVolume / 1e6)}</span>
                                                 <span className={styles.markets}>
                                                     <svg className={styles.chartIcon} width="12" height="12" viewBox="0 0 16 16" fill="none">
                                                         <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
