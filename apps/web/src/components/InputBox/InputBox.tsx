@@ -19,8 +19,6 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     // conditional logic behind how input box expands
     const showSuggestions = isExpanded && !noSuggestedPrompts && isEmpty
 
-    // some conditional logic behind how events can occur below inputbox wrapper when clicked on any event
-
     useEffect(() => {
         if (isEmpty && isFocused) {
             setIsExpanded(true)
@@ -61,6 +59,12 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                                 }}
                                 placeholder="Describe your trading strategy idea..."
                                 rows={isExpanded ? 3 : 1}
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if(e.key == "Enter") {
+                                        research(e)
+                                    }
+                                }}
                             />
 
                             <button

@@ -1,23 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react"
 import styles from './Events.module.css'
-import clsx from "clsx"
 import { EventCard } from "../EventCard/EventCard"
-import type { EventCardProps, SelectedEventProps } from "../../types/event"
+import type { EventCardProps, SelectedEventProps, Category } from "../../types/event"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import { EventSkeleton } from "../EventSkeleton/EventSkeleton"
-
-type Category = "all" | "crypto" | "sports" | "politics" | "esports" | "culture" | "economics" | "tech"
-
-const categoryLabel: Record<Category, string> = {
-  all: "All",
-  crypto: "Crypto",
-  sports: "Sports",
-  politics: "Politics",
-  esports: "Esports",
-  culture: "Culture",
-  economics: "Economics",
-  tech: "Tech"
-}
 
 export function Events() {
 
@@ -27,6 +13,17 @@ export function Events() {
   const selectedEvents = useEventStore((s) => s.selectedEvents)
   const [events, setEvents] = useState<EventCardProps[]>([])
   const [loading, setLoading] = useState(true)
+
+  const categories: Record<Category, string> = {
+    all: "All",
+    crypto: "Crypto",
+    sports: "Sports",
+    politics: "Politics",
+    esports: "Esports",
+    culture: "Culture",
+    economics: "Economics",
+    tech: "Tech"
+  }
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -53,6 +50,7 @@ export function Events() {
             title: event.metadata?.title || "",
             imgUrl: event.metadata?.imageUrl || ""
           },
+          category: event.category,
           totalVolume: event.volumeUsd || 0,
           markets: event.markets?.map((market: any) => ({
             metaData: {
@@ -68,6 +66,7 @@ export function Events() {
             }
           }))
         }))
+        
         setEvents(data)
         console.log(data)
       } catch (err) {
@@ -112,12 +111,21 @@ export function Events() {
             <input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              tabIndex={0}
+            onKeyDown={(e) => {
+              if(e.key == "Enter") {
+                searchForEvent()
+              }
+            }}
               className={styles.search}
               type="text"
               placeholder="Search events..."
             />
 
-            <button className={styles.rightBtn} onClick={searchForEvent}>
+            <button 
+            className={styles.rightBtn} 
+            onClick={searchForEvent}
+            >
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -127,16 +135,17 @@ export function Events() {
         </div>
 
         <div className={styles.eventCategories}>
-          {Object.entries(categoryLabel).map(([value, label]) => (
+        
+          {Object.entries(categories).map(([value, category]) => (
             <button
               key={value}
               onClick={() => {
                 setActiveCategory(value as Category)
                 setLoading(true)
               }}
-              className={`${activeCategory == value  ? styles.active : styles.categoryButton}`}
+              className={`${activeCategory == value ? styles.active : styles.categoryButton}`}
             >
-              {label}
+              {category}
             </button>
           ))}
         </div>
