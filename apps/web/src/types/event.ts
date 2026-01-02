@@ -13,7 +13,8 @@ export type EventCardProps = {
     metaData?: {
       imgUrl: string;
       title: string;
-    }
+    },
+    category?: string,
     markets: Markets[];
     totalVolume: number;
     isSelected?: boolean;
