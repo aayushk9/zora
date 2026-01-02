@@ -80,7 +80,8 @@ export function Events() {
 
   const searchForEvent = () => {
     let filteredEvent: EventCardProps[] = []
-    events.filter((event) => event.metaData?.title === searchInput && (
+    const normalizedSearchInput = searchInput.trim().toLowerCase()
+    events.filter((event) => event.metaData?.title.toLowerCase().includes(normalizedSearchInput) && (
       filteredEvent.push(event)
     ))
     setEvents(filteredEvent)
@@ -94,6 +95,8 @@ export function Events() {
       marketCount: event.marketCount
     })
   }, [addEvent])
+
+  const emptySearchInput = searchInput.trim() === ""
 
   return (
     <React.Fragment>
@@ -112,11 +115,11 @@ export function Events() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               tabIndex={0}
-            onKeyDown={(e) => {
-              if(e.key == "Enter") {
-                searchForEvent()
-              }
-            }}
+              onKeyDown={(e) => {
+               if(e.key == "Enter") {
+                  searchForEvent()
+               }
+              }}
               className={styles.search}
               type="text"
               placeholder="Search events..."
@@ -131,6 +134,7 @@ export function Events() {
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
             </button>
+
           </div>
         </div>
 
@@ -156,10 +160,9 @@ export function Events() {
             Array.from({ length: 6 }).map((_, i) => (
               <EventSkeleton key={i} />
             ))
-
           }
 
-          {events.length > 0 ? events.map((event) => (
+          {events.length > 0  ? events.map((event) => (
             <EventCard
               key={event.metaData?.title}
               metaData={{
