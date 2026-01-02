@@ -92,6 +92,8 @@
     background-color: #007bff;
     color: white;
     font-weight: bold;
+    border: none;
+    border-radius: 20px;
 }
 
 .eventCategories {
@@ -124,6 +126,12 @@
 .submit {
     background: transparent;
     border: none
+}
+
+.noEvent {
+    color: #fff;
+    font-family: sans-serif;
+    
 }
 
 @media (max-width:1024px) {

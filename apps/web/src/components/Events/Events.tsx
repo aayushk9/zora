@@ -70,7 +70,6 @@ export function Events() {
         }))
         setEvents(data)
         console.log(data)
-
       } catch (err) {
         console.log(`err: ${err}`)
       } finally {
@@ -81,16 +80,20 @@ export function Events() {
   }, [activeCategory])
 
   const searchForEvent = () => {
-    // send searchinput to server through post request
+    let filteredEvent: EventCardProps[] = []
+    events.filter((event) => event.metaData?.title === searchInput && (
+      filteredEvent.push(event)
+    ))
+    setEvents(filteredEvent)
   }
 
   const addEvents = useCallback((event: SelectedEventProps) => {
-     addEvent({
+    addEvent({
       imgUrl: event.imgUrl,
       title: event.title,
       totalVolume: event.totalVolume,
       marketCount: event.marketCount
-     })
+    })
   }, [addEvent])
 
   return (
@@ -131,9 +134,7 @@ export function Events() {
                 setActiveCategory(value as Category)
                 setLoading(true)
               }}
-              className={clsx(styles.categoryButton, {
-                [styles.active]: activeCategory == value,
-              })}
+              className={`${activeCategory == value  ? styles.active : styles.categoryButton}`}
             >
               {label}
             </button>
@@ -142,24 +143,27 @@ export function Events() {
 
         <div className={styles.eventsGrid}>
 
-          {loading ?
+          {loading &&
             Array.from({ length: 6 }).map((_, i) => (
               <EventSkeleton key={i} />
             ))
-            :
-            events.map((event) => (
-              <EventCard
-                key={event.metaData?.title}
-                metaData={{
-                  title: event.metaData?.title || "",
-                  imgUrl: event.metaData?.imgUrl || ""
-                }}
-                markets={event.markets}
-                totalVolume={event.totalVolume}
-                isSelected={selectedEvents.some(e => e.title === event.metaData?.title)}
-                onClick={addEvents}
-              />
-            ))
+
+          }
+
+          {events.length > 0 ? events.map((event) => (
+            <EventCard
+              key={event.metaData?.title}
+              metaData={{
+                title: event.metaData?.title || "",
+                imgUrl: event.metaData?.imgUrl || ""
+              }}
+              markets={event.markets}
+              totalVolume={event.totalVolume}
+              isSelected={selectedEvents.some(e => e.title === event.metaData?.title)}
+              onClick={addEvents}
+            />
+          )) :
+            <p className={styles.noEvent}>No event found</p>
           }
         </div>
         <div>
