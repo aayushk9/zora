@@ -36,9 +36,9 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     return (
         <React.Fragment>
-            <div className={`${styles.container} ${noOuterBorder ? styles.noBorder : ""}`}>
+            <div className={`${styles.container} ${noOuterBorder && styles.noBorder}`}>
                 <div
-                    className={`${styles.wrapper} ${isExpanded ? styles.expandedWrapper : ""} ${noOuterBorder ? styles.noBorder : ""}`}
+                    className={`${styles.wrapper} ${isExpanded && styles.expandedWrapper} ${noOuterBorder && styles.noBorder}`}
                     ref={containerRef}
                 >
                     <form className={`${styles.form}`} onSubmit={research}>
