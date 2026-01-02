@@ -159,7 +159,7 @@ export function Events() {
             ))
           }
 
-          {events.length > 0  ? events.map((event) => (
+          {events.length > 0  && !loading && events.map((event) => (
             <EventCard
               key={event.metaData?.title}
               metaData={{
@@ -171,9 +171,12 @@ export function Events() {
               isSelected={selectedEvents.some(e => e.title === event.metaData?.title)}
               onClick={addEvents}
             />
-          )) :
-            <p className={styles.noEvent}>No event found</p>
-          }
+          ))} 
+          
+           {events.length == 0 && !loading && (
+             <p className={styles.noEvent}>No event found</p>
+           )} 
+          
         </div>
         <div>
         </div>
