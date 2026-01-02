@@ -27,3 +27,5 @@ export type SelectedEventProps = {
     totalVolume: number;
     marketCount: number;
 }
+
+export type Category = "all" | "crypto" | "sports" | "politics" | "esports" | "cuture" | "economics" | "tech"
