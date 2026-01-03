@@ -34,11 +34,12 @@ export function Events() {
       }
 
       try {
-        const res = await fetch(`https://prediction-market-api.jup.ag/api/v1/events?category=${activeCategory}`, {
-          method: "GET",
+        const res = await fetch(`http://localhost:3000/v1/events`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
+          body: JSON.stringify({activeCategory: activeCategory})
         })
 
         if (!res.ok) {
@@ -91,7 +92,8 @@ export function Events() {
       imgUrl: event.imgUrl,
       title: event.title,
       totalVolume: event.totalVolume,
-      marketCount: event.marketCount
+      marketCount: event.marketCount,
+      category: event.category
     })
   }, [addEvent])
 
