@@ -23,12 +23,12 @@ export default function Zora() {
                     <h1 className={styles.mainHeader}>
                         Ask Zora to {""}
                         <span className={styles.trade}>
-                            Trade
+                            Analyze
                         </span> {""}
                         Prediction Markets
                     </h1>
                     <span className={styles.foot}>
-                        Build prediction market strategies in minutes with a single prompt
+                        Explore prediction market strategies, risks and scenarios with a single prompt
                     </span>
                 </div>
                 <InputBox onSend={handleLandingSend} />
