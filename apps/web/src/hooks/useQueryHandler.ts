@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useEventStore } from "../store/useSelectedEventStore";
 
 interface Message {
     role: "user" | 'agent',
-    content: string
+    content: string 
 }
 
 export function useQueryHandler() {
@@ -13,6 +14,7 @@ export function useQueryHandler() {
     const incomingText = params.get("c");
     const [messages, setMessages] = useState<Message[]>([]);
     const hasRun = useRef(false)
+    const selectedEvents = useEventStore((s) => s.selectedEvents)
 
     useEffect(() => {
         if (incomingText && !hasRun.current) {
@@ -25,7 +27,7 @@ export function useQueryHandler() {
         if (!input.trim()) return;
         const userMessage: Message = { role: "user", content: input }
         let updatedMessages: Message[] = [];
-        
+
         setMessages(prev => {
             updatedMessages = [...prev, userMessage];
             return updatedMessages;
@@ -38,16 +40,16 @@ export function useQueryHandler() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify([updatedMessages])
+                body: JSON.stringify({ userQuery: [updatedMessages], selectedEvents })
             })
-         console.log(res)
+            const output = await res.json()
+            console.log(output.data)
+            const agentMessage: Message = { role: 'agent', content: output.data }
+            setMessages(prev => [...prev, agentMessage])
         } catch (err) {
             console.log(err)
         }
 
-        // hard coding agent response as of now until server is up
-        const agentMessage: Message = { role: 'agent', content: "hard coded for now instead of server respose"}
-        setMessages(prev => [...prev, agentMessage])
     }
 
     return {
