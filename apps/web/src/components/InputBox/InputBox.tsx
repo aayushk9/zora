@@ -70,7 +70,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
         
         const fetchSuggestedPrompts = async() => {
         try {
-          const res = await fetch("http://localhost:3000/api/suggested-prompts", {
+          const res = await fetch("http://localhost:3000/api/generate-prompts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -155,7 +155,6 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                     </form>
                 </div>
                 <div>
-                    
                     {selectedEvents.length > 0 && location.pathname == "/" && (
                         <div>
                             <p className={styles.header}>Selected Events</p>

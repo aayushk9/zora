@@ -34,7 +34,7 @@ export function Events() {
       }
 
       try {
-        const res = await fetch(`http://localhost:3000/v1/events`, {
+        const res = await fetch(`http://localhost:3000/api/v1/events`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
