@@ -5,18 +5,20 @@ import { SuggestedPrompts } from "../SuggestedPrompts/SuggestedPrompts"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import { formatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
 
+ const DEFAULT_PROMPTS = [
+  "Predict the outcome of the next Solana price event and explain your reasoning",
+  "Analyze which side (YES/NO) has a better risk to reward ratio for this market",
+  "Suggest a trading strategy for low volume but high confidence markets",
+  "Estimate the probability of this event resolving as YES based on current liquidity",
+  "Summarize key signals that might affect the market outcome over the next 24 hours"
+];
+
 export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     const [query, setQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
-    const [suggestedPrompts, setSuggestedPrompts] = useState([
-        "Predict the outcome of the next Solana price event and explain your reasoning",
-        "Analyze which side (YES/NO) has a better risk to reward ratio for this market",
-        "Suggest a trading strategy for low volume but high confidence markets",
-        "Estimate the probability of this event resolving as YES based on current liquidity",
-        "Summarize key signals that might affect the market outcome over the next 24 hours"
-    ]);
+    const [suggestedPrompts, setSuggestedPrompts] = useState(DEFAULT_PROMPTS);
     const [suggestionLoader, setSuggestionLoader] = useState(true);
 
     const selectedEvents = useEventStore((s) => s.selectedEvents);
@@ -27,6 +29,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     // conditional logic behind how input box expands
     const showSuggestions = isExpanded && !noSuggestedPrompts && isEmpty
+
 
     useEffect(() => {
         if (isEmpty && isFocused) {
@@ -57,7 +60,13 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     */}
 
     useEffect(() => {
-        if(selectedEvents.length == 0) return;
+        if(selectedEvents.length == 0) {
+            setSuggestedPrompts(DEFAULT_PROMPTS)
+            setSuggestionLoader(false);
+            return;
+        };
+
+        setSuggestionLoader(true); // reset to true
         
         const fetchSuggestedPrompts = async() => {
         try {
@@ -112,7 +121,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                                 rows={isExpanded ? 3 : 1}
                                 tabIndex={0}
                                 onKeyDown={(e) => {
-                                    if(e.key == "Enter") {
+                                    if(e.key == "Enter" && !e.shiftKey) {
                                         research(e)
                                     }
                                 }}
