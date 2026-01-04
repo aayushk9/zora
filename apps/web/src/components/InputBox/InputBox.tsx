@@ -10,6 +10,15 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     const [query, setQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
+    const [suggestedPrompts, setSuggestedPrompts] = useState([
+        "Predict the outcome of the next Solana price event and explain your reasoning",
+        "Analyze which side (YES/NO) has a better risk to reward ratio for this market",
+        "Suggest a trading strategy for low volume but high confidence markets",
+        "Estimate the probability of this event resolving as YES based on current liquidity",
+        "Summarize key signals that might affect the market outcome over the next 24 hours"
+    ]);
+    const [suggestionLoader, setSuggestionLoader] = useState(true);
+
     const selectedEvents = useEventStore((s) => s.selectedEvents);
     const removeEvents = useEventStore((s) => s.removeEvent);
 
@@ -33,6 +42,48 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
             setIsExpanded(false);
         }
     }
+
+    // generate suggested prompts based on selected event/s
+    {/*
+      how are we going to generate prompts based on selected events
+      1) if certain event is selected send request at http://localhost:3000/api/generate=prompts with body as selected event
+      2) instruct model at backend for suggesting prompts 
+      3) from backend send request to llm model with selected event and instruction
+      4) wait for suggested prompts from llm 
+      5) recieve suggested prompts at backend
+      6) backend sends prompts to frontend
+      7) now data from backend (suggested prompts will be array) -> setPrompts(data) -> modify data here else in backend to be like prompts type
+      8) suggest prompts i.e send request at backend whenever selected event state store is changed
+    */}
+
+    useEffect(() => {
+        if(selectedEvents.length == 0) return;
+        
+        const fetchSuggestedPrompts = async() => {
+        try {
+          const res = await fetch("http://localhost:3000/api/suggested-prompts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({selectedEvents: selectedEvents})
+          })
+
+          if(!res.ok) {
+            throw new Error("something went wrong")
+          } 
+
+          const suggestedPromptsInJson = await res.json();
+          const suggestedPromptsData = suggestedPromptsInJson.data;
+          setSuggestedPrompts(suggestedPromptsData)
+        } catch(error){
+            console.log(`error: ${error}`)
+        } finally {
+          setSuggestionLoader(false)
+        }
+        }
+        fetchSuggestedPrompts()
+    }, [selectedEvents])
 
     return (
         <React.Fragment>
@@ -78,11 +129,18 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                         {showSuggestions && (
                             <div className={styles.suggestions}>
                                 <div className={styles.divider}></div>
-                                <SuggestedPrompts onSelect={(text: string) => {
+                                {suggestionLoader && selectedEvents.length > 0 ? (
+                                   
+                                        <p style={{color: "gray"}}>genrtsaing suggestions</p>
+                                 
+                                ) : (
+                                <SuggestedPrompts onClick={(text: string) => {
                                     setQuery(text);
                                     setIsExpanded(false)
-                                }}
-                                />
+                                }
+                            }
+                            prompts={suggestedPrompts}  
+                                /> )}
                             </div>
                         )}
                     </form>
@@ -99,7 +157,16 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                                             <div className={styles.subSection}>
                                                 <img className={styles.img} src={ev.imgUrl} />
                                                 <span className={styles.title}>{ev.title}</span>
-                                                <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
+                                                <button 
+                                                className={styles.closeBtn} 
+                                                onMouseDown={(e) => e.preventDefault()} 
+                                                onClick={() => {
+                                                removeEvents(ev.title)
+                                                setIsExpanded(false)
+                                                }}
+                                                >
+                                                    x
+                                                </button>
                                             </div>
                                             <div className={styles.stats}>
                                                 <span className={styles.volume}>{formatVolumeUsd(ev.totalVolume / 1e6)}</span>
