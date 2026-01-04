@@ -1,14 +1,7 @@
 import styles from './SuggestedPrompts.module.css'
+import type { suggestedPrompts } from '../../types/suggestedPrompts';
 
-export function SuggestedPrompts({ onSelect }: any) {
-
-  const prompts = [
-        "Predict the outcome of the next Solana price event and explain your reasoning",
-        "Analyze which side (YES/NO) has a better risk to reward ratio for this market",
-        "Suggest a trading strategy for low volume but high confidence markets",
-        "Estimate the probability of this event resolving as YES based on current liquidity",
-        "Summarize key signals that might affect the market outcome over the next 24 hours"
-    ]
+export function SuggestedPrompts({ onClick, prompts }: suggestedPrompts) {
 
     return (
         <div className={styles.parentContainer}>
@@ -18,7 +11,7 @@ export function SuggestedPrompts({ onSelect }: any) {
                     className={styles.promptButton}
                     onMouseDown={(e) => {
                       e.preventDefault();
-                      onSelect(prompt);
+                      onClick(prompt);
                     }}
                 >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
