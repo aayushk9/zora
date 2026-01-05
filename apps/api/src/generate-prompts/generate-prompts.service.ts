@@ -17,11 +17,11 @@ export class GeneratePromptsService {
 
     async generateSuggestedPrompts(selectedEvents: SelectedEventsDto[]) {
     
-        const prompt = `
+        const prompts = `
              You are a financial analysis assistant.
 
              Events:
-              ${JSON.stringify(selectedEvents, null, 2)}
+              ${selectedEvents}
 
              Task:
              Generate suggested prompts a user can ask to better understand the selected market events.
@@ -35,14 +35,13 @@ export class GeneratePromptsService {
                 - Do NOT mention specific numbers
                 - Keep prompts concise
                 - Output JSON only
-
         `;
 
         const res$ = await this.openai.chat.completions.create({
            model: "gpt-4o-mini",
            messages: [{
             role: 'user',
-            content: prompt
+            content: prompts
            }]
         })
 
