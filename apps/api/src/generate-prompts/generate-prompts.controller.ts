@@ -8,6 +8,6 @@ export class GeneratePromptsController {
 
     @Post()
     generateSuggestions(@Body('selectedEvents') selectedEvents: SelectedEventsDto[]) {
-       this.generatepromptService.generateSuggestedPrompts(selectedEvents)
+       return this.generatepromptService.generateSuggestedPrompts(selectedEvents)
     }
 }
