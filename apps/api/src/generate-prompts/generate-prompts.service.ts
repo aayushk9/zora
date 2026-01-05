@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { SelectedEventsDto } from './dto/selected-events.dto';
-import { HttpService } from '@nestjs/axios';
 import OpenAI from 'openai';
 
 @Injectable()
 export class GeneratePromptsService {
-    private openai: OpenAI;
-
-    constructor(private readonly http: HttpService) {
+    
+    constructor(private openai: OpenAI) {
         this.openai = new OpenAI({
             apiKey: process.env.OPENAI_API_KEY
         })
@@ -61,7 +59,7 @@ export class GeneratePromptsService {
             throw new Error("No JSON found in OpenAI response");
         }
 
-        // parse this json formatted string into actual json
+        // parse this json formatted string / json body text into actual js object
         const data = JSON.parse(jsonMatch[0]);
         console.log("data: ", data)
         return {
