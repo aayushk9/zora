@@ -35,7 +35,7 @@ export function useQueryHandler() {
         console.log(updatedMessages)
 
         try {
-            const res = await fetch(`http://localhost:3000/chat`, {
+            const res = await fetch(`http://localhost:3000/chat    `, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
