@@ -45,8 +45,10 @@ export function Events() {
         if (!res.ok) {
           throw new Error("failed to fetch events");
         }
-
+         
+        console.log(res)
         const eventsInJSON = await res.json();
+        console.log(eventsInJSON)
         const data: EventCardProps[] = eventsInJSON.data.map((event: any) => ({
           metaData: {
             title: event.metadata?.title || "",

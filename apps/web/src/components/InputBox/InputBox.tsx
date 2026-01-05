@@ -18,7 +18,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     const [query, setQuery] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
-    const [suggestedPrompts, setSuggestedPrompts] = useState(DEFAULT_PROMPTS);
+    const [suggestedPrompts, setSuggestedPrompts] = useState<string[]>(DEFAULT_PROMPTS);
     const [suggestionLoader, setSuggestionLoader] = useState(true);
 
     const selectedEvents = useEventStore((s) => s.selectedEvents);
@@ -46,19 +46,6 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
         }
     }
 
-    // generate suggested prompts based on selected event/s
-    {/*
-      how are we going to generate prompts based on selected events
-      1) if certain event is selected send request at http://localhost:3000/api/generate=prompts with body as selected event
-      2) instruct model at backend for suggesting prompts 
-      3) from backend send request to llm model with selected event and instruction
-      4) wait for suggested prompts from llm 
-      5) recieve suggested prompts at backend
-      6) backend sends prompts to frontend
-      7) now data from backend (suggested prompts will be array) -> setPrompts(data) -> modify data here else in backend to be like prompts type
-      8) suggest prompts i.e send request at backend whenever selected event state store is changed
-    */}
-
     useEffect(() => {
         if(selectedEvents.length == 0) {
             setSuggestedPrompts(DEFAULT_PROMPTS)
@@ -66,7 +53,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
             return;
         };
 
-        setSuggestionLoader(true); // reset to true
+        setSuggestionLoader(true); 
         
         const fetchSuggestedPrompts = async() => {
         try {
@@ -83,8 +70,8 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
           } 
 
           const suggestedPromptsInJson = await res.json();
-          console.log(suggestedPromptsInJson)
-          setSuggestedPrompts(suggestedPromptsInJson)
+          const data: string[] = suggestedPromptsInJson.prompts
+          setSuggestedPrompts(data)
         } catch(error){
             console.log(`error: ${error}`)
         } finally {
@@ -139,9 +126,9 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                             <div className={styles.suggestions}>
                                 <div className={styles.divider}></div>
                                 {suggestionLoader && selectedEvents.length > 0 ? (
-                                   
-                                        <p style={{color: "gray"}}>genrtsaing suggestions</p>
-                                 
+                                        <div className={styles.loader}>
+                                            <p className={styles.generatePrompts}>Generating suggestions...</p>
+                                        </div>
                                 ) : (
                                 <SuggestedPrompts onClick={(text: string) => {
                                     setQuery(text);
