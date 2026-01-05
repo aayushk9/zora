@@ -6,7 +6,12 @@ import { GeneratePromptsModule } from './generate-prompts/generate-prompts.modul
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [EventsModule, GeneratePromptsModule, ConfigModule.forRoot()],
+  imports: [
+    EventsModule, 
+    GeneratePromptsModule, 
+    ConfigModule.forRoot({
+     isGlobal: true,
+  })],
   controllers: [AppController],
   providers: [AppService],
 })
