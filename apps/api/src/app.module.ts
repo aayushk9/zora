@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { EventsModule } from './events/events.module';
 import { GeneratePromptsModule } from './generate-prompts/generate-prompts.module';
 import { ConfigModule } from '@nestjs/config';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -11,7 +12,9 @@ import { ConfigModule } from '@nestjs/config';
     GeneratePromptsModule, 
     ConfigModule.forRoot({
      isGlobal: true,
-  })],
+  }), 
+  ChatModule
+],
   controllers: [AppController],
   providers: [AppService],
 })
