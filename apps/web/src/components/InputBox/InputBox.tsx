@@ -83,8 +83,8 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
           } 
 
           const suggestedPromptsInJson = await res.json();
-          const suggestedPromptsData = suggestedPromptsInJson.data;
-          setSuggestedPrompts(suggestedPromptsData)
+          console.log(suggestedPromptsInJson)
+          setSuggestedPrompts(suggestedPromptsInJson)
         } catch(error){
             console.log(`error: ${error}`)
         } finally {

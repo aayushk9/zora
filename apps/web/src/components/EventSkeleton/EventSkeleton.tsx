@@ -7,7 +7,6 @@ export function EventSkeleton() {
         <div className={styles.image} />
         <div className={styles.title} />
       </div>
-
       <div className={styles.lines}>
         <div />
         <div />
