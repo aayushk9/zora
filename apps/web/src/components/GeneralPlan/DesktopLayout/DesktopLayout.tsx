@@ -6,6 +6,8 @@ import DottedBackground from "../../DottedBackground/DottedBackground";
 import { useQueryHandler } from "../../../hooks/useQueryHandler";
 import { useEventStore } from "../../../store/useSelectedEventStore";
 import { formatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
+import { StreamingMessage } from "../../StreamingMessage/StreamingMessage";
+import { Loader } from "../../Loader/Loader";
 
 export function DesktopLayout() {
 
@@ -45,7 +47,14 @@ export function DesktopLayout() {
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
                         {messages.map((message, index) => (
                            <p key={index} className={`${message.role == "user" ? styles.userQuery : styles.agentResponse}`}>
-                            {message.content}
+                            {message.role == "assistant" ? (
+                               message.isLoading == true ? (
+                                 <Loader/>
+                               ) : (
+                               <StreamingMessage text={message.content} />)
+                             ) : (
+                                 message.content
+                            )}
                             {selectedEvents.length > 0 && message.role == "user" && index == 0 && (
                                <div className={styles.events}>
                                 {selectedEvents.map((ev) => (

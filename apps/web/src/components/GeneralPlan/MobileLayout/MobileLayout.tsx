@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from './MobileLayout.module.css'
 import { InputBox } from "../../InputBox/InputBox";
 import { MobileNavbar } from "../../MobileNavbar/MobileNavbar";
-import { useLocation } from "react-router-dom";
 import { useQueryHandler } from "../../../hooks/useQueryHandler"
 import { useEventStore } from "../../../store/useSelectedEventStore";
 import { formatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
+import { Loader } from "../../Loader/Loader";
+import { StreamingMessage } from "../../StreamingMessage/StreamingMessage";
 
 export function MobileLayout() {
 
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const incomingText = params.get("c");
   const selectedEvents = useEventStore((s) => s.selectedEvents)
   const removeEvents = useEventStore((s) => s.removeEvent)
 
@@ -19,21 +17,9 @@ export function MobileLayout() {
   const [execution, setExecution] = useState(false);
   const {
     messages,
-    setMessages,
     handleUserQuery
   } = useQueryHandler();
 
-  useEffect(() => {
-    if (incomingText) {
-      setMessages([
-        ...messages,
-        {
-          role: 'user',
-          content: incomingText
-        }
-      ])
-    }
-  }, [incomingText])
 
   const handleQuery = () => {
     setStagQuery(true);
@@ -70,7 +56,14 @@ export function MobileLayout() {
               <div className={styles.messageArea}>
                 {messages.map((message, index) => (
                   <p key={index} className={`${message.role == "user" ? styles.userQuery : styles.agentResponse}`}>
-                    {message.content}
+                    {message.role == "assistant" ? (
+                      message.isLoading == true ? (
+                        <Loader/>
+                      )  : (
+                        <StreamingMessage text={message.content}/>
+                      )) : (
+                      message.content
+                    )}
                     {selectedEvents.length > 0 && message.role == "user" && index == 0 && (
                       <div className={styles.events}>
                         {selectedEvents.map((ev) => (
