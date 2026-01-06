@@ -5,6 +5,7 @@ import { EventsModule } from './events/events.module';
 import { GeneratePromptsModule } from './generate-prompts/generate-prompts.module';
 import { ConfigModule } from '@nestjs/config';
 import { ChatModule } from './chat/chat.module';
+import { OpenAIModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { ChatModule } from './chat/chat.module';
     ConfigModule.forRoot({
      isGlobal: true,
   }), 
-  ChatModule
+  ChatModule, OpenAIModule
 ],
   controllers: [AppController],
   providers: [AppService],
