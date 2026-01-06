@@ -7,7 +7,8 @@ export class GeneratePromptsController {
     constructor(private readonly generatepromptService: GeneratePromptsService) {}
 
     @Post()
-    generateSuggestions(@Body('selectedEvents') selectedEvents: SelectedEventsDto[]) {
-       return this.generatepromptService.generateSuggestedPrompts(selectedEvents)
+    async generateSuggestions(@Body() body: {selectedEvents: SelectedEventsDto[]}) {
+       const {selectedEvents} = body
+       return await this.generatepromptService.generateSuggestedPrompts(selectedEvents)
     }
 }
