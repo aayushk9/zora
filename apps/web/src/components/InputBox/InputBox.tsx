@@ -13,6 +13,7 @@ import { formatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
   "Summarize key signals that might affect the market outcome over the next 24 hours"
 ];
 
+
 export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     const [query, setQuery] = useState("");
@@ -62,15 +63,15 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({selectedEvents: selectedEvents})
+            body: JSON.stringify({selectedEvents})
           })
 
           if(!res.ok) {
             throw new Error("something went wrong")
           } 
-
-          const suggestedPromptsInJson = await res.json();
-          const data: string[] = suggestedPromptsInJson.prompts
+          console.log(res)
+          const data = await res.json();
+          console.log(data)
           setSuggestedPrompts(data)
         } catch(error){
             console.log(`error: ${error}`)
