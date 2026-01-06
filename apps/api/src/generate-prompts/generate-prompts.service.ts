@@ -6,9 +6,9 @@ import { OPENAI_CLIENT } from "src/openai/openai.constant"
 @Injectable()
 export class GeneratePromptsService {
     constructor(
-        @Inject(OPENAI_CLIENT) 
+        @Inject(OPENAI_CLIENT)
         private readonly openai: OpenAI
-    ) {}
+    ) { }
 
     async generateSuggestedPrompts(selectedEvents: SelectedEventsDto[]) {
         const prompts = `
@@ -46,14 +46,12 @@ export class GeneratePromptsService {
         if (!content) {
             throw new Error("api retruned no content")
         }
-
-            const arrayOfPrompts = content
-            .split(/\n|\r\n/) 
-            .map(line => line.trim()) 
+        const arrayOfPrompts = content
+            .split(/\n|\r\n/)
+            .map(line => line.trim())
             .filter(line => line.length > 0)
-             .map(line => line.replace(/^\d+\.\s*/, '')); 
+            .map(line => line.replace(/^\d+\.\s*/, ''));
 
         return arrayOfPrompts;
-    
     }
 }
