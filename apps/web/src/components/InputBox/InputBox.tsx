@@ -27,10 +27,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const isEmpty = query.trim() === ""
-
-    // conditional logic behind how input box expands
     const showSuggestions = isExpanded && !noSuggestedPrompts && isEmpty
-
 
     useEffect(() => {
         if (isEmpty && isFocused) {
@@ -127,8 +124,11 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                             <div className={styles.suggestions}>
                                 <div className={styles.divider}></div>
                                 {suggestionLoader && selectedEvents.length > 0 ? (
-                                        <div className={styles.loader}>
-                                            <p className={styles.generatePrompts}>Generating suggestions...</p>
+                                        <div className={styles.loadWrapper}>
+                                              <span className={styles.spinner}>
+                                                 <span className={styles.arc} />
+                                              </span>
+                                            <span className={styles.text}>Generating suggestions...</span>
                                         </div>
                                 ) : (
                                 <SuggestedPrompts onClick={(text: string) => {
