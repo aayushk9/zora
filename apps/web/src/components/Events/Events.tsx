@@ -70,6 +70,7 @@ export function Events() {
             }
           }))
         }))
+        console.log(eventsInJSON.pagination)
         setEvents(data)
       } catch (err) {
         console.log(`err: ${err}`)
