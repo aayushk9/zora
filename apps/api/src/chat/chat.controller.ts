@@ -1,14 +1,18 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { SelectedEventsDto } from 'src/generate-prompts/dto/selected-events.dto';
-import { userRequest } from './dto/userRequest.dto';
+import { Messages } from './dto/Messages';
 @Controller('chat')
 export class ChatController {
 
     constructor(private readonly chatService: ChatService) {}
 
     @Post()
-    sendResponse(@Body('userQuery, selectedEvents') userQuery: userRequest[], selectedEvents: SelectedEventsDto[]){
-       this.chatService.fetchResponse(userQuery, selectedEvents)
+    async sendResponse(
+        @Body('messages') messages: Messages[], 
+        @Body('selectedEvents') selectedEvents:SelectedEventsDto[]
+    )
+    {
+       return await this.chatService.fetchResponse(messages, selectedEvents)
     }
 }
