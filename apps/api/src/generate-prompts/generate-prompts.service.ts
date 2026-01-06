@@ -1,22 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { SelectedEventsDto } from './dto/selected-events.dto';
 import OpenAI from 'openai';
+import { OPENAI_CLIENT } from "src/openai/openai.constant"
 
 @Injectable()
 export class GeneratePromptsService {
-    
-    constructor(private openai: OpenAI) {
-        this.openai = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY
-        })
-    }
+    constructor(
+        @Inject(OPENAI_CLIENT) 
+        private readonly openai: OpenAI
+    ) {}
 
     async generateSuggestedPrompts(selectedEvents: SelectedEventsDto[]) {
         const prompts = `
              You are a financial analysis assistant.
 
              Events:
-              ${selectedEvents}
+              ${JSON.stringify(selectedEvents, null, 2)}
 
              Task:
              Generate suggested prompts a user can ask to better understand the selected market events
@@ -29,11 +28,6 @@ export class GeneratePromptsService {
                 - Do NOT give trading advice
                 - Do NOT mention specific numbers
                 - Keep prompts concise
-                - Output JSON only
-                - Output ONLY valid JSON
-                - Do NOT use markdown
-                - Do NOT wrap response in json
-                - Do NOT add any text outside JSON
         `;
 
         // raw response from open ai with all parameters
@@ -53,17 +47,13 @@ export class GeneratePromptsService {
             throw new Error("api retruned no content")
         }
 
-        const jsonMatch = content.match(/\{[\s\S]*\}/);
+            const arrayOfPrompts = content
+            .split(/\n|\r\n/) 
+            .map(line => line.trim()) 
+            .filter(line => line.length > 0)
+             .map(line => line.replace(/^\d+\.\s*/, '')); 
 
-        if (!jsonMatch) {
-            throw new Error("No JSON found in OpenAI response");
-        }
-
-        // parse this json formatted string / json body text into actual js object
-        const data = JSON.parse(jsonMatch[0]);
-        console.log("data: ", data)
-        return {
-            prompts: data.prompts
-        }
+        return arrayOfPrompts;
+    
     }
 }
