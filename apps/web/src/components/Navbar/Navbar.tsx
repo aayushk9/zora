@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styles from './Navbar.module.css'
 import React from 'react'
-
+import { Login } from '../Login/Login'
 export function Navbar() {
 
     return (
@@ -10,7 +10,7 @@ export function Navbar() {
             <div> <Link className={styles.zora} to="/"> Zora </Link></div>
             <div className={styles.navRight}>
               <Link className={styles.agents} to="/agents">Tools</Link>
-              <Link className={styles.signin} to="/">Sign in</Link>
+              <Login />
             </div>
           </nav>
         </React.Fragment>
