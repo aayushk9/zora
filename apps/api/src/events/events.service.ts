@@ -6,9 +6,9 @@ import { firstValueFrom } from 'rxjs';
 export class EventsService {
     constructor(private readonly http: HttpService) {}
 
-    async fetchEvents (activeCategory: string) {
+    async fetchEvents (activeCategory: string, start: number, end: number) {
      const URL = process.env.PREDICTION_MARKET_API
-     const res$ = this.http.get(`${URL}?category=${activeCategory}`)
+     const res$ = this.http.get(`${URL}?category=${activeCategory}&start=${start}&end=${end}`)
      const res = await firstValueFrom(res$)
     
      console.log(res.data)
