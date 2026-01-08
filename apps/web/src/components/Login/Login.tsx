@@ -86,7 +86,11 @@ export function Login() {
 
               <div className={styles.divider} />
 
-              <button className={styles.googleBtn}>
+              <button 
+              onClick={() => {
+                window.location.href = "http://localhost:3000/api/auth/google"
+              }}
+              className={styles.googleBtn}>
                 Continue with Google
               </button>
             </div>
