@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css"
 
-export function Login() {
+export const Login =  React.memo(function Login() {
   const [isLogged, setiSLogged] = useState(false);
   const [openLoginWindow, setOpenLoginWindow] = useState(false)
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
 
-  const signin = async () => {
+  const signin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
     try {
       const res = await fetch("http://localhost:3000/api/signin", {
         method: "POST",
@@ -15,27 +18,28 @@ export function Login() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          userName,
+          email,
           password
         }),
         credentials: "include"
       })
 
-      if (!res.ok) {
-        throw new Error("something is off")
-      }
-      // after succesfull fetch set logged state to true
+      if (!res.ok) throw new Error("something is off")
+      
+      if(res.status == 200) setiSLogged(true)
+      
     } catch (err) {
       console.log(err)
     } finally {
-      setiSLogged(true)
+      setIsLoading(false)
+      setOpenLoginWindow(false)
     }
   }
   return (
     <React.Fragment>
       {isLogged ? (
         <span className={styles.username}>
-          {userName}
+          {email}
         </span>
       ) : (
         <button className={styles.signinButton} onClick={() => {
@@ -62,12 +66,15 @@ export function Login() {
                 Suggestion layer for prediction markets
               </p>
 
-              <form className={styles.signinForm} onSubmit={signin}>
+              <form 
+              className={styles.signinForm} 
+              onSubmit={signin}
+              >
                 <input
                   type="text"
                   placeholder="aayushk@gmail.com"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className={styles.input}
                 />
 
@@ -79,9 +86,10 @@ export function Login() {
                   className={styles.input}
                 />
 
-                <button type="submit" className={styles.signinBtn}>
+                <button type="submit" className={`${isLoading ? styles.loadingSignup : styles.signupButton}`}>
                   Sign in
                 </button>
+
               </form>
 
               <div className={styles.divider} />
@@ -99,4 +107,4 @@ export function Login() {
       )}
     </React.Fragment>
   )
-}
+})

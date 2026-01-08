@@ -94,12 +94,23 @@
   border-color: rgba(255, 255, 255, 0.137);
 }
 
-.signinBtn {
+.signupButton {
   margin-top: 6px;
   padding: 12px;
   border-radius: 10px;
   border: none;
   background: rgb(30, 30, 30);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.loadingSignup {
+   margin-top: 6px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgb(66, 66, 66);
   color: white;
   font-weight: 500;
   cursor: pointer;
@@ -124,4 +135,9 @@
   color: white;
   font-weight: 500;
   cursor: pointer;
+}
+
+.loadingSignup:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
