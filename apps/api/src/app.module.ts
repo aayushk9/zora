@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ChatModule } from './chat/chat.module';
 import { OpenAIModule } from './openai/openai.module';
 import { AuthModule } from './auth/auth.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot({
      isGlobal: true,
   }), 
-  ChatModule, OpenAIModule, AuthModule
+  ChatModule, OpenAIModule, AuthModule, DatabaseModule
 ],
   controllers: [AppController],
   providers: [AppService],
