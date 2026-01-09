@@ -2,6 +2,7 @@ import { Controller, Post, Body } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { SelectedEventsDto } from 'src/generate-prompts/dto/selected-events.dto';
 import { Messages } from './dto/Messages';
+
 @Controller('chat')
 export class ChatController {
 
