@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import styles from './Navbar.module.css'
 import React from 'react'
 import { Login } from '../Login/Login'
-export function Navbar() {
 
+export function Navbar() {
     return (
         <React.Fragment>
           <nav className={styles.navbar}>
