@@ -51,6 +51,10 @@ export function useQueryHandler() {
             const output = await res.text()
             console.log(output)
 
+            if(res.status == 500) {
+                alert("Something seems off please try again later")
+            }
+
             setMessages((prev) => [
 
                 ...prev.slice(0, -1),
