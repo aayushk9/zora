@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import styles from "./Login.module.css"
 
 export const Login =  React.memo(function Login() {
-  const [isLogged, setiSLogged] = useState(false);
+  const [isLogged, setiSLogged] = useState<boolean>();
   const [openLoginWindow, setOpenLoginWindow] = useState(false)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false)
-
+  
   const signin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      const res = await fetch("http://localhost:3000/api/signin", {
+      const res = await fetch("http://localhost:3000/api/auth", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -24,15 +24,19 @@ export const Login =  React.memo(function Login() {
         credentials: "include"
       })
 
-      if (!res.ok) throw new Error("something is off")
+      if (res.status == 401) {
+        alert("Invalid credentials")
+      }
       
-      if(res.status == 200) setiSLogged(true)
+      if(res.status == 200) {
+        setiSLogged(true)
+        setOpenLoginWindow(false)
+      }
       
     } catch (err) {
       console.log(err)
     } finally {
       setIsLoading(false)
-      setOpenLoginWindow(false)
     }
   }
   return (
