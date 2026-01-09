@@ -51,7 +51,7 @@ export const Login =  React.memo(function Login() {
         <div className={styles.overlay}>
           <div className={styles.modal}>
             <div className={styles.header}>
-              <span className={styles.signInHeader}>Sign in</span>
+              <span className={styles.signInHeader}>Sign in to get higher access limits</span>
               <button
                 className={styles.close}
                 onClick={() => setOpenLoginWindow(false)}
