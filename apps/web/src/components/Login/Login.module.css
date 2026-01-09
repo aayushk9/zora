@@ -1,4 +1,4 @@
-.signinButton {
+.signinButton, .logoutButton {
   background-color:deepskyblue;
   color:white;
   font-size: 14px;
