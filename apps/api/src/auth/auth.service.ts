@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -47,5 +48,12 @@ export class AuthService {
       message: "Login successful",
       token: jwt
     }
+  }
+
+   getUserFromCookie(req: Request) {
+    const token = req.cookies?.jwt;
+    if (!token) return null;
+
+    return this.jwt.verify(token);
   }
 }
