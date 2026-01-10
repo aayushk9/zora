@@ -90,7 +90,7 @@ export function DesktopLayout() {
 
                <div id="execution" className={styles.executionBox}>
                   <div className={styles.headerSection}>
-                     <span className={styles.executionHeader}>Execution</span>
+                     <span className={styles.executionHeader}>Monitor Event</span>
                   </div>
                   <div className={styles.executionBorder}></div>
                   <div className={styles.executionBody}>
