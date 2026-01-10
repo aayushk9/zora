@@ -1,6 +1,7 @@
-import { Controller, Body, Post, Res, Get, Req } from '@nestjs/common';
+import { Controller, Body, Post, Res, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import type { Response, Request } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -39,4 +40,23 @@ export class AuthController {
         res.clearCookie("jwt");
         return { success: true };
     }
+
+    @Get("google")
+    @UseGuards(AuthGuard("google"))
+    async googleAuth () {
+        // redirection handled by passport and google strategy
+    }
+
+    @Get('google/callback')
+    @UseGuards(AuthGuard('google'))
+    async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+        const jwt = await this.authService.login(req.user)
+        res.cookie('jwt', jwt.accesstoken, {
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: false
+        })
+        return res.redirect(`http://localhost:5173/?token=${jwt.accesstoken}`)
+    }
+
 }

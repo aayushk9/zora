@@ -56,4 +56,39 @@ export class AuthService {
 
     return this.jwt.verify(token);
   }
+
+  async login(user: any){
+   const doesUserExist = await this.db.query(
+      `SELECT id, email 
+      FROM users
+      WHERE email = $1
+      `, [user.email]
+   )
+   console.log(doesUserExist);
+
+   if(doesUserExist.rowCount == 0) {
+    // insert new user in db
+    await this.db.query(
+      `INSERT INTO users (id, email)
+       VALUES (gen_random_uuid(), $1)
+      `, [user.email]
+    )
+    // jwt generation
+      const payload = {email: user.email, sub: user.id}
+      const token = this.jwt.sign(payload)
+      return {
+        accesstoken: token,
+        user
+      }
+   } else {
+    // user already exist direclty generate jwt
+    const payload = {email: user.email, sub: user.id}
+    const token = this.jwt.sign(payload);
+    return {
+      accesstoken: token,
+      user
+    }
+   }
+   
+  }
 }
