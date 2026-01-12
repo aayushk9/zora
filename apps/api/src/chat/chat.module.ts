@@ -3,10 +3,11 @@ import { ChatController } from './chat.controller';
 import { ChatService } from './chat.service';
 import { HttpModule } from '@nestjs/axios';
 import { OpenAIModule } from 'src/openai/openai.module';
+import { DatabaseService } from 'src/database/database.service';
 
 @Module({
   controllers: [ChatController],
   providers: [ChatService],
-  imports: [HttpModule, OpenAIModule]
+  imports: [HttpModule, OpenAIModule, DatabaseService]
 })
 export class ChatModule {}
