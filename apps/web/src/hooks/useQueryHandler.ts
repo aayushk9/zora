@@ -57,7 +57,7 @@ export function useQueryHandler() {
 
             setMessages((prev) => [
 
-                ...prev.slice(0, -1),
+                ...prev,
                 {
                     role: "assistant",
                     content: output,
@@ -68,7 +68,7 @@ export function useQueryHandler() {
             console.log(err);
             setMessages((prev) => [
 
-                ...prev.slice(0, -1),
+                ...prev,
                 {
                     role: "assistant",
                     content: "Something went wrong. Plese try again later",
