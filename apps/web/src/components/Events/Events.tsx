@@ -98,7 +98,6 @@ export function Events() {
 
   const addEvents = useCallback((event: SelectedEventProps) => {
     addEvent({
-      imgUrl: event.imgUrl,
       title: event.title,
       totalVolume: event.totalVolume,
       marketCount: event.marketCount,
