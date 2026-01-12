@@ -3,13 +3,15 @@ import OpenAI from 'openai';
 import { Messages } from './dto/Messages';
 import { SelectedEventsDto } from 'src/generate-prompts/dto/selected-events.dto';
 import { OPENAI_CLIENT } from 'src/openai/openai.constant';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class ChatService {
 
   constructor(
     @Inject(OPENAI_CLIENT)
-    private readonly openai: OpenAI
+    private readonly openai: OpenAI,
+    private readonly db: DatabaseService
   ) { }
 
   async fetchResponse(messages: Messages[], selectedEvents: SelectedEventsDto[]) {
@@ -25,6 +27,9 @@ export class ChatService {
       role: (user.role === "assistant" ? "assistant" : "user") as "assistant" | "user",
       content: user.content
     }))
+
+    // save role as user and content of user first before saving/inserting validate with if user is logged in
+    
 
     const systemPrompt = `You are an educational assistant for a prediction market platform. Your role is to help users understand and analyze market events through 
                          conversational Q&A.
@@ -100,8 +105,10 @@ export class ChatService {
 
     console.log(response);
 
+    // save role that is agentic and save content from response
+
     const content = response.choices[0].message?.content;
-    console.log("content", content)
+    console.log(messages)
 
     if (!content) {
       throw new Error("no content found in response from llm")
