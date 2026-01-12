@@ -24,8 +24,8 @@ export class AuthService {
     if (result.rowCount == 0) {
       const password_hash = await bcrypt.hash(password, 10)
       await this.db.query(
-        `INSERT INTO users (id, email, password_hash)
-             VALUES (gen_random_uuid(), $1, $2)
+        `INSERT INTO users (email, password_hash)
+             VALUES ($1, $2)
             `, [email, password_hash]
       )
       const payload = {email};
@@ -57,6 +57,7 @@ export class AuthService {
     return this.jwt.verify(token);
   }
 
+  //OAuth logins
   async login(user: any){
    const doesUserExist = await this.db.query(
       `SELECT id, email 
@@ -69,8 +70,8 @@ export class AuthService {
    if(doesUserExist.rowCount == 0) {
     // insert new user in db
     await this.db.query(
-      `INSERT INTO users (id, email)
-       VALUES (gen_random_uuid(), $1)
+      `INSERT INTO users (email)
+       VALUES ($1)
       `, [user.email]
     )
     // jwt generation
