@@ -44,16 +44,12 @@ export function Login() {
     }
   }, [email, password])
 
-  /*
-    Google OAuth
-    when user clicks on continue with google it should open google redirection page
-    -> you save those details in same db -> check if same mail exists in db if no create user in db and generate jwt whereas if yes just generate jwt
-    // signup -> logout when these request goes another request to chnage sttaus of user from null to somebody so signin turns logout
-
-  */
-
     const handleGoogleLogin = () => {
       window.location.href ="http://localhost:3000/api/auth/google"
+    }
+
+    const redirectAfterLogout = () => {
+      window.location.href = "http://localhost:5173"
     }
 
   return (
@@ -64,6 +60,7 @@ export function Login() {
             <button className={styles.logoutButton} onClick={ () => {
               logout()
               setOpenLoginWindow(true)
+              redirectAfterLogout()
              } }>Logout</button>
           </span>
         </div>
