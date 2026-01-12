@@ -7,7 +7,7 @@ import { DatabaseService } from 'src/database/database.service';
 
 @Module({
   controllers: [ChatController],
-  providers: [ChatService],
-  imports: [HttpModule, OpenAIModule, DatabaseService]
+  providers: [ChatService, DatabaseService],
+  imports: [HttpModule, OpenAIModule]
 })
 export class ChatModule {}
