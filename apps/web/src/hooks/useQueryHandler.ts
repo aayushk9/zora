@@ -27,12 +27,11 @@ export function useQueryHandler() {
     const handleUserQuery = async (input: string) => {
         if (!input.trim()) return;
 
+        const userMessage: Messages = { role: "user", content: input };
+        const assistantMessage: Messages = { role: "assistant", content: "", isLoading: true };
 
-        setMessages((prev) => [
-            ...prev,
-            { role: "user", content: input },
-            { role: "assistant", content: "", isLoading: true }
-        ])
+        const updatedMessages = [...messages, userMessage, assistantMessage];
+        setMessages(updatedMessages);
 
         try {
             const res = await fetch(`http://localhost:3000/api/chat`, {
@@ -42,39 +41,37 @@ export function useQueryHandler() {
                 },
                 body: JSON.stringify({
                     messages: [
-                        ...messages,
-                        { role: "user", content: input }
+                        ...messages, userMessage
                     ],
                     selectedEvents
-                })
+                }),
+                credentials: "include"
             })
-            const output = await res.text()
-            console.log(output)
+            //const output = await res.text()
+            //console.log(output)
 
-            if(res.status == 500) {
+            const data = await res.text();
+            const output = data;
+            if (res.status == 500) {
                 alert("Something seems off please try again later")
             }
 
-            setMessages((prev) => [
-
-                ...prev,
-                {
-                    role: "assistant",
-                    content: output,
-                    isLoading: false
-                }
-            ])
+            setMessages((prev) =>
+                prev.map((msg, i) =>
+                    i == prev.length - 1 ?
+                        { ...msg, content: output, isLoading: false } :
+                        { ...msg }
+                )
+            )
         } catch (err) {
             console.log(err);
-            setMessages((prev) => [
-
-                ...prev,
-                {
-                    role: "assistant",
-                    content: "Something went wrong. Plese try again later",
-                    isLoading: false
-                }
-            ])
+            setMessages((prev) =>
+                prev.map((msg, i) =>
+                    i == prev.length - 1 ?
+                        { ...msg, content: "server has some problems pleasse try later" } :
+                        { ...msg }
+                )
+            )
         }
     }
 
