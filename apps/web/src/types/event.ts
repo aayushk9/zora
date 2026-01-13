@@ -22,6 +22,7 @@ export type EventCardProps = {
 }
 
 export type SelectedEventProps = {
+    imgUrl?: string;
     title: string;
     totalVolume: number;
     marketCount: number;
