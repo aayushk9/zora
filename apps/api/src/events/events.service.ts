@@ -10,8 +10,6 @@ export class EventsService {
      const URL = process.env.PREDICTION_MARKET_API
      const res$ = this.http.get(`${URL}?category=${activeCategory}&start=${start}&end=${end}`)
      const res = await firstValueFrom(res$)
-    
-     console.log(res.data)
      return res.data
     } 
 }
