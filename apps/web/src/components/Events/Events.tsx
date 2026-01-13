@@ -13,7 +13,6 @@ export function Events() {
   const [end, setEnd] = useState(20)
   const [events, setEvents] = useState<EventCardProps[]>([]);
   const [loading, setLoading] = useState(true);
-  const [hasNext, setHasNext] = useState(true)
   const addEvent = useEventStore((s) => s.addEvent);
   const selectedEvents = useEventStore((s) => s.selectedEvents)
 
@@ -98,6 +97,7 @@ export function Events() {
 
   const addEvents = useCallback((event: SelectedEventProps) => {
     addEvent({
+      imgUrl: event.imgUrl,
       title: event.title,
       totalVolume: event.totalVolume,
       marketCount: event.marketCount,
