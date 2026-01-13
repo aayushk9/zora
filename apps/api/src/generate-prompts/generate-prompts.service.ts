@@ -1,13 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { SelectedEventsDto } from './dto/selected-events.dto';
-import OpenAI from 'openai';
-import { OPENAI_CLIENT } from "src/openai/openai.constant"
+import Groq from 'groq-sdk';
+import { GROQ_CLIENT } from 'src/groq/groq.constant';
 
 @Injectable()
 export class GeneratePromptsService {
     constructor(
-        @Inject(OPENAI_CLIENT)
-        private readonly openai: OpenAI
+        @Inject(GROQ_CLIENT)
+        private readonly groq: Groq
     ) { }
 
     async generateSuggestedPrompts(selectedEvents: SelectedEventsDto[]) {
@@ -17,7 +17,7 @@ export class GeneratePromptsService {
              Events:
               ${JSON.stringify(selectedEvents, null, 2)}
 
-             Task:
+             Task:    
              Generate suggested prompts a user can ask to better understand the selected market events
 
              Rules:
@@ -30,9 +30,8 @@ export class GeneratePromptsService {
                 - Keep prompts concise
         `;
 
-        // raw response from open ai with all parameters
-        const response = await this.openai.chat.completions.create({
-            model: "gpt-4o-mini",
+        const response = await this.groq.chat.completions.create({
+            model: "llama-3.1-8b-instant",
             messages: [{
                 role: 'user',
                 content: prompts
@@ -40,7 +39,6 @@ export class GeneratePromptsService {
         })
 
         console.log("response", response)
-        // extract the actual response i.e prompts
         const content = response.choices[0].message.content;
         console.log("content" + content)
         if (!content) {
