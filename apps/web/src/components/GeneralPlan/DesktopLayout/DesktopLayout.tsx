@@ -8,6 +8,7 @@ import { useEventStore } from "../../../store/useSelectedEventStore";
 import { formatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
 import { StreamingMessage } from "../../StreamingMessage/StreamingMessage";
 import { Loader } from "../../Loader/Loader";
+import { MonitorEventFlow } from "../../MonitorEventFlow/MonitorEventFlow";
 
 export function DesktopLayout() {
 
@@ -23,8 +24,8 @@ export function DesktopLayout() {
          messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
       }
    };
-   const selectedEvents = useEventStore((s) => s.selectedEvents); 
-   const removeEvents = useEventStore((s) => s.removeEvent) 
+   const selectedEvents = useEventStore((s) => s.selectedEvents);
+   const removeEvents = useEventStore((s) => s.removeEvent)
 
    useEffect(() => {
       scrollToBottom();
@@ -47,38 +48,38 @@ export function DesktopLayout() {
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
                         {messages.map((message, index) => (
                            <p key={index} className={`${message.role == "user" ? styles.userQuery : styles.agentResponse}`}>
-                            {message.role == "assistant" ? (
-                               message.isLoading == true ? (
-                                 <Loader/>
-                               ) : (
-                               <StreamingMessage text={message.content} />)
-                             ) : (
+                              {message.role == "assistant" ? (
+                                 message.isLoading == true ? (
+                                    <Loader />
+                                 ) : (
+                                    <StreamingMessage text={message.content} />)
+                              ) : (
                                  message.content
-                            )}
-                            {selectedEvents.length > 0 && message.role == "user" && index == 0 && (
-                               <div className={styles.events}>
-                                {selectedEvents.map((ev) => (
-                                    <div key={ev.title} className={styles.selectedEvent}>
-                                        <div className={styles.contest}>
-                                            <div className={styles.subSection}>
+                              )}
+                              {selectedEvents.length > 0 && message.role == "user" && index == 0 && (
+                                 <div className={styles.events}>
+                                    {selectedEvents.map((ev) => (
+                                       <div key={ev.title} className={styles.selectedEvent}>
+                                          <div className={styles.contest}>
+                                             <div className={styles.subSection}>
                                                 <span className={styles.title}>{ev.title}</span>
                                                 <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
-                                            </div>
-                                            <div className={styles.stats}>
+                                             </div>
+                                             <div className={styles.stats}>
                                                 <span className={styles.volume}>{formatVolumeUsd(ev.totalVolume / 1e6)}</span>
                                                 <span className={styles.markets}>
-                                                    <svg className={styles.chartIcon} width="12" height="12" viewBox="0 0 16 16" fill="none">
-                                                        <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                                    </svg>
-                                                    <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
+                                                   <svg className={styles.chartIcon} width="12" height="12" viewBox="0 0 16 16" fill="none">
+                                                      <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                   </svg>
+                                                   <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
                                                 </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            )}
-                          </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    ))}
+                                 </div>
+                              )}
+                           </p>
                         ))}
                         <div ref={messagesEndRef} />
                      </div>
@@ -94,7 +95,23 @@ export function DesktopLayout() {
                   </div>
                   <div className={styles.executionBorder}></div>
                   <div className={styles.executionBody}>
-                     <DottedBackground />
+                     <DottedBackground>
+                        <div style={{
+                           position: 'absolute',
+                           marginTop: "1rem",
+                           justifyContent: "center",
+                           padding: '6px 10px',
+                           borderRadius: 8,
+                           fontSize: 11,
+                           color: '#ffffffd1',
+                           zIndex: 10,
+                           marginLeft: "15rem",
+                           fontFamily: "sans-serif"
+                        }}>
+                           Live monitoring coming soon
+                        </div>
+                        <MonitorEventFlow />
+                     </DottedBackground>
                   </div>
                </div>
             </div>

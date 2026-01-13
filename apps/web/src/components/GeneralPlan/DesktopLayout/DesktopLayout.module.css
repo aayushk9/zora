@@ -219,3 +219,7 @@
 .marketCount {
     line-height: 1;
 }
+
+.executionBody {
+  height: calc(100vh - 120px); 
+}
