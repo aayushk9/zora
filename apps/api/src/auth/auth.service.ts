@@ -19,16 +19,16 @@ export class AuthService {
          `, [email]
     )
 
-    console.log(result)
-
     if (result.rowCount == 0) {
       const password_hash = await bcrypt.hash(password, 10)
-      await this.db.query(
+      const insert = await this.db.query(
         `INSERT INTO users (email, password_hash)
              VALUES ($1, $2)
+             RETURNING id, email
             `, [email, password_hash]
       )
-      const payload = {email};
+      const newUser = insert.rows[0]
+      const payload = { email: newUser.email, sub: newUser.id };
       const jwt = this.jwt.sign(payload)
       return {
         message: "Login successful",
@@ -42,7 +42,7 @@ export class AuthService {
       return { message: "Invalid credentials" }
     }
 
-    const payload = {email};
+    const payload = { email: user.email, sub: user.id };
     const jwt = this.jwt.sign(payload)
     return {
       message: "Login successful",
@@ -50,46 +50,38 @@ export class AuthService {
     }
   }
 
-   getUserFromCookie(req: Request) {
+  getUserFromCookie(req: Request) {
     const token = req.cookies?.jwt;
     if (!token) return null;
 
     return this.jwt.verify(token);
   }
 
-  //OAuth logins
-  async login(user: any){
-   const doesUserExist = await this.db.query(
+  async login(user: any) {
+    const doesUserExist = await this.db.query(
       `SELECT id, email 
       FROM users
       WHERE email = $1
       `, [user.email]
-   )
-   console.log(doesUserExist);
-
-   if(doesUserExist.rowCount == 0) {
-    // insert new user in db
-    await this.db.query(
-      `INSERT INTO users (email)
-       VALUES ($1)
-      `, [user.email]
     )
-    // jwt generation
-      const payload = {email: user.email, sub: user.id}
-      const token = this.jwt.sign(payload)
-      return {
-        accesstoken: token,
-        user
-      }
-   } else {
-    // user already exist direclty generate jwt
-    const payload = {email: user.email, sub: user.id}
-    const token = this.jwt.sign(payload);
-    return {
-      accesstoken: token,
-      user
+
+    let userId: string;
+
+    if (doesUserExist.rowCount == 0) {
+      const insert = await this.db.query(
+        `INSERT INTO users (email)
+       VALUES ($1)
+       RETURNING id, email
+      `, [user.email]
+      )
+      userId = insert.rows[0].id
+    } else {
+      userId = doesUserExist.rows[0].id
     }
-   }
-   
+    const payload = { email: user.email, sub: userId }
+    const token = this.jwt.sign(payload)
+    return {
+      accesstoken: token
+    }
   }
 }
