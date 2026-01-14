@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 export class ConversationsController {
     constructor(private readonly db: DatabaseService, private readonly jwt: JwtService) { }
 
-    @Post()
+    @Get("id-title")
     async fetchConversationId(@Req() req: Request) {
 
         const token = req.cookies['jwt'];
@@ -35,7 +35,7 @@ export class ConversationsController {
         }
     }
 
-    @Get()
+    @Get("title")
     async fetchConversations(@Req() req: Request) {
         const token = req.cookies["jwt"];
 
