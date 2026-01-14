@@ -14,7 +14,7 @@ export function Sidebar() {
 
   useEffect(() => {
     const fetchConversationOnLoad = async() => {
-      const res = await fetch("http://localhost:3000/api/conversations", {
+      const res = await fetch("http://localhost:3000/api/conversations/title", {
         method: "GET",
         credentials: "include"
       })
