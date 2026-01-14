@@ -56,7 +56,6 @@ export class AuthController {
             sameSite: 'strict',
             secure: false
         })
-        return res.redirect(`http://localhost:5173/?token=${jwt.accesstoken}`)
+        return res.redirect(`http://localhost:5173`)
     }
-
 }
