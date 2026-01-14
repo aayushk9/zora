@@ -9,6 +9,7 @@ import { OpenAIModule } from './openai/openai.module';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { GroqModule } from './groq/groq.module';
+import { ConversationsModule } from './conversations/conversations.module';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { GroqModule } from './groq/groq.module';
     ConfigModule.forRoot({
      isGlobal: true,
   }), 
-  ChatModule, OpenAIModule, AuthModule, DatabaseModule, GroqModule
+  ChatModule, OpenAIModule, AuthModule, DatabaseModule, GroqModule, ConversationsModule
 ],
   controllers: [AppController],
   providers: [AppService],
