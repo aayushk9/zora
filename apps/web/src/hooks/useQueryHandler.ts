@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate} from "react-router-dom";
 import { useEventStore } from "../store/useSelectedEventStore";
 import { useConversationStore } from "../store/useConversationStore";
+import { useMessageStore } from "../store/useMessageStore";
 
 interface Messages {
-    role: "user" | 'assistant',
+    message_type : "user" | 'assistant',
     content: string
     isLoading?: boolean
 }
@@ -14,22 +15,14 @@ export function useQueryHandler() {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const incomingText = params.get("c");
-    const [messages, setMessages] = useState<Messages[]>([]);
+    const messages = useMessageStore((message) => message.messages)
+    const setMessages = useMessageStore((message) => message.setMessages)
     const hasRun = useRef(false)
     const selectedEvents = useEventStore((s) => s.selectedEvents)
     const [conversationId, setConversationId] = useState<string>("")
-    const  conversations  = useConversationStore.getState().conversations;
+    const  conversations  = useConversationStore((conversation) => conversation.conversations);
     const addConversation = useConversationStore((conversation) => conversation.addConversation)
     const navigate = useNavigate();
-    // we need to send only once post request to /conversations from here when the user sends first request as it grabs conversation ids from there and attaches here to post request of chat so in same
-    // chat we dont need another id unless its new chat
-
-
-    // apart from intial conversation id change we will empty satte messages whenever conversationn id changes and send request to chat ednpoint with this changes conversdation id  for messages existing in that conversation id 
-    // flow => client -> api call -> db -> api call - client\
-
-   // sedn request based on 2 cases. firstly when we send the request when conversation id = 0 and when that 0 keeps changin
-
 
     useEffect(() => {
         if (incomingText && !hasRun.current) {
@@ -45,8 +38,8 @@ export function useQueryHandler() {
     const handleUserQuery = async (input: string) => {
         if (!input.trim()) return;
 
-        const userMessage: Messages = { role: "user", content: input };
-        const assistantMessage: Messages = { role: "assistant", content: "", isLoading: true };
+        const userMessage: Messages = { message_type: "user", content: input };
+        const assistantMessage: Messages = { message_type: "assistant", content: "", isLoading: true };
         const updatedMessages = [...messages, userMessage, assistantMessage];
         setMessages(updatedMessages);
 
@@ -70,7 +63,7 @@ export function useQueryHandler() {
             const output = data.response;
             const id = data.id
 
-            if(!conversationId && conversations.length == 0) {
+            if(!conversationId && data.id) {
                 setConversationId(data.id)
                 navigate(`/query/${id}`)
 
@@ -93,13 +86,6 @@ export function useQueryHandler() {
             )
         } catch (err) {
             console.log(err);
-            setMessages((prev) =>
-                prev.map((msg, i) =>
-                    i == prev.length - 1 ?
-                        { ...msg, content: "server has some problems pleasse try later" } :
-                        { ...msg }
-                )
-            )
         }
     }
 
