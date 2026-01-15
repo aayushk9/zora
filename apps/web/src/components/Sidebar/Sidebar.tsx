@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react"
 import styles from "./Sidebar.module.css"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useConversationStore } from "../../store/useConversationStore"
+import { useMessageStore } from "../../store/useMessageStore"
 
+interface Message {
+  message_type: "user" | "assistant",
+  content: string;
+}
 
 export function Sidebar() {
   const navigate = useNavigate();
   const conversations = useConversationStore((conversation) => conversation.conversations)
   const setConversations = useConversationStore((conversation) => conversation.setConversations)
+  const setMessages = useMessageStore((message) => message.setMessages)
   const [historyTabOpen, setHistoryTabOpen] = useState(true)
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     const fetchConversationOnLoad = async () => {
@@ -26,11 +33,9 @@ export function Sidebar() {
 
   const openNewChat = async () => {
     navigate(`/query`)
+    setMessages([])
   }
 
-  const fetchMessages = () => {
-   
-  }
   return (
     <React.Fragment>
       <div className={styles.parentContainer}>
@@ -48,11 +53,32 @@ export function Sidebar() {
             {historyTabOpen && (
               <div className={styles.titles}>
                 {conversations.map((conversation) => (
-                  <div key={conversation.id} onClick={() => {
-                         navigate(`/query/${conversation.id}`);
-                         fetchMessages()}
-                       } 
-                      className={styles.titleItem}>
+                  <div
+                    key={conversation.id}
+                    onClick={() => {
+                      if (id !== conversation.id) {
+                        navigate(`/query/${conversation.id}`);
+                        const fetchMessages = async () => {
+                          setMessages([]);
+                          const res = await fetch("http://localhost:3000/api/chat/history", {
+                            method: "POST",
+                            credentials: "include",
+                            headers: {
+                              "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                              conversationId: conversation.id
+                            })
+                          })
+
+                          const data: Message[] = await res.json();
+                          setMessages(data)
+                        }
+                        fetchMessages()
+                      }
+                    }
+                    }
+                    className={styles.titleItem}>
                     {conversation.title}
                   </div>
                 ))}
