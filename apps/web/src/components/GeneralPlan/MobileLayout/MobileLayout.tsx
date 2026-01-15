@@ -55,8 +55,8 @@ export function MobileLayout() {
             <div className={styles.queryPanel}>
               <div className={styles.messageArea}>
                 {messages.map((message, index) => (
-                  <p key={index} className={`${message.role == "user" ? styles.userQuery : styles.agentResponse}`}>
-                    {message.role == "assistant" ? (
+                  <p key={index} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
+                    {message.message_type == "assistant" ? (
                       message.isLoading == true ? (
                         <Loader/>
                       )  : (
@@ -64,7 +64,7 @@ export function MobileLayout() {
                       )) : (
                       message.content
                     )}
-                    {selectedEvents.length > 0 && message.role == "user" && index == 0 && (
+                    {selectedEvents.length > 0 && message.message_type == "user" && index == 0 && (
                       <div className={styles.events}>
                         {selectedEvents.map((ev) => (
                           <div key={ev.title} className={styles.selectedEvent}>
