@@ -9,6 +9,7 @@ export const EventCard = React.memo(function EventCard({ metaData, markets, tota
     const handleClick = useCallback(() => {
         if (onClick) {
             onClick({
+                imgUrl: metaData?.imgUrl,
                 title: metaData?.title || "",
                 totalVolume: totalVolume,
                 marketCount: markets.length
