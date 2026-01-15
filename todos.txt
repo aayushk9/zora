@@ -1,0 +1,14 @@
+things to do after dinner
+
+1) stop message streaming when rendered from history
+2) fix the undefined response shit coming from llms
+3) improve system prompt and increase token size
+4) replace global state for various reasons
+
+
+todo in general
+
+1) landing page
+2) add caching, rate limiting to every api call going to db, external api and manily llms
+3) remove logs from codebase'
+4) replace localhost with envs
