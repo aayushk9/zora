@@ -1,4 +1,4 @@
 export class Messages {
-  role: "user" | 'assistant'
+  message_type: "user" | 'assistant'
   content: string
 }
