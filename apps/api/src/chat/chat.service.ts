@@ -103,7 +103,6 @@ export class ChatService {
 
     let title = "New chat"
     if(!conversationId) {
-      // create one for user and submit to user
      const result =  await this.db.query(
         `INSERT INTO conversations (user_id, title)
          VALUES ($1, $2)
