@@ -1,47 +1,54 @@
-import { Injectable, Inject } from '@nestjs/common';
-import OpenAI from 'openai';
+import { Injectable, Inject, Req } from '@nestjs/common';
+import Groq from 'groq-sdk';
 import { Messages } from './dto/Messages';
 import { SelectedEventsDto } from 'src/generate-prompts/dto/selected-events.dto';
-import { OPENAI_CLIENT } from 'src/openai/openai.constant';
 import { DatabaseService } from 'src/database/database.service';
+import { GROQ_CLIENT } from 'src/groq/groq.constant';
+import { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions";
+
 
 @Injectable()
 export class ChatService {
 
   constructor(
-    @Inject(OPENAI_CLIENT)
-    private readonly openai: OpenAI,
-    private readonly db: DatabaseService
+    private readonly db: DatabaseService,
+    @Inject(GROQ_CLIENT)
+    private readonly groq: Groq
   ) { }
 
-  async fetchResponse(messages: Messages[], selectedEvents: SelectedEventsDto[]) {
-    // SELECTED EVENTS CONSIST 25-35 TOKENS PER EVENT
-    try {
-      if (!Array.isArray(messages)) {
-        throw new Error("messages must be an array");
+  async fetchResponse(messages: Messages[], selectedEvents: SelectedEventsDto[], userId: string | null, conversationId: string | null) {
+
+
+    if (!Array.isArray(messages)) {
+      throw new Error("messages must be an array");
+    }
+
+    if (!Array.isArray(selectedEvents)) {
+      throw new Error("selectedEvents must be an array");
+    }
+
+
+    const userMessage = messages.filter(message => message.role == "user");
+    const assistantMessage = messages.filter(message => message.role == "assistant");
+
+    const firstUserMessage = userMessage[0]?.content ?? "New conversation"
+    const latestUserMessage = userMessage[userMessage.length - 1]?.content;
+
+    if (!latestUserMessage) {
+      throw new Error("No user message provided");
+    }
+
+    console.log(firstUserMessage)
+    console.log(latestUserMessage)
+
+    const recentMessages = messages.slice(-3)
+
+    function buildSelectedEventsContext(events: SelectedEventsDto[]) {
+      if (!events || events.length === 0) {
+        return `No specific events selected.`;
       }
 
-      if (!Array.isArray(selectedEvents)) {
-        throw new Error("selectedEvents must be an array");
-      }
-
-      const userMessage = messages.filter(message => message.role == "user"); 
-      const assistantMessage = messages.filter(message => message.role == "assistant");
-
-      const lastTwoUserQueries = userMessage.slice(-2);
-      const lastAssistantResponse = assistantMessage.slice(-1)
-
-      const recentMessages = [
-        ...lastTwoUserQueries,
-        ...lastAssistantResponse
-      ]
-
-      function buildSelectedEventsContext(events: SelectedEventsDto[]) {
-        if (!events || events.length === 0) {
-          return `No specific events selected.`;
-        }
-
-        return `
+      return `
         Selected Events:
          ${events.map((e, i) => `
            ${i + 1}. ${e.title}
@@ -50,10 +57,9 @@ export class ChatService {
            - Markets: ${e.marketCount}
          `).join("")}
         `;
-      }
+    }
 
-
-      const systemPrompt = `You are an educational assistant for a prediction market platform. Your role is to help users understand and analyze market events
+    const systemPrompt = `You are an educational assistant for a prediction market platform. Your role is to help users understand and analyze market events
 
                       Your Responsibilities
                       - Answer user questions about the selected events or prediction markets
@@ -69,48 +75,79 @@ export class ChatService {
                         - Beginner-friendly
                         - Use headers when helpful
 
-                `;
+                   `;
 
-      const messagesForLLM: OpenAI.Chat.ChatCompletionMessageParam[] = [
-        {
-          role: "system",
-          content: systemPrompt
-        },
-        {
-          role: "system",
-          content: buildSelectedEventsContext(selectedEvents)
-        },
-        ...recentMessages.map( recentMessage=> ({
-          role: recentMessage.role,
-          content: recentMessage.content
-        }))
-      ]
+    const messagesForLLM: ChatCompletionMessageParam[] = [
+      {
+        role: "system",
+        content: systemPrompt
+      },
+      {
+        role: "system",
+        content: buildSelectedEventsContext(selectedEvents)
+      },
+      ...recentMessages.map(recentMessage => ({
+        role: recentMessage.role,
+        content: recentMessage.content
+      }))
+    ]
 
-      const response = await this.openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: messagesForLLM,
-        max_tokens: 150
-      })
+    const response = await this.groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: messagesForLLM,
+      max_tokens: 10,
+      temperature: 0.4
+    })
 
-      console.log(response);
+    const content = response.choices[0].message?.content;
 
-      const content = response.choices[0].message?.content;
-      console.log(messages)
+    let title = "New chat"
+    if(!conversationId) {
+      // create one for user and submit to user
+     const result =  await this.db.query(
+        `INSERT INTO conversations (user_id, title)
+         VALUES ($1, $2)
+         RETURNING id, title
+        `, [userId, firstUserMessage.slice(0, 60)]
+      )
+       conversationId = result.rows[0].id;
+       title = result.rows[0].title;
+    }
 
-      // INSERT INTO users with gen random uuid(), current conversation id, Message type as user/assitanr and content as content from user/assistant
+    if (userId) {
+      await this.db.query(
+        `INSERT INTO messages (id, conversation_id, message_type, content)
+         VALUES (gen_random_uuid(), $1, 'user', $2)
+        `, [conversationId, latestUserMessage]
+      )
 
-      if (!content) {
-        throw new Error("no content found in response from llm")
-      }
+      await this.db.query(
+        `INSERT INTO messages (id, conversation_id, message_type, content)
+         VALUES(gen_random_uuid(), $1, 'assistant' , $2 )
+        `, [conversationId, content]
+      )
 
-      return content;
-    } catch (error) {
-      if (error.status === 429) {
-        throw new error(
-          'AI is temporarily rate limited. Please try again later.',
-          429
-        );
-      }
+      // this will run only when conversation title is New chat whic is at initial user request
+      await this.db.query(
+        `
+      UPDATE conversations
+      SET title = $1
+      WHERE id = $2
+        AND title = 'New chat'
+      `,
+        [firstUserMessage.slice(0, 60), conversationId]
+      );
+
+    }
+
+    if (!content) {
+      throw new Error("no content found in response from llm")
+    }
+
+    return {
+      response: content,
+      id: conversationId,
+      title: title
     }
   }
 }
