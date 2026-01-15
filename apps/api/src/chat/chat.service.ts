@@ -28,8 +28,8 @@ export class ChatService {
     }
 
 
-    const userMessage = messages.filter(message => message.role == "user");
-    const assistantMessage = messages.filter(message => message.role == "assistant");
+    const userMessage = messages.filter(message => message.message_type == "user");
+    const assistantMessage = messages.filter(message => message.message_type == "assistant");
 
     const firstUserMessage = userMessage[0]?.content ?? "New conversation"
     const latestUserMessage = userMessage[userMessage.length - 1]?.content;
@@ -87,7 +87,7 @@ export class ChatService {
         content: buildSelectedEventsContext(selectedEvents)
       },
       ...recentMessages.map(recentMessage => ({
-        role: recentMessage.role,
+        role: recentMessage.message_type,
         content: recentMessage.content
       }))
     ]
