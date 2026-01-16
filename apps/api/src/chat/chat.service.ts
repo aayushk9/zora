@@ -27,21 +27,53 @@ export class ChatService {
       throw new Error("selectedEvents must be an array");
     }
 
+    if (
+      !conversationId ||
+      typeof conversationId !== "string" ||
+      conversationId.trim() === "" ||
+      conversationId === "{}"
+    ) {
+      conversationId = null;
+    }
+
+    if (
+      !userId ||
+      typeof userId !== "string" ||
+      userId.trim() === "" ||
+      userId === "{}"
+    ) {
+      userId = null;
+    }
+
+    if (!conversationId || conversationId === "") {
+      conversationId == null
+    }
+
+    if (conversationId && userId) {
+      const exists = await this.db.query(
+        `
+    SELECT id
+    FROM conversations
+    WHERE id = $1
+      AND user_id = $2
+    `,
+        [conversationId, userId]
+      );
+
+      if (exists.rowCount === 0) {
+        conversationId = null;
+      }
+    }
+
 
     const userMessage = messages.filter(message => message.message_type == "user");
-    const assistantMessage = messages.filter(message => message.message_type == "assistant");
-
     const firstUserMessage = userMessage[0]?.content ?? "New conversation"
     const latestUserMessage = userMessage[userMessage.length - 1]?.content;
+    const recentMessages = messages.slice(-3)
 
     if (!latestUserMessage) {
       throw new Error("No user message provided");
     }
-
-    console.log(firstUserMessage)
-    console.log(latestUserMessage)
-
-    const recentMessages = messages.slice(-3)
 
     function buildSelectedEventsContext(events: SelectedEventsDto[]) {
       if (!events || events.length === 0) {
@@ -102,18 +134,18 @@ export class ChatService {
     const content = response.choices[0].message?.content;
 
     let title = "New chat"
-    if(!conversationId) {
-     const result =  await this.db.query(
+    if (!conversationId && userId) {
+      const result = await this.db.query(
         `INSERT INTO conversations (user_id, title)
          VALUES ($1, $2)
          RETURNING id, title
         `, [userId, firstUserMessage.slice(0, 60)]
       )
-       conversationId = result.rows[0].id;
-       title = result.rows[0].title;
+      conversationId = result.rows[0].id;
+      title = result.rows[0].title;
     }
 
-    if (userId) {
+    if (userId && conversationId) {
       await this.db.query(
         `INSERT INTO messages (id, conversation_id, message_type, content)
          VALUES (gen_random_uuid(), $1, 'user', $2)
