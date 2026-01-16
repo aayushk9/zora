@@ -4,6 +4,7 @@ interface Messages {
     message_type: "user" | "assistant",
     content: string,
     isLoading?: boolean
+    conversationHistory?: boolean
 }
 
 interface MessagesState {
