@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEventStore } from "../store/useSelectedEventStore";
 import { useConversationStore } from "../store/useConversationStore";
 import { useMessageStore } from "../store/useMessageStore";
@@ -20,7 +20,8 @@ export function useQueryHandler() {
     const setMessages = useMessageStore((message) => message.setMessages)
     const hasRun = useRef(false)
     const selectedEvents = useEventStore((s) => s.selectedEvents)
-    const [conversationId, setConversationId] = useState<string>("")
+    const { id: routeConversationId } = useParams<{ id?: string }>()
+    const conversationId = routeConversationId ?? null
     const conversations = useConversationStore((conversation) => conversation.conversations);
     const addConversation = useConversationStore((conversation) => conversation.addConversation);
     const navigate = useNavigate();
@@ -36,14 +37,19 @@ export function useQueryHandler() {
         }
     }, [incomingText])
 
+
     const handleUserQuery = async (input: string) => {
         if (!input.trim()) return;
 
         const userMessage: Messages = { message_type: "user", content: input, conversationHistory: false };
         const assistantMessage: Messages = { message_type: "assistant", content: "", isLoading: true, conversationHistory: false };
+
         setMessages((prev) => [...prev, userMessage, assistantMessage]);
 
         const payloadMessages = [...messages, userMessage];
+        const safeConversationId = typeof conversationId === "string" &&
+            conversationId.length > 0
+            ? conversationId : null;
 
         try {
             const res = await fetch(`http://localhost:3000/api/chat`, {
@@ -54,24 +60,21 @@ export function useQueryHandler() {
                 },
                 body: JSON.stringify({
                     messages: payloadMessages,
-                    conversationId,
+                    conversationId: safeConversationId,
                     selectedEvents
                 }),
             })
 
             const data = await res.json();
             const output = data.response;
-            console.log("outttttttt", output)
-            const id = data.id
 
-            if (!conversationId) {
-                setConversationId(data.id)
-                navigate(`/query/${id}`)
-
+            if (!conversationId && data.id) {
                 addConversation({
                     id: data.id,
                     title: data.title
                 })
+
+                navigate(`/query/${data.id}`)
             }
 
             if (res.status == 500) {
@@ -84,7 +87,7 @@ export function useQueryHandler() {
                         ? { ...msg, content: output, isLoading: false }
                         : msg
                 ))
-            console.log(messages)
+
         } catch (err) {
             console.log(err);
         }
