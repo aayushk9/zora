@@ -49,10 +49,14 @@ export function DesktopLayout() {
                         {messages.map((message, index) => (
                            <p key={index} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
                               {message.message_type == "assistant" ? (
-                                 message.isLoading == true ? (
+                                 message.isLoading  ? (
                                     <Loader />
                                  ) : (
-                                    <StreamingMessage text={message.content} />)
+                                    message.conversationHistory  ? (
+                                    message.content
+                                    ) : (
+                                    <StreamingMessage key={index} text={message.content} />)
+                                 )
                               ) : (
                                  message.content
                               )}
