@@ -4,9 +4,11 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useConversationStore } from "../../store/useConversationStore"
 import { useMessageStore } from "../../store/useMessageStore"
 
-interface Message {
+interface Messages {
   message_type: "user" | "assistant",
+  isLoading? : boolean;
   content: string;
+  conversationHistory: boolean;
 }
 
 export function Sidebar() {
@@ -67,12 +69,18 @@ export function Sidebar() {
                               "Content-Type": "application/json"
                             },
                             body: JSON.stringify({
-                              conversationId: conversation.id
+                              conversationId: conversation.id,
                             })
                           })
 
-                          const data: Message[] = await res.json();
-                          setMessages(data)
+                          const data = await res.json();
+                          console.log(data)
+                          const message: Messages[] = data.map((m: any) => ({
+                            ...m,
+                            conversationHistory: true,
+                            isLoading: false
+                          }));
+                          setMessages(message)
                         }
                         fetchMessages()
                       }
