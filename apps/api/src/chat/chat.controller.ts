@@ -5,6 +5,7 @@ import { Messages } from './dto/Messages';
 import type { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { DatabaseService } from 'src/database/database.service';
+import { boolean } from 'zod';
 
 @Controller('chat')
 export class ChatController {
@@ -37,7 +38,9 @@ export class ChatController {
   }
 
   @Post('history')
-  async fetchMessages(@Body("conversationId") conversationId: string) {
+  async fetchMessages(
+    @Body("conversationId") conversationId: string,
+) {
      // user authenticated earlier
 
      const result = await this.db.query(
@@ -47,6 +50,7 @@ export class ChatController {
        ORDER BY created_at ASC
       `, [conversationId]
      )
+     
 
      return result.rows;
   }
