@@ -6,7 +6,7 @@ import { useMessageStore } from "../../store/useMessageStore"
 
 interface Messages {
   message_type: "user" | "assistant",
-  isLoading? : boolean;
+  isLoading?: boolean;
   content: string;
   conversationHistory: boolean;
 }
@@ -17,11 +17,10 @@ export function Sidebar() {
   const setConversations = useConversationStore((conversation) => conversation.setConversations)
   const setMessages = useMessageStore((message) => message.setMessages)
   const [historyTabOpen, setHistoryTabOpen] = useState(true)
-  const { id } = useParams<{ id: string }>();
+  const { activeConversationId } = useParams<{ activeConversationId: string }>();
 
   useEffect(() => {
-    const fetchConversationOnLoad = async () => {
-
+    const fetchConversations = async () => {
       const res = await fetch("http://localhost:3000/api/conversations", {
         method: "GET",
         credentials: "include"
@@ -29,13 +28,38 @@ export function Sidebar() {
       const data = await res.json();
       setConversations(data)
     }
-    fetchConversationOnLoad()
+    fetchConversations()
   }, [])
 
-
   const openNewChat = async () => {
-    navigate(`/query`)
     setMessages([])
+    navigate(`/query`)
+  }
+
+  const openConversation = async (conversationId: string) => {
+    if (conversationId == activeConversationId) return;
+
+    setMessages([])
+    navigate(`/query/${conversationId}`)
+    const res = await fetch("http://localhost:3000/api/chat/history", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        conversationId: conversationId
+      })
+    })
+
+    const data = await res.json();
+
+    const formattedMessages: Messages[] = data.map((m: any) => ({
+      ...m,
+      isLoading: false,
+      conversationHistory: true
+    }))
+    setMessages(formattedMessages)
   }
 
   return (
@@ -55,38 +79,7 @@ export function Sidebar() {
             {historyTabOpen && (
               <div className={styles.titles}>
                 {conversations.map((conversation) => (
-                  <div
-                    key={conversation.id}
-                    onClick={() => {
-                      if (id !== conversation.id) {
-                        navigate(`/query/${conversation.id}`);
-                        const fetchMessages = async () => {
-                          setMessages([]);
-                          const res = await fetch("http://localhost:3000/api/chat/history", {
-                            method: "POST",
-                            credentials: "include",
-                            headers: {
-                              "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                              conversationId: conversation.id,
-                            })
-                          })
-
-                          const data = await res.json();
-                          console.log(data)
-                          const message: Messages[] = data.map((m: any) => ({
-                            ...m,
-                            conversationHistory: true,
-                            isLoading: false
-                          }));
-                          setMessages(message)
-                        }
-                        fetchMessages()
-                      }
-                    }
-                    }
-                    className={styles.titleItem}>
+                  <div key={conversation.id} onClick={() => openConversation(conversation.id)} className={styles.titleItem}>
                     {conversation.title}
                   </div>
                 ))}
