@@ -1,14 +1,16 @@
-things to do after dinner
+things to do asap
 
-1) stop message streaming when rendered from history
-2) fix the undefined response shit coming from llms
+1) stop message streaming when rendered from history (done)
+2) fix the undefined response shit coming from llms (done)
 3) improve system prompt and increase token size
 4) replace global state for various reasons
-
+5) place a skeleton chat holder until messages are rednered from db for conversation history messages
+6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear new dont create new
+   conversation within exisiting conversation and create new when starting new conversation from new chat or totally new /query
 
 todo in general
 
 1) landing page
 2) add caching, rate limiting to every api call going to db, external api and manily llms
-3) remove logs from codebase'
+3) remove logs from codebase
 4) replace localhost with envs
