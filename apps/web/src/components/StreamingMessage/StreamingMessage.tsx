@@ -10,13 +10,13 @@ export function StreamingMessage({ text }: { text: string }) {
     setDisplayedText("");
 
     const interval = setInterval(() => {
-      setDisplayedText((prev) => prev + text[index]);
       index++;
+      setDisplayedText(text.slice(0, index));
 
       if (index >= text.length) {
         clearInterval(interval);
       }
-    }, 15); 
+    }, 10); 
 
     return () => clearInterval(interval);
   }, [text]);
