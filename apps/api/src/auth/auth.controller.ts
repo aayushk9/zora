@@ -2,6 +2,7 @@ import { Controller, Body, Post, Res, Get, Req, UseGuards } from '@nestjs/common
 import { AuthService } from './auth.service';
 import type { Response, Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -30,6 +31,7 @@ export class AuthController {
         return res.status(200).json({ message: result.message });
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get("me")
     me(@Req() req: Request) {
         return this.authService.getUserFromCookie(req);
