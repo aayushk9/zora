@@ -1,33 +1,24 @@
-import { Controller, Req, Res, Post, Get, UnauthorizedException } from '@nestjs/common';
-import type { Request, Response } from 'express';
+import { Controller, Req, Get, UseGuards } from '@nestjs/common';
+import type { Request } from 'express';
 import { DatabaseService } from 'src/database/database.service';
-import { JwtService } from '@nestjs/jwt';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('conversations')
+@UseGuards(JwtAuthGuard)
 export class ConversationsController {
-    constructor(private readonly db: DatabaseService, private readonly jwt: JwtService) { }
+    constructor(private readonly db: DatabaseService) { }
     
     @Get()
     async fetchConversations(@Req() req: Request) {
-        const token = req.cookies["jwt"];
-
-        if (!token) {
-            throw new UnauthorizedException("jwt not found")
-        }
-
-        let user;
-        try {
-            user = this.jwt.verify(token)
-        } catch {
-            throw new UnauthorizedException("invalid jwt")
-        }
+       
+        const userId = (req.user as any).userId;
 
         const result = await this.db.query(
             `SELECT id, title 
              FROM conversations
              WHERE user_id = $1
              ORDER BY created_at DESC
-            `, [user.sub]
+            `, [userId]
         )
         return result.rows
     }
