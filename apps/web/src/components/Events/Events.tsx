@@ -9,12 +9,14 @@ export function Events() {
 
   const [searchInput, setSearchInput] = useState("");
   const [activeCategory, setActiveCategory] = useState<Category>("all");
-  const [start, setStart] = useState(0)
-  const [end, setEnd] = useState(20)
   const [events, setEvents] = useState<EventCardProps[]>([]);
   const [loading, setLoading] = useState(true);
+  
   const addEvent = useEventStore((s) => s.addEvent);
   const selectedEvents = useEventStore((s) => s.selectedEvents)
+
+  const start = 0;
+  const end = 20;
 
   const categories: Record<Category, string> = {
     all: "All",
