@@ -48,47 +48,47 @@ export function DesktopLayout() {
                   <div className={styles.userInterface}>
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
                         {messages.map((message, index) => (
-                           message.chatLoader ? (<ChatSkeleton/>) :
-                           <p key={index} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
-                              {message.message_type == "assistant" ? (
-                                 message.isLoading ? (
-                                    <Loader />
+                           message.chatLoader ? (<ChatSkeleton />) :
+                              <p key={index} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
+                                 {message.message_type == "assistant" ? (
+                                    message.isLoading ? (
+                                       <Loader />
+                                    ) : (
+                                       message.conversationHistory ? (
+                                          message.chatLoader ? (
+                                             <ChatSkeleton />
+                                          ) : (
+                                             message.content
+                                          )) : (
+                                          <StreamingMessage key={index} text={message.content} />)
+                                    )
                                  ) : (
-                                    message.conversationHistory ? (
-                                       message.chatLoader ? (
-                                          <ChatSkeleton />
-                                       ) : (
-                                          message.content
-                                       )) : (
-                                       <StreamingMessage key={index} text={message.content} />)
-                                 )
-                              ) : (
-                                 message.content
-                              )}
-                              {selectedEvents.length > 0 && message.message_type == "user" && index == 0 && (
-                                 <div className={styles.events}>
-                                    {selectedEvents.map((ev) => (
-                                       <div key={ev.title} className={styles.selectedEvent}>
-                                          <div className={styles.contest}>
-                                             <div className={styles.subSection}>
-                                                <span className={styles.title}>{ev.title}</span>
-                                                <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
-                                             </div>
-                                             <div className={styles.stats}>
-                                                <span className={styles.volume}>{formatVolumeUsd(ev.totalVolume / 1e6)}</span>
-                                                <span className={styles.markets}>
-                                                   <svg className={styles.chartIcon} width="12" height="12" viewBox="0 0 16 16" fill="none">
-                                                      <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                                   </svg>
-                                                   <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
-                                                </span>
+                                    message.content
+                                 )}
+                                 {selectedEvents.length > 0 && message.message_type == "user" && index == 0 && (
+                                    <div className={styles.events}>
+                                       {selectedEvents.map((ev) => (
+                                          <div key={ev.title} className={styles.selectedEvent}>
+                                             <div className={styles.contest}>
+                                                <div className={styles.subSection}>
+                                                   <span className={styles.title}>{ev.title}</span>
+                                                   <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
+                                                </div>
+                                                <div className={styles.stats}>
+                                                   <span className={styles.volume}>{formatVolumeUsd(ev.totalVolume / 1e6)}</span>
+                                                   <span className={styles.markets}>
+                                                      <svg className={styles.chartIcon} width="12" height="12" viewBox="0 0 16 16" fill="none">
+                                                         <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                      </svg>
+                                                      <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
+                                                   </span>
+                                                </div>
                                              </div>
                                           </div>
-                                       </div>
-                                    ))}
-                                 </div>
-                              )}
-                           </p>
+                                       ))}
+                                    </div>
+                                 )}
+                              </p>
                         ))}
                         <div ref={messagesEndRef} />
                      </div>
