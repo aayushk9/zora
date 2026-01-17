@@ -7,6 +7,9 @@ import { useEventStore } from "../../../store/useSelectedEventStore";
 import { formatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
 import { Loader } from "../../Loader/Loader";
 import { StreamingMessage } from "../../StreamingMessage/StreamingMessage";
+import { ChatSkeleton } from "../../ChatSkeleton/ChatSkeleton";
+import DottedBackground from "../../DottedBackground/DottedBackground";
+import { MonitorEventFlow } from "../../MonitorEventFlow/MonitorEventFlow";
 
 export function MobileLayout() {
 
@@ -15,6 +18,7 @@ export function MobileLayout() {
 
   const [stagQuery, setStagQuery] = useState(true);
   const [execution, setExecution] = useState(false);
+
   const {
     messages,
     handleUserQuery
@@ -55,39 +59,48 @@ export function MobileLayout() {
             <div className={styles.queryPanel}>
               <div className={styles.messageArea}>
                 {messages.map((message, index) => (
-                  <p key={index} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
-                    {message.message_type == "assistant" ? (
-                      message.isLoading == true ? (
-                        <Loader/>
-                      )  : (
-                        <StreamingMessage text={message.content}/>
-                      )) : (
-                      message.content
-                    )}
-                    {selectedEvents.length > 0 && message.message_type == "user" && index == 0 && (
-                      <div className={styles.events}>
-                        {selectedEvents.map((ev) => (
-                          <div key={ev.title} className={styles.selectedEvent}>
-                            <div className={styles.contest}>
-                              <div className={styles.subSection}>
-                                <span className={styles.title}>{ev.title}</span>
-                                <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
-                              </div>
-                              <div className={styles.stats}>
-                                <span className={styles.volume}>{formatVolumeUsd(ev.totalVolume / 1e6)}</span>
-                                <span className={styles.markets}>
-                                  <svg className={styles.chartIcon} width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                  </svg>
-                                  <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
-                                </span>
+                  message.chatLoader ? <ChatSkeleton /> :
+                    <p key={index} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
+                      {message.message_type == "assistant" ? (
+                        message.isLoading ? (
+                          <Loader />
+                        ) : (
+                          message.conversationHistory ? (
+                            message.chatLoader ? (
+                                <ChatSkeleton />
+                             ) : 
+                                 message.content
+                            )
+                             :
+                            <StreamingMessage key={index} text={message.content} />
+                           )
+                        ) : (
+                        message.content
+                      )}
+                      {selectedEvents.length > 0 && message.message_type == "user" && index == 0 && (
+                        <div className={styles.events}>
+                          {selectedEvents.map((ev) => (
+                            <div key={ev.title} className={styles.selectedEvent}>
+                              <div className={styles.contest}>
+                                <div className={styles.subSection}>
+                                  <span className={styles.title}>{ev.title}</span>
+                                  <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
+                                </div>
+                                <div className={styles.stats}>
+                                  <span className={styles.volume}>{formatVolumeUsd(ev.totalVolume / 1e6)}</span>
+                                  <span className={styles.markets}>
+                                    <svg className={styles.chartIcon} width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                      <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    </svg>
+                                    <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </p>
+                          ))}
+                        </div>
+                      )}
+                    </p>
                 ))}
               </div>
               <div className={styles.inputBox}><InputBox noSuggestedPrompts noOuterBorder onSend={handleUserQuery} /></div>
@@ -95,9 +108,25 @@ export function MobileLayout() {
           )}
 
           {execution && (
-            <div>
-              {/* display execution stpes here*/}
-            </div>
+              <div className={styles.executionBody}>
+                     <DottedBackground>
+                        <div style={{
+                           position: 'absolute',
+                           marginTop: "1rem",
+                           justifyContent: "center",
+                           padding: '6px 10px',
+                           borderRadius: 8,
+                           fontSize: 11,
+                           color: '#ffffffd1',
+                           zIndex: 10,
+                           marginLeft: "15rem",
+                           fontFamily: "sans-serif"
+                        }}>
+                           Live monitoring coming soon
+                        </div>
+                        <MonitorEventFlow />
+                     </DottedBackground>
+                  </div>
           )}
         </div>
       </div>
