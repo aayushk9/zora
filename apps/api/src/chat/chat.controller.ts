@@ -1,16 +1,16 @@
-import { Controller, Post, Body, Req } from '@nestjs/common';
+import { Controller, Post, Body, Req, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { SelectedEventsDto } from 'src/generate-prompts/dto/selected-events.dto';
 import { Messages } from './dto/Messages';
 import type { Request } from 'express';
-import { JwtService } from '@nestjs/jwt';
 import { DatabaseService } from 'src/database/database.service';
-import { boolean } from 'zod';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('chat')
+@UseGuards(JwtAuthGuard)
 export class ChatController {
 
-  constructor(private readonly chatService: ChatService, private readonly jwt: JwtService, private readonly db: DatabaseService) { }
+  constructor(private readonly chatService: ChatService, private readonly db: DatabaseService) { }
 
   @Post()
   async sendResponse(
@@ -20,15 +20,9 @@ export class ChatController {
     @Body("conversationId") conversationId: string
   ) 
   {
-    const token = req.cookies?.jwt ?? null;
 
-    let userId: string | null = null;
-    if (token) {
-      try {
-        const user = this.jwt.verify(token);
-        userId = user.sub;
-      } catch { }
-    }
+    const userId = (req.user as any).userId;
+    
     return await this.chatService.fetchResponse(
       messages,
       selectedEvents,
@@ -41,8 +35,6 @@ export class ChatController {
   async fetchMessages(
     @Body("conversationId") conversationId: string,
 ) {
-     // user authenticated earlier
-
      const result = await this.db.query(
       `SELECT message_type, content
        FROM messages
@@ -50,7 +42,6 @@ export class ChatController {
        ORDER BY created_at ASC
       `, [conversationId]
      )
-     
 
      return result.rows;
   }
