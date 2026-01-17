@@ -13,6 +13,6 @@ todo in general
 
 1) landing page
 2) add caching, rate limiting to every api call going to db, external api and manily llms
-3) remove logs from codebase
+3) remove logs from codebase (done)
 4) replace localhost with envs
 5) add clear message for non authenticated users when try to to access /query (done)
