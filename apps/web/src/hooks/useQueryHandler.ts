@@ -14,71 +14,77 @@ interface Messages {
 
 export function useQueryHandler() {
 
+    const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const incomingText = params.get("c");
+
     const messages = useMessageStore((message) => message.messages)
     const setMessages = useMessageStore((message) => message.setMessages)
+
     const hasRun = useRef(false);
     const isNewConversation = useRef(true);
-    const selectedEvents = useEventStore((s) => s.selectedEvents)
+
     const { id: routeConversationId } = useParams<{ id?: string }>()
     const conversationId = routeConversationId ?? null
+
     const conversations = useConversationStore((conversation) => conversation.conversations);
     const addConversation = useConversationStore((conversation) => conversation.addConversation);
-    const navigate = useNavigate();
+    const selectedEvents = useEventStore((s) => s.selectedEvents)
 
 
     useEffect(() => {
-        if (incomingText && !hasRun.current ) {
+        if (incomingText && !hasRun.current) {
             if (!incomingText) return;
             if (!conversations) return;
             if (hasRun.current) return;
 
-            hasRun.current = true
-            isNewConversation.current = true
-            setMessages([])
-            handleUserQuery(incomingText)
+            hasRun.current = true;
+            isNewConversation.current = true;
+
+            setMessages([]);
+            handleUserQuery(incomingText);
         }
     }, [incomingText])
 
     useEffect(() => {
-        if(!conversationId && isNewConversation.current) return;
-      const fetchExistingChatFromDB = async() => {
-        setMessages([
-            {
-                message_type: "assistant",
-                content: "",
-                conversationHistory: true,
-                chatLoader: true
-            }
-        ])
-       try { 
-        if(conversationId) {
-            const res = await fetch("http://localhost:3000/api/chat/history", {
-                method: 'POST',
-                credentials: "include",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    conversationId: conversationId
-                })
-            })
+        if (!conversationId && isNewConversation.current) return;
+        
+        const fetchExistingChatFromDB = async () => {
+            setMessages([
+                {
+                    message_type: "assistant",
+                    content: "",
+                    conversationHistory: true,
+                    chatLoader: true
+                }
+            ])
+            try {
+                if (conversationId) {
+                    const res = await fetch("http://localhost:3000/api/chat/history", {
+                        method: 'POST',
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            conversationId: conversationId
+                        })
+                    })
 
-            const data = await res.json();
-            const formatMesssage: Messages[] = data.map((msg: any) => ({
-                ...msg,
-                conversationHistory: true,
-                chatLoader: false
-            }))
-           setMessages(formatMesssage)
+                    const data = await res.json();
+                    const formatMesssage: Messages[] = data.map((msg: any) => ({
+                        ...msg,
+                        conversationHistory: true,
+                        chatLoader: false
+                    }))
+                    setMessages(formatMesssage)
+                }
+            } catch (error) {
+                console.log(error)
+            }
         }
-      } catch (error) {
-       console.log(error)
-      }
-      }
-      fetchExistingChatFromDB()
+        fetchExistingChatFromDB()
     }, [])
 
 
