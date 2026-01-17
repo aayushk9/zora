@@ -34,14 +34,14 @@ export class GeneratePromptsService {
             }
 
             return `
-        Selected Events:
-         ${events.map((e, i) => `
-           ${i + 1}. ${e.title}
-           - Category: ${e.category}
-           - Total Volume: ${e.totalVolume}
-           - Markets: ${e.marketCount}
-         `).join("")}
-        `;
+                     Selected Events:
+                     ${events.map((e, i) => `
+                         ${i + 1}. ${e.title}
+                         - Category: ${e.category}
+                         - Total Volume: ${e.totalVolume}
+                         - Markets: ${e.marketCount}
+                    `).join("")}
+                  `;
         }
 
         const instructionsForLLM: ChatCompletionMessageParam[] = [
@@ -60,12 +60,12 @@ export class GeneratePromptsService {
             messages: instructionsForLLM
         })
 
-        console.log("response", response)
         const content = response.choices[0].message.content;
-        console.log("content" + content)
+    
         if (!content) {
             throw new Error("api retruned no content")
         }
+        
         const arrayOfPrompts = content
             .split(/\n|\r\n/)
             .map(line => line.trim())
