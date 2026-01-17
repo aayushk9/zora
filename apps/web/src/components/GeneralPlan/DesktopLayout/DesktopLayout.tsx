@@ -9,6 +9,7 @@ import { formatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
 import { StreamingMessage } from "../../StreamingMessage/StreamingMessage";
 import { Loader } from "../../Loader/Loader";
 import { MonitorEventFlow } from "../../MonitorEventFlow/MonitorEventFlow";
+import { ChatSkeleton } from "../../ChatSkeleton/ChatSkeleton";
 
 export function DesktopLayout() {
 
@@ -47,15 +48,19 @@ export function DesktopLayout() {
                   <div className={styles.userInterface}>
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
                         {messages.map((message, index) => (
+                           message.chatLoader ? (<ChatSkeleton/>) :
                            <p key={index} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
                               {message.message_type == "assistant" ? (
-                                 message.isLoading  ? (
+                                 message.isLoading ? (
                                     <Loader />
                                  ) : (
-                                    message.conversationHistory  ? (
-                                    message.content
-                                    ) : (
-                                    <StreamingMessage key={index} text={message.content} />)
+                                    message.conversationHistory ? (
+                                       message.chatLoader ? (
+                                          <ChatSkeleton />
+                                       ) : (
+                                          message.content
+                                       )) : (
+                                       <StreamingMessage key={index} text={message.content} />)
                                  )
                               ) : (
                                  message.content
