@@ -9,6 +9,7 @@ interface Messages {
   isLoading?: boolean;
   content: string;
   conversationHistory: boolean;
+  chatLoader: boolean
 }
 
 export function Sidebar() {
@@ -18,6 +19,7 @@ export function Sidebar() {
   const setMessages = useMessageStore((message) => message.setMessages)
   const [historyTabOpen, setHistoryTabOpen] = useState(true)
   const { activeConversationId } = useParams<{ activeConversationId: string }>();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -31,35 +33,54 @@ export function Sidebar() {
     fetchConversations()
   }, [])
 
+  useEffect(() => {
+    if (conversations.length > 0 && activeIndex === null) {
+      setActiveIndex(0);
+    }
+  }, [conversations, activeIndex]);
+
   const openNewChat = async () => {
     setMessages([])
     navigate(`/query`)
   }
 
-  const openConversation = async (conversationId: string) => {
-    if (conversationId == activeConversationId) return;
+  const openConversation = async (conversationId: string, index: number) => {
 
-    setMessages([])
-    navigate(`/query/${conversationId}`)
-    const res = await fetch("http://localhost:3000/api/chat/history", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        conversationId: conversationId
+    try {
+      if (conversationId == activeConversationId) return;
+      setActiveIndex(index)
+      setMessages([
+        {
+          message_type: "assistant",
+          content: "",
+          chatLoader: true,
+          conversationHistory: true
+        }
+      ])
+
+      navigate(`/query/${conversationId}`)
+      const res = await fetch("http://localhost:3000/api/chat/history", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          conversationId: conversationId
+        })
       })
-    })
 
-    const data = await res.json();
+      const data = await res.json();
 
-    const formattedMessages: Messages[] = data.map((m: any) => ({
-      ...m,
-      isLoading: false,
-      conversationHistory: true
-    }))
-    setMessages(formattedMessages)
+      const formattedMessages: Messages[] = data.map((m: any) => ({
+        ...m,
+        chatLoader: false,
+        conversationHistory: true
+      }))
+      setMessages(formattedMessages)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -71,15 +92,19 @@ export function Sidebar() {
           </button>
           <div className={styles.historySection}>
             <div className={styles.historyHeader} onClick={() => setHistoryTabOpen(prev => !prev)}>
-              <span>History</span>
+              <span className={styles.history}>History</span>
               <span className={styles.arrow}>
                 {historyTabOpen ? "▼" : "▶"}
               </span>
             </div>
             {historyTabOpen && (
               <div className={styles.titles}>
-                {conversations.map((conversation) => (
-                  <div key={conversation.id} onClick={() => openConversation(conversation.id)} className={styles.titleItem}>
+                {conversations.map((conversation, index) => (
+                  <div key={index} onClick={() => openConversation(conversation.id, index)} className={
+                    index === activeIndex
+                      ? styles.activeConversation
+                      : styles.titleItem
+                  }>
                     {conversation.title}
                   </div>
                 ))}
