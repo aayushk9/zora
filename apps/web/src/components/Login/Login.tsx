@@ -1,13 +1,15 @@
 import React, { useState, useCallback } from "react";
 import { useAuth } from "../../auth/AuthContext";
+import { useAuthStore } from "../../store/useAuthStore";
 import styles from "./Login.module.css"
 
 export function Login() {
   const { user, setUser, logout } = useAuth();
-  const [openLoginWindow, setOpenLoginWindow] = useState(false)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false)
+  const isAuthWindowOpen = useAuthStore((authWindow) => authWindow.isAuthWindowOpen);
+  const setIsAuthWindowOpen = useAuthStore((authWindow) => authWindow.setIsAuthWindow)
 
   const signin = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,9 +36,8 @@ export function Login() {
       });
 
       const user = await me.json();
-      console.log("userme: ", user)
       setUser(user);
-      setOpenLoginWindow(false);
+      setIsAuthWindowOpen(false);
     } catch (err) {
       console.log(err)
     } finally {
@@ -59,25 +60,25 @@ export function Login() {
           <span>
             <button className={styles.logoutButton} onClick={ () => {
               logout()
-              setOpenLoginWindow(true)
+              setIsAuthWindowOpen(true)
               redirectAfterLogout()
              } }>Logout</button>
           </span>
         </div>
       ) : (
         <button className={styles.signinButton} onClick={() => {
-          setOpenLoginWindow(true)
+          setIsAuthWindowOpen(true)
         }}>Signin</button>
       )}
 
-      {openLoginWindow && (
+      {isAuthWindowOpen && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
             <div className={styles.header}>
-              <span className={styles.signInHeader}>Sign in to get higher access limits</span>
+              <span className={styles.signInHeader}>Sign in</span>
               <button
                 className={styles.close}
-                onClick={() => setOpenLoginWindow(false)}
+                onClick={() => setIsAuthWindowOpen(false)}
               >
                 ✕
               </button>

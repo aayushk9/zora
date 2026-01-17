@@ -3,6 +3,7 @@ import styles from "./Sidebar.module.css"
 import { useNavigate, useParams } from "react-router-dom"
 import { useConversationStore } from "../../store/useConversationStore"
 import { useMessageStore } from "../../store/useMessageStore"
+import { useAuthStore } from "../../store/useAuthStore"
 
 interface Messages {
   message_type: "user" | "assistant",
@@ -20,6 +21,7 @@ export function Sidebar() {
   const [historyTabOpen, setHistoryTabOpen] = useState(true)
   const { activeConversationId } = useParams<{ activeConversationId: string }>();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const setIsAuthWindowOpen = useAuthStore((authWindow) => authWindow.setIsAuthWindow)
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -27,8 +29,15 @@ export function Sidebar() {
         method: "GET",
         credentials: "include"
       })
+
+      if(res.status === 401) { // user not authenticated
+       setIsAuthWindowOpen(true)
+       navigate("/");
+       return;
+      }
       const data = await res.json();
       setConversations(data)
+
     }
     fetchConversations()
   }, [])
