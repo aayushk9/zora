@@ -5,6 +5,7 @@ interface Messages {
     content: string,
     isLoading?: boolean
     conversationHistory?: boolean
+    chatLoader?: boolean
 }
 
 interface MessagesState {
