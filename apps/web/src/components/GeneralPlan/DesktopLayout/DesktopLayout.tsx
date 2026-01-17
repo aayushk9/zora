@@ -20,13 +20,15 @@ export function DesktopLayout() {
 
    const messagesEndRef: any = useRef(null);
    const messagesAreaRef = useRef<HTMLDivElement>(null);
+
+   const selectedEvents = useEventStore((s) => s.selectedEvents);
+   const removeEvents = useEventStore((s) => s.removeEvent)
+
    const scrollToBottom = () => {
       if (messagesEndRef.current) {
          messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
       }
    };
-   const selectedEvents = useEventStore((s) => s.selectedEvents);
-   const removeEvents = useEventStore((s) => s.removeEvent)
 
    useEffect(() => {
       scrollToBottom();
