@@ -26,6 +26,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     const removeEvents = useEventStore((s) => s.removeEvent);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
+
     const isEmpty = query.trim() === ""
     const showSuggestions = isExpanded && !noSuggestedPrompts && isEmpty
 
@@ -66,9 +67,8 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
           if(!res.ok) {
             throw new Error("something went wrong")
           } 
-          console.log(res)
+        
           const data = await res.json();
-          console.log(data)
           setSuggestedPrompts(data)
         } catch(error){
             console.log(`error: ${error}`)

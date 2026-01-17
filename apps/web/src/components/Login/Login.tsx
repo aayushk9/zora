@@ -2,18 +2,26 @@ import React, { useState, useCallback } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import { useAuthStore } from "../../store/useAuthStore";
 import styles from "./Login.module.css"
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
+
+  const navigate = useNavigate();
+
   const { user, setUser, logout } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false)
+
   const isAuthWindowOpen = useAuthStore((authWindow) => authWindow.isAuthWindowOpen);
   const setIsAuthWindowOpen = useAuthStore((authWindow) => authWindow.setIsAuthWindow)
 
   const signin = useCallback(async (e: React.FormEvent) => {
+
     e.preventDefault()
     setIsLoading(true)
+
     try {
       const res = await fetch("http://localhost:3000/api/auth", {
         method: "POST",
@@ -31,7 +39,7 @@ export function Login() {
         alert("Invalid credentials")
       }
 
-      const me = await fetch("http://localhost:3000/api/auth/me", { // extract user details from jwt
+      const me = await fetch("http://localhost:3000/api/auth/me", { 
         credentials: "include",
       });
 
@@ -45,24 +53,29 @@ export function Login() {
     }
   }, [email, password])
 
-    const handleGoogleLogin = () => {
-      window.location.href ="http://localhost:3000/api/auth/google"
-    }
+  const handleGoogleLogin = () => {
+      navigate("http://localhost:3000/api/auth/google")
+  }
 
-    const redirectAfterLogout = () => {
-      window.location.href = "http://localhost:5173"
-    }
+  const redirectAfterLogout = () => {
+      navigate("http://localhost:5173")
+   }
 
   return (
     <React.Fragment>
       {user ? (
         <div>
           <span>
-            <button className={styles.logoutButton} onClick={ () => {
-              logout()
-              setIsAuthWindowOpen(true)
-              redirectAfterLogout()
-             } }>Logout</button>
+            <button 
+              className={styles.logoutButton} 
+              onClick= {() => {
+                logout()
+                setIsAuthWindowOpen(true)
+                redirectAfterLogout()
+             }}
+             >
+              Logout
+            </button>
           </span>
         </div>
       ) : (

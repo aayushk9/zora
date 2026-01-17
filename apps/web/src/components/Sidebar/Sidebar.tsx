@@ -14,15 +14,19 @@ interface Messages {
 }
 
 export function Sidebar() {
+
   const navigate = useNavigate();
+
   const conversations = useConversationStore((conversation) => conversation.conversations)
   const setConversations = useConversationStore((conversation) => conversation.setConversations)
   const setMessages = useMessageStore((message) => message.setMessages)
-  const [historyTabOpen, setHistoryTabOpen] = useState(true)
-  const { activeConversationId } = useParams<{ activeConversationId: string }>();
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const setIsAuthWindowOpen = useAuthStore((authWindow) => authWindow.setIsAuthWindow)
 
+  const [historyTabOpen, setHistoryTabOpen] = useState(true)
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const { activeConversationId } = useParams<{ activeConversationId: string }>();
+  
   useEffect(() => {
     const fetchConversations = async () => {
       const res = await fetch("http://localhost:3000/api/conversations", {
@@ -30,14 +34,13 @@ export function Sidebar() {
         credentials: "include"
       })
 
-      if(res.status === 401) { // user not authenticated
+      if(res.status === 401) { 
        setIsAuthWindowOpen(true)
        navigate("/");
        return;
       }
       const data = await res.json();
       setConversations(data)
-
     }
     fetchConversations()
   }, [])
@@ -56,7 +59,9 @@ export function Sidebar() {
   const openConversation = async (conversationId: string, index: number) => {
 
     try {
+
       if (conversationId == activeConversationId) return;
+
       setActiveIndex(index)
       setMessages([
         {
@@ -66,8 +71,8 @@ export function Sidebar() {
           conversationHistory: true
         }
       ])
-
       navigate(`/query/${conversationId}`)
+
       const res = await fetch("http://localhost:3000/api/chat/history", {
         method: "POST",
         credentials: "include",
@@ -80,7 +85,6 @@ export function Sidebar() {
       })
 
       const data = await res.json();
-
       const formattedMessages: Messages[] = data.map((m: any) => ({
         ...m,
         chatLoader: false,
