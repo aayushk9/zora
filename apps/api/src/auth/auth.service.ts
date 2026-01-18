@@ -53,8 +53,12 @@ export class AuthService {
   getUserFromCookie(req: Request) {
     const token = req.cookies?.jwt;
     if (!token) return null;
-
-    return this.jwt.verify(token);
+   
+    try {
+       return this.jwt.verify(token);
+    } catch {
+      return null;
+    }
   }
 
   async login(user: any) {

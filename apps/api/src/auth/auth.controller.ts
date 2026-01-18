@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import type { Response, Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { isProd, CLIENT_URL } from 'src/config/env';
 
 @Controller('auth')
 export class AuthController {
@@ -55,9 +56,9 @@ export class AuthController {
         const jwt = await this.authService.login(req.user)
         res.cookie('jwt', jwt.accesstoken, {
             httpOnly: true,
-            sameSite: 'strict',
-            secure: false
+            secure: isProd,
+            sameSite: isProd ? "none" : 'lax'
         })
-        return res.redirect(`http://localhost:5173`)
+        return res.redirect(`${CLIENT_URL}`)
     }
 }
