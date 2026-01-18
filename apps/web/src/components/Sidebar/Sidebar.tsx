@@ -4,40 +4,33 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useConversationStore } from "../../store/useConversationStore"
 import { useMessageStore } from "../../store/useMessageStore"
 import { useAuthStore } from "../../store/useAuthStore"
-
-interface Messages {
-  message_type: "user" | "assistant",
-  isLoading?: boolean;
-  content: string;
-  conversationHistory: boolean;
-  chatLoader: boolean
-}
+import { API_BASE_URL } from "../../env"
 
 export function Sidebar() {
 
   const navigate = useNavigate();
+  const { id: activeConversationId } = useParams<{ id: string }>();
 
   const conversations = useConversationStore((conversation) => conversation.conversations)
   const setConversations = useConversationStore((conversation) => conversation.setConversations)
+
   const setMessages = useMessageStore((message) => message.setMessages)
   const setIsAuthWindowOpen = useAuthStore((authWindow) => authWindow.setIsAuthWindow)
 
   const [historyTabOpen, setHistoryTabOpen] = useState(true)
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const { activeConversationId } = useParams<{ activeConversationId: string }>();
-  
   useEffect(() => {
     const fetchConversations = async () => {
-      const res = await fetch("http://localhost:3000/api/conversations", {
+      setConversations([])
+      const res = await fetch(`${API_BASE_URL}/api/conversations`, {
         method: "GET",
         credentials: "include"
       })
 
-      if(res.status === 401) { 
-       setIsAuthWindowOpen(true)
-       navigate("/");
-       return;
+      if (res.status === 401) {
+        setIsAuthWindowOpen(true)
+        navigate("/");
+        return;
       }
       const data = await res.json();
       setConversations(data)
@@ -45,52 +38,15 @@ export function Sidebar() {
     fetchConversations()
   }, [])
 
-  useEffect(() => {
-    if (conversations.length > 0 && activeIndex === null) {
-      setActiveIndex(0);
-    }
-  }, [conversations, activeIndex]);
-
-  const openNewChat = async () => {
+  const openNewChat =  () => {
     setMessages([])
     navigate(`/query`)
   }
 
-  const openConversation = async (conversationId: string, index: number) => {
-
+  const openConversation = async (conversationId: string) => {
     try {
-
       if (conversationId == activeConversationId) return;
-
-      setActiveIndex(index)
-      setMessages([
-        {
-          message_type: "assistant",
-          content: "",
-          chatLoader: true,
-          conversationHistory: true
-        }
-      ])
       navigate(`/query/${conversationId}`)
-
-      const res = await fetch("http://localhost:3000/api/chat/history", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          conversationId: conversationId
-        })
-      })
-
-      const data = await res.json();
-      const formattedMessages: Messages[] = data.map((m: any) => ({
-        ...m,
-        chatLoader: false,
-        conversationHistory: true
-      }))
-      setMessages(formattedMessages)
     } catch (error) {
       console.log(error)
     }
@@ -112,9 +68,9 @@ export function Sidebar() {
             </div>
             {historyTabOpen && (
               <div className={styles.titles}>
-                {conversations.map((conversation, index) => (
-                  <div key={index} onClick={() => openConversation(conversation.id, index)} className={
-                    index === activeIndex
+                {conversations.map((conversation) => (
+                  <div key={conversation.id} onClick={() => openConversation(conversation.id)} className={
+                    conversation.id === activeConversationId
                       ? styles.activeConversation
                       : styles.titleItem
                   }>

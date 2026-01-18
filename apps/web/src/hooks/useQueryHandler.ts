@@ -3,6 +3,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEventStore } from "../store/useSelectedEventStore";
 import { useConversationStore } from "../store/useConversationStore";
 import { useMessageStore } from "../store/useMessageStore";
+import { API_BASE_URL } from "../env";
+import type { SelectedEventProps } from "../types/event";
 
 interface Messages {
     message_type: "user" | 'assistant',
@@ -10,6 +12,7 @@ interface Messages {
     isLoading?: boolean
     conversationHistory?: boolean
     chatLoader?: boolean
+    selectedEvents?: SelectedEventProps[]
 }
 
 export function useQueryHandler() {
@@ -44,12 +47,23 @@ export function useQueryHandler() {
 
             setMessages([]);
             handleUserQuery(incomingText);
+            navigate(`/query`, { replace: true });
+
         }
     }, [incomingText])
 
     useEffect(() => {
-        if (!conversationId && isNewConversation.current) return;
-        
+        if (conversationId) {
+            hasRun.current = false;
+            isNewConversation.current = false;
+
+            setMessages([])
+        }
+    }, [conversationId])
+
+    useEffect(() => {
+        if (!conversationId) return;
+
         const fetchExistingChatFromDB = async () => {
             setMessages([
                 {
@@ -61,7 +75,7 @@ export function useQueryHandler() {
             ])
             try {
                 if (conversationId) {
-                    const res = await fetch("http://localhost:3000/api/chat/history", {
+                    const res = await fetch(`${API_BASE_URL}/api/chat/history`, {
                         method: 'POST',
                         credentials: "include",
                         headers: {
@@ -85,7 +99,7 @@ export function useQueryHandler() {
             }
         }
         fetchExistingChatFromDB()
-    }, [])
+    }, [conversationId])
 
 
     const handleUserQuery = async (input: string) => {
@@ -96,13 +110,13 @@ export function useQueryHandler() {
 
         setMessages((prev) => [...prev, userMessage, assistantMessage]);
 
-        const payloadMessages = [...messages, userMessage];
+        const payloadMessages = isNewConversation ? [userMessage] : [...messages, userMessage]
         const safeConversationId = typeof conversationId === "string" &&
             conversationId.length > 0
             ? conversationId : null;
 
         try {
-            const res = await fetch(`http://localhost:3000/api/chat`, {
+            const res = await fetch(`${API_BASE_URL}/api/chat`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -119,6 +133,7 @@ export function useQueryHandler() {
             const output = data.response;
 
             if (!conversationId && data.id) {
+                  isNewConversation.current = false;
                 addConversation({
                     id: data.id,
                     title: data.title
@@ -136,7 +151,8 @@ export function useQueryHandler() {
                     msg.isLoading
                         ? { ...msg, content: output, isLoading: false }
                         : msg
-                ))
+                )
+            )
 
         } catch (err) {
             console.log(err);
