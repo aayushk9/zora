@@ -2,14 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { VersioningType } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import { CLIENT_URL } from './config/env';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   app.use(cookieParser());
 
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: CLIENT_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   });
