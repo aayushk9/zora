@@ -1,4 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { API_BASE_URL } from "../env";
+import { useConversationStore } from "../store/useConversationStore";
+import { useMessageStore } from "../store/useMessageStore";
 
 type User = {
   email: string;
@@ -22,8 +25,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+   const setConversations = useConversationStore((conversation) => conversation.setConversations)
+   const setMessages = useMessageStore((message) => message.setMessages)
+
   useEffect(() => {
-    fetch("http://localhost:3000/api/auth/me", {
+    fetch(`${API_BASE_URL}/api/auth/me`, {
       credentials: "include",
     })
       .then((res) => (res.ok ? res.json() : null))
@@ -32,10 +38,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = async () => {
-    await fetch("http://localhost:3000/api/auth/logout", {
+    await fetch(`${API_BASE_URL}/api/auth/logout`, {
       method: "POST",
       credentials: "include", 
     });
+    setConversations([]);
+    setMessages([]);
     setUser(null);
   };
 
