@@ -5,14 +5,13 @@ things to do asap
 3) improve system prompt and increase token size
 4) replace global state for various reasons (done)
 5) place a skeleton chat holder until messages are rednered from db for conversation history messages (done)
-6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear new dont create new
-   conversation within exisiting conversation and create new when starting new conversation from new chat or totally new /query (done) WE REPLACED IN STATE CONVERSATION ID AS IT WAS 
-   GETTING EMPTY AFTER LOAD AND WE REPLACED IT WITH EXTRACTED CONVERSATION ID WHIC NEVER EXPIRES SO IS CHECK ALWAYS SUCCEEDS AS ID 
+6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear
 
 todo in general
 
 1) landing page
 2) add caching, rate limiting to every api call going to db, external api and manily llms
 3) remove logs from codebase (done)
-4) replace localhost with envs
+4) replace localhost with envs (done)
 5) add clear message for non authenticated users when try to to access /query (done)
+6) make sure selected event is only attached along the query it came with
