@@ -52,11 +52,11 @@ export class ChatService {
     if (conversationId && userId) {
       const exists = await this.db.query(
         `
-    SELECT id
-    FROM conversations
-    WHERE id = $1
-      AND user_id = $2
-    `,
+         SELECT id
+         FROM conversations
+         WHERE id = $1
+         AND user_id = $2
+       `,
         [conversationId, userId]
       );
 
@@ -64,7 +64,6 @@ export class ChatService {
         conversationId = null;
       }
     }
-
 
     const userMessage = messages.filter(message => message.message_type == "user");
     const firstUserMessage = userMessage[0]?.content ?? "New conversation"
