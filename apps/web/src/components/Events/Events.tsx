@@ -4,6 +4,7 @@ import { EventCard } from "../EventCard/EventCard"
 import type { EventCardProps, SelectedEventProps, Category } from "../../types/event"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import { EventSkeleton } from "../EventSkeleton/EventSkeleton"
+import { API_BASE_URL } from "../../env"
 
 export function Events() {
 
@@ -11,7 +12,7 @@ export function Events() {
   const [activeCategory, setActiveCategory] = useState<Category>("all");
   const [events, setEvents] = useState<EventCardProps[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   const addEvent = useEventStore((s) => s.addEvent);
   const selectedEvents = useEventStore((s) => s.selectedEvents)
 
@@ -37,7 +38,7 @@ export function Events() {
       }
 
       try {
-        const res = await fetch(`http://localhost:3000/api/v1/events`, {
+        const res = await fetch(`${API_BASE_URL}/api/v1/events`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

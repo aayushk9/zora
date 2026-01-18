@@ -4,6 +4,7 @@ import sendIcon from '../../assets/send.png'
 import { SuggestedPrompts } from "../SuggestedPrompts/SuggestedPrompts"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import { formatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
+import { API_BASE_URL } from "../../env"
 
  const DEFAULT_PROMPTS = [
   "Predict the outcome of the next Solana price event and explain your reasoning",
@@ -56,7 +57,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
         
         const fetchSuggestedPrompts = async() => {
         try {
-          const res = await fetch("http://localhost:3000/api/generate-prompts", {
+          const res = await fetch(`${API_BASE_URL}/api/generate-prompts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

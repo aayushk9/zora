@@ -3,6 +3,7 @@ import { useAuth } from "../../auth/AuthContext";
 import { useAuthStore } from "../../store/useAuthStore";
 import styles from "./Login.module.css"
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../env";
 
 export function Login() {
 
@@ -23,7 +24,7 @@ export function Login() {
     setIsLoading(true)
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth", {
+      const res = await fetch(`${API_BASE_URL}/api/auth`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -39,7 +40,7 @@ export function Login() {
         alert("Invalid credentials")
       }
 
-      const me = await fetch("http://localhost:3000/api/auth/me", { 
+      const me = await fetch(`${API_BASE_URL}/api/auth/me`, { 
         credentials: "include",
       });
 
@@ -54,11 +55,11 @@ export function Login() {
   }, [email, password])
 
   const handleGoogleLogin = () => {
-      navigate("http://localhost:3000/api/auth/google")
+      window.location.href =  `${API_BASE_URL}/api/auth/google`
   }
 
   const redirectAfterLogout = () => {
-      navigate("http://localhost:5173")
+      navigate("/")
    }
 
   return (
