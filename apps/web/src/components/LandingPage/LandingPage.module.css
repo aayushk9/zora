@@ -8,8 +8,8 @@
 }
 
 .left {
-    width: 18%;
-    min-width: 70px;
+    width: 28%;
+    min-width: 95px;
     padding: 60px;
     display: flex;
     flex-direction: column;
@@ -75,59 +75,56 @@
 
 @media (max-width: 900px) {
 
-    /* Stack layout cleanly */
     .page {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-        overflow-y: auto;
+        min-height: 60vh;     
     }
 
-    /* HERO SECTION */
     .left {
         width: 100%;
-        min-height: auto;
-        padding: 28px 20px 36px;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        justify-content: flex-start;
+        min-height: 60vh;     
+        padding: 24px 20px 56px;
+        border: none;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
     }
 
     .navbar {
-        position: static;
-        margin-bottom: 20px;
-        font-size: 16px;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .content {
+        padding-bottom: env(safe-area-inset-bottom);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
     }
 
     .heading {
-        font-size: 40px;
-        line-height: 1.05;
-        margin-bottom: 14px;
-        letter-spacing: -0.04em;
+        font-size: 50px;
+        margin: 0;
     }
 
     .subtext {
         font-size: 14px;
-        line-height: 1.45;
-        margin-bottom: 22px;
-        max-width: 100%;
+        max-width: 90%;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.6);
     }
 
     .primary {
+        margin-top: 16px;
         font-size: 14px;
-        padding: 12px 22px;
+        padding: 12px 20px;
+        width: fit-content;
     }
 
-    /* AUTH SECTION */
     .right {
-        width: 100%;
-        padding: 0;
-        align-items: stretch;
-        background: #000;
-    }
-
-    /* IMPORTANT: prevent vertical purple strip */
-    .right > * {
-        width: 100%;
+        display: none;
     }
 }

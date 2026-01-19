@@ -21,11 +21,7 @@ export default function Zora() {
                         supporting jupiter prediction market
                     </span>
                     <h1 className={styles.mainHeader}>
-                        Ask Zora to {""}
-                        <span className={styles.trade}>
-                            Analyze
-                        </span> {""}
-                        Prediction Markets
+                        Ask Zora to Analyze Prediction Markets
                     </h1>
                     <span className={styles.foot}>
                         Explore prediction market strategies, risks and scenarios with a single prompt

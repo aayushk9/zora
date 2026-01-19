@@ -1,9 +1,11 @@
 import { AuthPage } from '../Auth/AuthPage';
 import styles from './LandingPage.module.css'
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '../useIsMobile/useIsMobile';
 
 export function LandingPage() {
     const navigate = useNavigate();
+    const isMobile = useIsMobile(768);
 
     return (
         <>
@@ -28,9 +30,11 @@ export function LandingPage() {
                     </div>
                 </div>
 
-                <div className={styles.right}>
+                {!isMobile ? 
+                 <div className={styles.right}>
                     <AuthPage mode="landingPage" />
-                </div>
+                </div>    
+            : "" }
             </div>
         </>
     );

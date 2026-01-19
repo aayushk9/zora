@@ -64,7 +64,6 @@
 
 @media (max-width: 900px) {
 
-    /* Center hero block on mobile */
     .childContainer {
         align-items: center;
         text-align: center;
@@ -73,25 +72,23 @@
         padding: 0 12px;
     }
 
-    /* Reduce top bias */
     .parentContainer {
         padding-top: 24px;
     }
 
-    /* Slightly tighten vertical spacing */
     .miniHeader {
         margin-bottom: 0.4rem;
-        font-size: 10px;
+        font-size: 8px;
     }
 
     .mainHeader {
         margin-bottom: 0.3rem;
-        font-size:18px;
+        font-size: 16px;
     }
 
     .foot {
-        line-height: 1.35;
-        font-size: 15px;
+        line-height: 1.2;
+        font-size: 10px;
     }
 
     .trade {
