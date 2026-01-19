@@ -7,7 +7,7 @@ export function Navbar() {
     return (
         <React.Fragment>
           <nav className={styles.navbar}>
-            <div> <Link className={styles.zora} to="/"> Zora </Link></div>
+            <div> <Link className={styles.zora} to="/app"> Zora </Link></div>
             <div className={styles.navRight}>
               <Link className={styles.agents} to="/agents">Tools</Link>
               <Login />
