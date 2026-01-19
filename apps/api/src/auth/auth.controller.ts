@@ -4,6 +4,7 @@ import type { Response, Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { isProd, CLIENT_URL } from 'src/config/env';
+import { GoogleAuthGuard } from './google-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -45,7 +46,7 @@ export class AuthController {
     }
 
     @Get("google")
-    @UseGuards(AuthGuard("google"))
+    @UseGuards(GoogleAuthGuard)
     async googleAuth () {
         // redirection handled by passport and google strategy
     }
@@ -59,6 +60,6 @@ export class AuthController {
             secure: isProd,
             sameSite: isProd ? "none" : 'lax'
         })
-        return res.redirect(`${CLIENT_URL}`)
+        return res.redirect(`${CLIENT_URL}/app`)
     }
 }
