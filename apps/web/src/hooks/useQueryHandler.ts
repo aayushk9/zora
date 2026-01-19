@@ -53,16 +53,16 @@ export function useQueryHandler() {
     }, [incomingText])
 
     useEffect(() => {
-        if (conversationId) {
-            hasRun.current = false;
-            isNewConversation.current = false;
+        if (!conversationId) return;
 
-            setMessages([])
-        }
+        hasRun.current = true;
     }, [conversationId])
 
     useEffect(() => {
+        // this should only run when we are refreshing or reloading page
         if (!conversationId) return;
+
+         if (!isNewConversation.current) return; // this condition avoides recenlty created conversation dual api request
 
         const fetchExistingChatFromDB = async () => {
             setMessages([
@@ -110,7 +110,7 @@ export function useQueryHandler() {
 
         setMessages((prev) => [...prev, userMessage, assistantMessage]);
 
-        const payloadMessages = isNewConversation ? [userMessage] : [...messages, userMessage]
+        const payloadMessages = isNewConversation.current ? [userMessage] : [...useMessageStore.getState().messages, userMessage];
         const safeConversationId = typeof conversationId === "string" &&
             conversationId.length > 0
             ? conversationId : null;
@@ -133,7 +133,7 @@ export function useQueryHandler() {
             const output = data.response;
 
             if (!conversationId && data.id) {
-                  isNewConversation.current = false;
+                isNewConversation.current = false;
                 addConversation({
                     id: data.id,
                     title: data.title

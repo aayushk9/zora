@@ -35,12 +35,15 @@ export function Sidebar() {
   }
 
   const openConversation = async (conversationId: string) => {
-    try {
-      if (conversationId == activeConversationId) return;
-      navigate(`/query/${conversationId}`)
-    } catch (error) {
-      console.log(error)
-    }
+    setMessages([
+      {
+        message_type: "assistant",
+        content: "",
+        chatLoader: true,
+        conversationHistory: true
+      }
+    ])
+    navigate(`/query/${conversationId}`)
   }
 
   return (
