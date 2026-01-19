@@ -1,62 +1,17 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { useAuth } from "../../auth/AuthContext";
 import { useAuthStore } from "../../store/useAuthStore";
 import styles from "./Login.module.css"
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../../env";
+import { AuthPage } from "../Auth/AuthPage";
 
 export function Login() {
 
   const navigate = useNavigate();
-
-  const { user, setUser, logout } = useAuth();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
-
-  const isAuthWindowOpen = useAuthStore((authWindow) => authWindow.isAuthWindowOpen);
+  const { user, logout } = useAuth();
+  const isAuthWindowOpen = useAuthStore((authWindow) => authWindow.isAuthWindowOpen)
   const setIsAuthWindowOpen = useAuthStore((authWindow) => authWindow.setIsAuthWindow)
 
-  const signin = useCallback(async (e: React.FormEvent) => {
-
-    e.preventDefault()
-    setIsLoading(true)
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/auth`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          password
-        }),
-        credentials: "include"
-      })
-
-      if (res.status == 401) {
-        alert("Invalid credentials")
-      }
-
-      const me = await fetch(`${API_BASE_URL}/api/auth/me`, { 
-        credentials: "include",
-      });
-
-      const user = await me.json();
-      setUser(user);
-      setIsAuthWindowOpen(false);
-    } catch (err) {
-      console.log(err)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [email, password])
-
-  const handleGoogleLogin = () => {
-      window.location.href =  `${API_BASE_URL}/api/auth/google`
-  }
 
   const redirectAfterLogout = () => {
       navigate("/")
@@ -71,7 +26,6 @@ export function Login() {
               className={styles.logoutButton} 
               onClick= {() => {
                 logout()
-                setIsAuthWindowOpen(true)
                 redirectAfterLogout()
              }}
              >
@@ -85,64 +39,8 @@ export function Login() {
         }}>Signin</button>
       )}
 
-      {isAuthWindowOpen && (
-        <div className={styles.overlay}>
-          <div className={styles.modal}>
-            <div className={styles.header}>
-              <span className={styles.signInHeader}>Sign in</span>
-              <button
-                className={styles.close}
-                onClick={() => setIsAuthWindowOpen(false)}
-              >
-                ✕
-              </button>
-            </div>
+      { isAuthWindowOpen && <AuthPage mode="inWindowAuth"/> }
 
-            <div className={styles.body}>
-              <div className={styles.logo}>Zora</div>
-              <p className={styles.subtitle}>
-                Suggestion layer for prediction markets
-              </p>
-
-              <form
-                className={styles.signinForm}
-                onSubmit={signin}
-              >
-                <input
-                  type="text"
-                  placeholder="aayushk@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={styles.input}
-                />
-
-                <input
-                  type="password"
-                  placeholder="******"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={styles.input}
-                />
-
-                <button type="submit" className={`${isLoading ? styles.loadingSignup : styles.signupButton}`}>
-                  Sign in
-                </button>
-
-              </form>
-
-              <div className={styles.divider} />
-
-              <button
-                onClick={() => {
-                 handleGoogleLogin()
-                }}
-                className={styles.googleBtn}>
-                Continue with Google
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </React.Fragment>
   )
 }
