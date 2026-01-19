@@ -9,9 +9,13 @@ things to do asap
 
 todo in general
 
-1) landing page
+1) landing page (done)
 2) add caching, rate limiting to every api call going to db, external api and manily llms
 3) remove logs from codebase (done)
 4) replace localhost with envs (done)
 5) add clear message for non authenticated users when try to to access /query (done)
 6) make sure selected event is only attached along the query it came with
+
+-fix chat loader getting displayed after evry query
+- events box mobile resposiveness
+- updat query exxecution page of mobile screens
