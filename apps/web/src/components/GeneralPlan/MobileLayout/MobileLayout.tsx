@@ -110,20 +110,6 @@ export function MobileLayout() {
           {execution && (
               <div className={styles.executionBody}>
                      <DottedBackground>
-                        <div style={{
-                           position: 'absolute',
-                           marginTop: "1rem",
-                           justifyContent: "center",
-                           padding: '6px 10px',
-                           borderRadius: 8,
-                           fontSize: 11,
-                           color: '#ffffffd1',
-                           zIndex: 10,
-                           marginLeft: "15rem",
-                           fontFamily: "sans-serif"
-                        }}>
-                           Live monitoring coming soon
-                        </div>
                         <MonitorEventFlow />
                      </DottedBackground>
                   </div>

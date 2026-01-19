@@ -65,7 +65,8 @@ export function DesktopLayout() {
                                           <StreamingMessage key={index} text={message.content} />)
                                     )
                                  ) : (
-                                    message.content
+                                    message.content // instead of attaching event jsut below query and rendering on every first user query lest condition it here as we are doing for assistant messages
+                                    // render message.contett like internal comparison ianisde message.content that is message.type === user and message === first message and event attached = yes => attach event to THAT first query
                                  )}
                                  {selectedEvents.length > 0 && message.message_type == "user" && index == 0 && (
                                     <div className={styles.events}>
