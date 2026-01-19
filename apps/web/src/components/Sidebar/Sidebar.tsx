@@ -3,7 +3,6 @@ import styles from "./Sidebar.module.css"
 import { useNavigate, useParams } from "react-router-dom"
 import { useConversationStore } from "../../store/useConversationStore"
 import { useMessageStore } from "../../store/useMessageStore"
-import { useAuthStore } from "../../store/useAuthStore"
 import { API_BASE_URL } from "../../env"
 
 export function Sidebar() {
@@ -13,9 +12,7 @@ export function Sidebar() {
 
   const conversations = useConversationStore((conversation) => conversation.conversations)
   const setConversations = useConversationStore((conversation) => conversation.setConversations)
-
   const setMessages = useMessageStore((message) => message.setMessages)
-  const setIsAuthWindowOpen = useAuthStore((authWindow) => authWindow.setIsAuthWindow)
 
   const [historyTabOpen, setHistoryTabOpen] = useState(true)
 
@@ -26,12 +23,6 @@ export function Sidebar() {
         method: "GET",
         credentials: "include"
       })
-
-      if (res.status === 401) {
-        setIsAuthWindowOpen(true)
-        navigate("/");
-        return;
-      }
       const data = await res.json();
       setConversations(data)
     }
