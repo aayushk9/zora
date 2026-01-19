@@ -5,6 +5,8 @@ import { SuggestedPrompts } from "../SuggestedPrompts/SuggestedPrompts"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import { formatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
 import { API_BASE_URL } from "../../env"
+import { useAuth } from "../../auth/AuthContext"
+import { useAuthStore } from "../../store/useAuthStore"
 
  const DEFAULT_PROMPTS = [
   "Predict the outcome of the next Solana price event and explain your reasoning",
@@ -22,6 +24,8 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     const [isFocused, setIsFocused] = useState(false);
     const [suggestedPrompts, setSuggestedPrompts] = useState<string[]>(DEFAULT_PROMPTS);
     const [suggestionLoader, setSuggestionLoader] = useState(true);
+    const { user } = useAuth();
+    const setAuthWindow = useAuthStore((state) => state.setIsAuthWindow)
 
     const selectedEvents = useEventStore((s) => s.selectedEvents);
     const removeEvents = useEventStore((s) => s.removeEvent);
@@ -38,8 +42,14 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     }, [query, isEmpty])
 
     const research = (e: React.FormEvent) => {
+        
         e.preventDefault();
+
         if (!isEmpty) {
+           if(!user){
+             setAuthWindow(true)
+             return;
+           }
             if (onSend) onSend(query);
             setQuery("");
             setIsExpanded(false);
@@ -144,7 +154,7 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
                     </form>
                 </div>
                 <div>
-                    {selectedEvents.length > 0 && location.pathname == "/" && (
+                    {selectedEvents.length > 0 && location.pathname == "/app" && (
                         <div>
                             <p className={styles.header}>Selected Events</p>
                             <div className={styles.events}>
