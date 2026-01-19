@@ -5,7 +5,7 @@ things to do asap
 3) improve system prompt and increase token size
 4) replace global state for various reasons (done)
 5) place a skeleton chat holder until messages are rednered from db for conversation history messages (done)
-6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear
+6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear (done)
 
 todo in general
 
@@ -16,6 +16,6 @@ todo in general
 5) add clear message for non authenticated users when try to to access /query (done)
 6) make sure selected event is only attached along the query it came with
 
--fix chat loader getting displayed after evry query
+-fix chat loader getting displayed after evry query (done)
 - events box mobile resposiveness
 - updat query exxecution page of mobile screens
