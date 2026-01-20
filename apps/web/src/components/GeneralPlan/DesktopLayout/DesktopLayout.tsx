@@ -65,9 +65,18 @@ export function DesktopLayout() {
                                           <StreamingMessage key={index} text={message.content} />)
                                     )
                                  ) : (
-                                    message.content // instead of attaching event jsut below query and rendering on every first user query lest condition it here as we are doing for assistant messages
+                                     // instead of attaching event jsut below query and rendering on every first user query lest condition it here as we are doing for assistant messages
                                     // render message.contett like internal comparison ianisde message.content that is message.type === user and message === first message and event attached = yes => attach event to THAT first query
-                                 )}
+                                    // first condition inside before message.contenrt -> 
+                                    // message_type == user 
+                                    // is it the first message from user yes fo ahead
+                                    // is the event attached to it if yes than attach the event to first user query else just return the user query
+                                    message.message_type == "user" && index == 0 ?( // add condition of message.selectedEvent as true ot fals\
+                                      message.content // render user query with selected event
+                                 )  : (
+                                    message.content // return just user query
+                                 )
+                              )}
                                  {selectedEvents.length > 0 && message.message_type == "user" && index == 0 && (
                                     <div className={styles.events}>
                                        {selectedEvents.map((ev) => (
