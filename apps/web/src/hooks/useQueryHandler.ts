@@ -59,7 +59,7 @@ export function useQueryHandler() {
     }, [conversationId])
 
     useEffect(() => {
-        // this should only run when we are refreshing or reloading page
+        // this effect should only run when we are refreshing or reloading page
         if (!conversationId) return;
 
          if (!isNewConversation.current) return; // this condition avoides recenlty created conversation dual api request
