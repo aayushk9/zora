@@ -9,7 +9,7 @@ export default function Zora() {
     const navigate = useNavigate()
 
     const handleLandingSend = (query: string) => {
-        navigate(`/query?c=${encodeURIComponent(query)}`)
+        navigate(`/query?c=${encodeURIComponent(query)}&src=landing`)
     }
 
     return (
