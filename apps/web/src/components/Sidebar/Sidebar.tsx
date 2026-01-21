@@ -5,6 +5,7 @@ import { useConversationStore } from "../../store/useConversationStore"
 import { useMessageStore } from "../../store/useMessageStore"
 import { API_BASE_URL } from "../../env"
 import type { SelectedEventProps } from "../../types/event"
+import { useEventStore } from "../../store/useSelectedEventStore"
 
 interface Messages {
   message_id?: string
@@ -24,6 +25,7 @@ export function Sidebar() {
   const conversations = useConversationStore((conversation) => conversation.conversations)
   const setConversations = useConversationStore((conversation) => conversation.setConversations)
   const setMessages = useMessageStore((message) => message.setMessages)
+  const clearEvents = useEventStore((event) => event.clearEvents);
 
   const [historyTabOpen, setHistoryTabOpen] = useState(true)
 
@@ -42,6 +44,7 @@ export function Sidebar() {
 
   const openNewChat = () => {
     setMessages([])
+    clearEvents();
     navigate(`/query`)
   }
 
@@ -56,7 +59,6 @@ export function Sidebar() {
           content: "",
           chatLoader: true,
           conversationHistory: true,
-          selected_events: []
         }
       ])
       navigate(`/query/${conversationId}`)
@@ -89,7 +91,7 @@ export function Sidebar() {
       <div className={styles.parentContainer}>
         <div className={styles.sidebar}>
           <button onClick={() => { openNewChat() }} className={styles.chat}>
-            Research
+            New chat
           </button>
           <div className={styles.historySection}>
             <div className={styles.historyHeader} onClick={() => setHistoryTabOpen(prev => !prev)}>
