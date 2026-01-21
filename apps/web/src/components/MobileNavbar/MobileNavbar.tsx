@@ -4,8 +4,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useConversationStore } from "../../store/useConversationStore";
 import { useMessageStore } from "../../store/useMessageStore";
 import { API_BASE_URL } from "../../env";
+import type { SelectedEventProps } from "../../types/event";
+
+interface Messages {
+  message_id?: string
+  message_type: "user" | "assistant",
+  content: string,
+  isLoading?: boolean
+  conversationHistory?: boolean
+  chatLoader?: boolean
+  selected_events?: SelectedEventProps[],
+}
 
 export function MobileNavbar() {
+
   const navigate = useNavigate();
   const { id: activeConversationId } = useParams<{ id: string }>();
 
@@ -15,6 +27,7 @@ export function MobileNavbar() {
 
   const [historyTabOpen, setHistoryTabOpen] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -36,17 +49,43 @@ export function MobileNavbar() {
   };
 
   const openConversation = async (conversationId: string) => {
-    setMessages([
-      {
-        message_type: "assistant",
-        content: "",
-        chatLoader: true,
+    try {
+      if (conversationId == activeConversationId) {
+        return;
+      }
+      setMessages([
+        {
+          message_type: "assistant",
+          content: "",
+          chatLoader: true,
+          conversationHistory: true,
+          selected_events: []
+        }
+      ])
+      navigate(`/query/${conversationId}`)
+
+      const res = await fetch("http://localhost:3000/api/chat/history", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          conversationId: conversationId
+        })
+      })
+
+      const data = await res.json();
+      const formattedMessages: Messages[] = data.map((m: any) => ({
+        ...m,
+        chatLoader: false,
         conversationHistory: true,
-      },
-    ]);
-    navigate(`/query/${conversationId}`);
-    setIsDrawerOpen(false);
-  };
+      }))
+      setMessages(formattedMessages)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
