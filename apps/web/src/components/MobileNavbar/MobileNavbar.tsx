@@ -105,7 +105,7 @@ export function MobileNavbar() {
       >
         <div className={styles.sidebar}>
           <button onClick={openNewChat} className={styles.chat}>
-            Research
+            New chat
           </button>
 
           <div className={styles.historySection}>
