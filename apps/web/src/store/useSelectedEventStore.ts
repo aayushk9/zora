@@ -5,6 +5,7 @@ type Store = {
     selectedEvents: SelectedEventProps[];
     addEvent: (event: SelectedEventProps) => void;
     removeEvent: (title: string) => void;
+    clearEvents: () => void;
 }
 
 export const useEventStore = create<Store>((set) => ({
@@ -21,5 +22,7 @@ export const useEventStore = create<Store>((set) => ({
     removeEvent: (title) =>
         set((state) => ({
             selectedEvents: state.selectedEvents.filter(e => e.title !== title)
-        }))
+    })),
+
+    clearEvents: () => set({selectedEvents: []})
 }))
