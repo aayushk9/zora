@@ -17,7 +17,8 @@ export class ChatService {
   ) { }
 
   async fetchResponse(messages: Messages[], selectedEvents: SelectedEventsDto[], userId: string | null, conversationId: string | null) {
-
+  console.log("messages", messages)
+  console.log("selected events", selectedEvents)
 
     if (!Array.isArray(messages)) {
       throw new Error("messages must be an array");
@@ -146,13 +147,14 @@ export class ChatService {
     }
 
     let assistantId: string = "";
+    const isEventSelected = isFirstMessage && Array.isArray(selectedEvents) && selectedEvents.length > 0
     if (userId && conversationId) {
       const userQuery = await this.db.query(
         `INSERT INTO messages (id, conversation_id, message_type, content, selected_events)
          VALUES (gen_random_uuid(), $1, 'user', $2, $3)
-        `, [conversationId, latestUserMessage, isFirstMessage ? JSON.stringify(selectedEvents) : null]
+        `, [conversationId, latestUserMessage, isEventSelected ? JSON.stringify(selectedEvents) : null]
       )
-
+    
       const assistantResponse = await this.db.query(
         `INSERT INTO messages (id, conversation_id, message_type, content)
          VALUES(gen_random_uuid(), $1, 'assistant' , $2 )
