@@ -7,12 +7,13 @@ import { API_BASE_URL } from "../env";
 import type { SelectedEventProps } from "../types/event";
 
 interface Messages {
+    message_id?: string
     message_type: "user" | 'assistant',
     content: string
     isLoading?: boolean
     conversationHistory?: boolean
     chatLoader?: boolean
-    selectedEvents?: SelectedEventProps[]
+    selected_events?: SelectedEventProps[],
 }
 
 export function useQueryHandler() {
@@ -21,6 +22,7 @@ export function useQueryHandler() {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const incomingText = params.get("c");
+    const src = params.get("src");
 
     const messages = useMessageStore((message) => message.messages)
     const setMessages = useMessageStore((message) => message.setMessages)
@@ -30,8 +32,7 @@ export function useQueryHandler() {
 
     const { id: routeConversationId } = useParams<{ id?: string }>()
     const conversationId = routeConversationId ?? null
-
-    const conversations = useConversationStore((conversation) => conversation.conversations);
+    const conversations = useConversationStore((state) => state.conversations)
     const addConversation = useConversationStore((conversation) => conversation.addConversation);
     const selectedEvents = useEventStore((s) => s.selectedEvents)
 
@@ -46,7 +47,7 @@ export function useQueryHandler() {
             isNewConversation.current = true;
 
             setMessages([]);
-            handleUserQuery(incomingText);
+            handleUserQuery(incomingText, src);
             navigate(`/query`, { replace: true });
 
         }
@@ -54,25 +55,19 @@ export function useQueryHandler() {
 
     useEffect(() => {
         if (!conversationId) return;
+        if (!isNewConversation.current) return;
 
-        hasRun.current = true;
-    }, [conversationId])
-
-    useEffect(() => {
-        // this effect should only run when we are refreshing or reloading page
-        if (!conversationId) return;
-
-         if (!isNewConversation.current) return; // this condition avoides recenlty created conversation dual api request
-
-        const fetchExistingChatFromDB = async () => {
+        const fetchHistory = async () => {
             setMessages([
                 {
+                    message_id: crypto.randomUUID(),
                     message_type: "assistant",
                     content: "",
                     conversationHistory: true,
                     chatLoader: true
                 }
             ])
+
             try {
                 if (conversationId) {
                     const res = await fetch(`${API_BASE_URL}/api/chat/history`, {
@@ -87,33 +82,51 @@ export function useQueryHandler() {
                     })
 
                     const data = await res.json();
+                    console.log(data)
                     const formatMesssage: Messages[] = data.map((msg: any) => ({
                         ...msg,
                         conversationHistory: true,
                         chatLoader: false
                     }))
+                    console.log(formatMesssage)
                     setMessages(formatMesssage)
                 }
             } catch (error) {
                 console.log(error)
             }
         }
-        fetchExistingChatFromDB()
+        fetchHistory()
     }, [conversationId])
 
 
-    const handleUserQuery = async (input: string) => {
+    const handleUserQuery = async (input: string, source?: string | null) => {
         if (!input.trim()) return;
 
-        const userMessage: Messages = { message_type: "user", content: input, conversationHistory: false };
-        const assistantMessage: Messages = { message_type: "assistant", content: "", isLoading: true, conversationHistory: false };
+        const userId = crypto.randomUUID();
+        const assistantId = crypto.randomUUID();
+
+        const userMessage: Messages = {
+            message_id: userId,
+            message_type: "user",
+            content: input,
+            conversationHistory: false,
+            selected_events: source == "landing" ? selectedEvents : [],
+        };
+
+        const assistantMessage: Messages = {
+            message_id: assistantId,
+            message_type: "assistant",
+            content: "",
+            isLoading: true,
+            conversationHistory: false
+        };
 
         setMessages((prev) => [...prev, userMessage, assistantMessage]);
 
-        const payloadMessages = isNewConversation.current ? [userMessage] : [...useMessageStore.getState().messages, userMessage];
-        const safeConversationId = typeof conversationId === "string" &&
-            conversationId.length > 0
-            ? conversationId : null;
+        const payloadMessages = isNewConversation.current ?
+            [userMessage] :
+            useMessageStore.getState().messages.filter(m => !m.isLoading).concat(userMessage);
+
 
         try {
             const res = await fetch(`${API_BASE_URL}/api/chat`, {
@@ -124,33 +137,27 @@ export function useQueryHandler() {
                 },
                 body: JSON.stringify({
                     messages: payloadMessages,
-                    conversationId: safeConversationId,
+                    conversationId: conversationId ?? null,
                     selectedEvents
                 }),
             })
 
             const data = await res.json();
-            const output = data.response;
 
             if (!conversationId && data.id) {
-                isNewConversation.current = false;
-                addConversation({
-                    id: data.id,
-                    title: data.title
-                })
-
+                isNewConversation.current = false
+                addConversation({ id: data.id, title: data.title })
                 navigate(`/query/${data.id}`)
             }
 
-            if (res.status == 500) {
-                alert("Something seems off please try again later")
-            }
-
             setMessages(prev =>
-                prev.map(msg =>
-                    msg.isLoading
-                        ? { ...msg, content: output, isLoading: false }
-                        : msg
+                prev.map((m) =>
+                    m.message_id === assistantId ?
+                        {
+                            ...m,
+                            message_id: data.messageId, content: data.response, isLoading: false, selected_events: source == "landing" ? selectedEvents : []
+                        }
+                        : m
                 )
             )
 
@@ -162,6 +169,6 @@ export function useQueryHandler() {
     return {
         messages,
         setMessages,
-        handleUserQuery
+        handleUserQuery,
     };
 }
