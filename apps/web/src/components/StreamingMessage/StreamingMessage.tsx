@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function StreamingMessage({ text }: { text: string }) {
+export function StreamingMessage({ text }: { text: string}) {
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
