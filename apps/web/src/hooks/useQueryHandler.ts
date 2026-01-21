@@ -99,7 +99,7 @@ export function useQueryHandler() {
     }, [conversationId])
 
 
-    const handleUserQuery = async (input: string, source?: string | null) => {
+    const handleUserQuery = async (input: string, src?: string | null) => {
         if (!input.trim()) return;
 
         const userId = crypto.randomUUID();
@@ -110,7 +110,7 @@ export function useQueryHandler() {
             message_type: "user",
             content: input,
             conversationHistory: false,
-            selected_events: source == "landing" ? selectedEvents : [],
+            selected_events: src == "landing" ? selectedEvents : [],
         };
 
         const assistantMessage: Messages = {
@@ -123,9 +123,9 @@ export function useQueryHandler() {
 
         setMessages((prev) => [...prev, userMessage, assistantMessage]);
 
-        const payloadMessages = isNewConversation.current ?
-            [userMessage] :
-            useMessageStore.getState().messages.filter(m => !m.isLoading).concat(userMessage);
+        const payloadMessages = 
+            [userMessage] 
+           
 
 
         try {
@@ -155,7 +155,7 @@ export function useQueryHandler() {
                     m.message_id === assistantId ?
                         {
                             ...m,
-                            message_id: data.messageId, content: data.response, isLoading: false, selected_events: source == "landing" ? selectedEvents : []
+                            message_id: data.messageId, content: data.response, isLoading: false, selected_events: src == "landing" ? selectedEvents : []
                         }
                         : m
                 )
