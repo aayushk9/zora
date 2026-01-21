@@ -1,11 +1,14 @@
 import { create } from "zustand"
+import type { SelectedEventProps } from "../types/event"
 
 interface Messages {
+    message_id?: string
     message_type: "user" | "assistant",
     content: string,
     isLoading?: boolean
     conversationHistory?: boolean
     chatLoader?: boolean
+    selected_events?: SelectedEventProps[],
 }
 
 interface MessagesState {
@@ -25,5 +28,5 @@ export const useMessageStore = create<MessagesState>((set) => ({
     addMessages: (message) =>
         set((state) => ({
             messages: [message, ...state.messages]
-        }))
+    }))
 }))
