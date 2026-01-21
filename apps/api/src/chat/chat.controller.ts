@@ -36,13 +36,14 @@ export class ChatController {
     @Body("conversationId") conversationId: string,
 ) {
      const result = await this.db.query(
-      `SELECT message_type, content
+      `SELECT id, message_type, content, selected_events
        FROM messages
        WHERE conversation_id = $1
        ORDER BY created_at ASC
       `, [conversationId]
      )
-
+  
+     console.log(result.rows)
      return result.rows;
   }
 }
