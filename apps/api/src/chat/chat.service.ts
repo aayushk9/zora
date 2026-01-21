@@ -65,6 +65,7 @@ export class ChatService {
       }
     }
 
+    const isFirstMessage = !conversationId;
     const userMessage = messages.filter(message => message.message_type == "user");
     const firstUserMessage = userMessage[0]?.content ?? "New conversation"
     const latestUserMessage = userMessage[userMessage.length - 1]?.content;
@@ -144,21 +145,25 @@ export class ChatService {
       title = result.rows[0].title;
     }
 
+    let assistantId: string = "";
     if (userId && conversationId) {
-      await this.db.query(
-        `INSERT INTO messages (id, conversation_id, message_type, content)
-         VALUES (gen_random_uuid(), $1, 'user', $2)
-        `, [conversationId, latestUserMessage]
+      const userQuery = await this.db.query(
+        `INSERT INTO messages (id, conversation_id, message_type, content, selected_events)
+         VALUES (gen_random_uuid(), $1, 'user', $2, $3)
+        `, [conversationId, latestUserMessage, isFirstMessage ? JSON.stringify(selectedEvents) : null]
       )
 
-      await this.db.query(
+      const assistantResponse = await this.db.query(
         `INSERT INTO messages (id, conversation_id, message_type, content)
          VALUES(gen_random_uuid(), $1, 'assistant' , $2 )
+         RETURNING id
         `, [conversationId, content]
       )
 
+       assistantId = assistantResponse.rows[0].id;
+
       // this will run only when conversation title is New chat whic is at initial user request
-      await this.db.query(
+     const updateConversationTitle = await this.db.query(
         `
       UPDATE conversations
       SET title = $1
@@ -167,7 +172,7 @@ export class ChatService {
       `,
         [firstUserMessage.slice(0, 60), conversationId]
       );
-
+     
     }
 
     if (!content) {
@@ -177,7 +182,8 @@ export class ChatService {
     return {
       response: content,
       id: conversationId,
-      title: title
+      title: title,
+      messageId: assistantId
     }
   }
 }
