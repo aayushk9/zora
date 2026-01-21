@@ -4,7 +4,6 @@ import { Sidebar } from "../../Sidebar/Sidebar";
 import { InputBox } from "../../InputBox/InputBox";
 import DottedBackground from "../../DottedBackground/DottedBackground";
 import { useQueryHandler } from "../../../hooks/useQueryHandler";
-import { useEventStore } from "../../../store/useSelectedEventStore";
 import { formatVolumeUsd } from "../../../hooks/useFormatVolumeUsd";
 import { StreamingMessage } from "../../StreamingMessage/StreamingMessage";
 import { Loader } from "../../Loader/Loader";
@@ -21,9 +20,6 @@ export function DesktopLayout() {
    const messagesEndRef: any = useRef(null);
    const messagesAreaRef = useRef<HTMLDivElement>(null);
 
-   const selectedEvents = useEventStore((s) => s.selectedEvents);
-   const removeEvents = useEventStore((s) => s.removeEvent)
-
    const scrollToBottom = () => {
       if (messagesEndRef.current) {
          messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -33,6 +29,10 @@ export function DesktopLayout() {
    useEffect(() => {
       scrollToBottom();
    }, [messages]);
+
+   const firstUserIndex = messages.findIndex(
+      (m) => m.message_type === "user"
+   );
 
    return (
       <React.Fragment>
@@ -49,9 +49,10 @@ export function DesktopLayout() {
                   <div className={styles.queryBorder}></div>
                   <div className={styles.userInterface}>
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
+
                         {messages.map((message, index) => (
                            message.chatLoader ? (<ChatSkeleton />) :
-                              <p key={index} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
+                              <div key={message.message_id} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
                                  {message.message_type == "assistant" ? (
                                     message.isLoading ? (
                                        <Loader />
@@ -62,45 +63,58 @@ export function DesktopLayout() {
                                           ) : (
                                              message.content
                                           )) : (
-                                          <StreamingMessage key={index} text={message.content} />)
+                                          <StreamingMessage key={message.message_id} text={message.content} />)
                                     )
                                  ) : (
-                                     // instead of attaching event jsut below query and rendering on every first user query lest condition it here as we are doing for assistant messages
-                                    // render message.contett like internal comparison ianisde message.content that is message.type === user and message === first message and event attached = yes => attach event to THAT first query
-                                    // first condition inside before message.contenrt -> 
-                                    // message_type == user 
-                                    // is it the first message from user yes fo ahead
-                                    // is the event attached to it if yes than attach the event to first user query else just return the user query
-                                    message.message_type == "user" && index == 0 ?( // add condition of message.selectedEvent as true ot fals\
-                                      message.content // render user query with selected event
-                                 )  : (
-                                    message.content // return just user query
-                                 )
-                              )}
-                                 {selectedEvents.length > 0 && message.message_type == "user" && index == 0 && (
-                                    <div className={styles.events}>
-                                       {selectedEvents.map((ev) => (
-                                          <div key={ev.title} className={styles.selectedEvent}>
-                                             <div className={styles.contest}>
-                                                <div className={styles.subSection}>
-                                                   <span className={styles.title}>{ev.title}</span>
-                                                   <button className={styles.closeBtn} onClick={() => removeEvents(ev.title)}>x</button>
+                                    message.message_type === "user" && index === firstUserIndex && (message.selected_events?.length ?? 0) ? (
+                                       <>
+                                          {message.content}
+                                          <div className={styles.events}>
+                                             {message.selected_events?.map((ev) => (
+                                                <div key={ev.title} className={styles.selectedEvent}>
+                                                   <div className={styles.contest}>
+                                                      <div className={styles.subSection}>
+                                                         <span className={styles.title}>{ev.title}</span>
+                                                      </div>
+
+                                                      <div className={styles.stats}>
+                                                         <span className={styles.volume}>
+                                                            {formatVolumeUsd(ev.totalVolume / 1e6)}
+                                                         </span>
+
+                                                         <span className={styles.markets}>
+                                                            <svg
+                                                               className={styles.chartIcon}
+                                                               width="12"
+                                                               height="12"
+                                                               viewBox="0 0 16 16"
+                                                               fill="none"
+                                                            >
+                                                               <path
+                                                                  d="M2 14V8M8 14V2M14 14V6"
+                                                                  stroke="currentColor"
+                                                                  strokeWidth="1.5"
+                                                                  strokeLinecap="round"
+                                                               />
+                                                            </svg>
+                                                            <span className={styles.marketCount}>
+                                                               {ev.marketCount === 1
+                                                                  ? "1 MARKET"
+                                                                  : `${ev.marketCount} MARKETS`}
+                                                            </span>
+                                                         </span>
+                                                      </div>
+                                                   </div>
                                                 </div>
-                                                <div className={styles.stats}>
-                                                   <span className={styles.volume}>{formatVolumeUsd(ev.totalVolume / 1e6)}</span>
-                                                   <span className={styles.markets}>
-                                                      <svg className={styles.chartIcon} width="12" height="12" viewBox="0 0 16 16" fill="none">
-                                                         <path d="M2 14V8M8 14V2M14 14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                                      </svg>
-                                                      <span className={styles.marketCount}>{ev.marketCount == 1 ? ev.marketCount + " MARKET" : ev.marketCount + " MARKETS"}</span>
-                                                   </span>
-                                                </div>
-                                             </div>
+                                             ))}
                                           </div>
-                                       ))}
-                                    </div>
+
+                                       </>
+                                    ) : (
+                                       message.content
+                                    )
                                  )}
-                              </p>
+                              </div>
                         ))}
                         <div ref={messagesEndRef} />
                      </div>
