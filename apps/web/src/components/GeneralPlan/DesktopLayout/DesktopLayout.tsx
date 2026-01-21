@@ -66,7 +66,7 @@ export function DesktopLayout() {
                                           <StreamingMessage key={message.message_id} text={message.content} />)
                                     )
                                  ) : (
-                                    message.message_type === "user" && index === firstUserIndex && (message.selected_events?.length ?? 0) ? (
+                                    message.message_type === "user" && index === firstUserIndex && (message.selected_events?.length ?? 0) > 0 ? (
                                        <>
                                           {message.content}
                                           <div className={styles.events}>
