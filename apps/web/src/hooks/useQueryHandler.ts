@@ -16,6 +16,8 @@ interface Messages {
     chatLoader?: boolean
     selected_events?: SelectedEventProps[],
 }
+// problem of conversations appending atter old conversations happne when /chat endpoint loads first and than /conversations load so -> request sent at same time to /conversations and /chat so now if if render /conversations first and
+// /chat second we will load exisitng conversatins first and than add new conversation on top vice versa and once the new con is added at bottom adconversation keeps adding at botom unles reloadded
 
 export function useQueryHandler() {
 
@@ -32,28 +34,26 @@ export function useQueryHandler() {
     const isNewConversation = useRef(true);
 
     const { id: routeConversationId } = useParams<{ id?: string }>()
-    const conversationId = routeConversationId ?? null
+    const conversationId = routeConversationId ?? null;
+
     const conversations = useConversationStore((state) => state.conversations)
     const addConversation = useConversationStore((conversation) => conversation.addConversation);
     const selectedEvents = useEventStore((s) => s.selectedEvents)
 
     useEffect(() => {
         if (incomingText && !hasRun.current) {
-            {
-                if (!incomingText) return;
-                if (!conversations) return;
-                if (hasRun.current) return;
+            if (!incomingText) return;
+            if (!conversations) return;
+            if (hasRun.current) return;
 
-                hasRun.current = true;
-                isNewConversation.current = false;
+            hasRun.current = true;
+            isNewConversation.current = false;
 
-                setMessages([]);
-                handleUserQuery(incomingText, src);
-                navigate("/query", { replace: true });
-            }
+            setMessages([]);
+            handleUserQuery(incomingText, src);
+            navigate("/query", { replace: true });
         }
     }, [incomingText])
-
 
     useEffect(() => {
         if (!conversationId) return;
@@ -84,7 +84,6 @@ export function useQueryHandler() {
                     })
 
                     const data = await res.json();
-
 
                     const formatMessage: Messages[] = data.map((msg: any) => ({
                         client_id: crypto.randomUUID(),
@@ -147,7 +146,6 @@ export function useQueryHandler() {
 
             const data = await res.json();
 
-
             if (!conversationId && data.id) {
                 isNewConversation.current = false
                 addConversation({
@@ -166,7 +164,6 @@ export function useQueryHandler() {
                         : m
                 )
             )
-            console.log("messages after server", messages)
         } catch (err) {
             console.log(err);
         }
