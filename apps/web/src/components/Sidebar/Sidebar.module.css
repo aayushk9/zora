@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 0.5rem;
-    margin-left: 1.3rem;
+    margin-left: 0.8rem;
 }
 
 .chat {
@@ -23,8 +23,8 @@
     align-self: flex-start;
     width: fit-content;
     border: none;
-    margin-left: 3px;
     font-size: 15px;
+    margin-left: 3px;
 }
 
 .sidebar {
@@ -32,13 +32,14 @@
     flex-direction: column;
     height: 100%;
     gap: 1rem;
-    padding-right: 16px;
+   
+    margin-top: 1rem;
 }
 
 .historyHeader {
     padding: 8px;
     cursor: pointer;
-    color: #cfcfcf;
+    color: #ffffff9b;
     font-size: 14px;
     width: 60%;
 }
@@ -72,38 +73,36 @@
     overflow-y: auto;
     flex: 1;
     min-height: 0;
-    padding-bottom: 80px;
-    width: 60%;
-     display: flex;        
-    flex-direction: column;
-    gap: 10px;            
+    padding-bottom: 30px;
+    width: 60%;          
 }
 
 .titleItem {
-    padding: 6px 10px;
-    font-size: 15px;
-    color: #fff;
+    padding: 8px;
+    font-size: 14px;
+    color: #ffffff9b;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 10px;
     font-family: sans-serif;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-bottom: 12px;
 }
 
 .activeConversation {
-    background-color: #194d85a5;
-    padding: 7px 14px;
-    font-size: 15px;
-    color: #fff;
+    background-color: #63636365;
+    padding: 8px;
+    font-size: 14px;
+    color: #ffffffde;
     cursor: pointer;
-    border-radius: 6px;
     font-family: sans-serif;
-    border-radius: 17px;
+    border-radius: 5px;
     margin-right: 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-bottom: 12px;
 }
 
 .history {
@@ -116,7 +115,7 @@
 }
 
 .titles::-webkit-scrollbar {
-    width: 50%;
+    width: 2px;
 }
 
 .titles::-webkit-scrollbar-thumb {

@@ -18,7 +18,6 @@ interface Messages {
   selected_events?: SelectedEventProps[],
 }
 
-
 export function Sidebar() {
 
   const navigate = useNavigate();
@@ -93,7 +92,6 @@ export function Sidebar() {
     }
   }
 
-
   return (
     <React.Fragment>
       <div className={styles.parentContainer}>
@@ -103,7 +101,7 @@ export function Sidebar() {
           </button>
           <div className={styles.historySection}>
             <div className={styles.historyHeader} onClick={() => setHistoryTabOpen(prev => !prev)}>
-              <span className={styles.history}>History</span>
+              <span className={styles.history}>Recents</span>
               <span className={styles.arrow}>
                 {historyTabOpen ? "▼" : "▶"}
               </span>
