@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setConversations([]);
     setMessages([]);
     setUser(null);
+    window.location.reload();
   };
 
   return (
