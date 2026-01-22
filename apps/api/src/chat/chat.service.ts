@@ -140,7 +140,7 @@ export class ChatService {
         `INSERT INTO conversations (user_id, title)
          VALUES ($1, $2)
          RETURNING id, title
-        `, [userId, firstUserMessage.slice(0, 60)]
+        `, [userId, firstUserMessage.slice(0, 30)]
       )
       conversationId = result.rows[0].id;
       title = result.rows[0].title;
