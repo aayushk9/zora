@@ -5,7 +5,7 @@ things to do asap
 3) improve system prompt and increase token size (do at last)
 4) replace global state for various reasons (done)
 5) place a skeleton chat holder until messages are rednered from db for conversation history messages (done)
-6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear 
+6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear
 
 todo in general
 
@@ -19,3 +19,6 @@ todo in general
 - fix chat loader getting displayed after evry query (done)
 - events box mobile resposiveness (done)
 - updat query exxecution page of mobile screens (done)
+
+- make sure new conversatins are appended from top -> bottom even when fast routing/navigations
+- good condition to open concvesations and reload chat page in one request and not let new curent conversation use that api endpoint
