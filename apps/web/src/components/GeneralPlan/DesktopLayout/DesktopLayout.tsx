@@ -51,8 +51,8 @@ export function DesktopLayout() {
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
 
                         {messages.map((message, index) => (
-                           message.chatLoader ? (<ChatSkeleton />) :
-                              <div key={message.message_id} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
+                           message.chatLoader ? (<ChatSkeleton key={message.client_id}/>) :
+                              <div key={message.client_id} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
                                  {message.message_type == "assistant" ? (
                                     message.isLoading ? (
                                        <Loader />
@@ -63,7 +63,7 @@ export function DesktopLayout() {
                                           ) : (
                                              message.content
                                           )) : (
-                                          <StreamingMessage key={message.message_id} text={message.content} />)
+                                          <StreamingMessage text={message.content} />)
                                     )
                                  ) : (
                                     message.message_type === "user" && index === firstUserIndex && (message.selected_events?.length ?? 0) > 0 ? (
