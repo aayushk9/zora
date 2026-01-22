@@ -43,6 +43,7 @@ export function AuthPage({ mode }: authModel) {
       }
 
       const me = await fetch(`${API_BASE_URL}/api/auth/me`, {
+        method: "GET",
         credentials: "include",
       });
 

@@ -30,6 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/auth/me`, {
+      method: 'GET',
       credentials: "include",
     })
       .then((res) => (res.ok ? res.json() : null))
