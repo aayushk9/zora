@@ -74,6 +74,9 @@
     min-height: 0;
     padding-bottom: 80px;
     width: 60%;
+     display: flex;        
+    flex-direction: column;
+    gap: 10px;            
 }
 
 .titleItem {
@@ -83,7 +86,9 @@
     cursor: pointer;
     border-radius: 6px;
     font-family: sans-serif;
-    gap: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .activeConversation {
@@ -94,9 +99,11 @@
     cursor: pointer;
     border-radius: 6px;
     font-family: sans-serif;
-    gap: 1rem;
     border-radius: 17px;
     margin-right: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .history {

@@ -4,16 +4,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useConversationStore } from "../../store/useConversationStore";
 import { useMessageStore } from "../../store/useMessageStore";
 import { API_BASE_URL } from "../../env";
-import type { SelectedEventProps } from "../../types/event";
+import type { SelectedEventProps } from "../../types/event"
 
 interface Messages {
-  message_id?: string
-  message_type: "user" | "assistant",
-  content: string,
-  isLoading?: boolean
-  conversationHistory?: boolean
-  chatLoader?: boolean
-  selected_events?: SelectedEventProps[],
+    client_id: string
+    server_id?: string
+    message_type: "user" | 'assistant',
+    content: string
+    isLoading?: boolean
+    conversationHistory?: boolean
+    chatLoader?: boolean
+    selected_events?: SelectedEventProps[],
 }
 
 export function MobileNavbar() {
@@ -40,7 +41,7 @@ export function MobileNavbar() {
       setConversations(data);
     };
     fetchConversations();
-  }, []);
+  }, [setConversations]);
 
   const openNewChat = () => {
     setMessages([]);
@@ -53,15 +54,16 @@ export function MobileNavbar() {
       if (conversationId == activeConversationId) {
         return;
       }
-      setMessages([
-        {
-          message_type: "assistant",
-          content: "",
-          chatLoader: true,
-          conversationHistory: true,
-          selected_events: []
-        }
-      ])
+       setMessages([
+                {
+                    client_id: crypto.randomUUID(),
+                    message_type: "assistant",
+                    content: "",
+                    conversationHistory: true,
+                    chatLoader: true
+                }
+        ])
+
       navigate(`/query/${conversationId}`)
 
       const res = await fetch("http://localhost:3000/api/chat/history", {
@@ -76,12 +78,16 @@ export function MobileNavbar() {
       })
 
       const data = await res.json();
-      const formattedMessages: Messages[] = data.map((m: any) => ({
-        ...m,
-        chatLoader: false,
-        conversationHistory: true,
-      }))
-      setMessages(formattedMessages)
+      const formatMessage: Messages[] = data.map((msg: any) => ({
+                        client_id: crypto.randomUUID(),
+                        server_id: msg.message_id,
+                        message_type: msg.message_type,
+                        content: msg.content,
+                        selected_events: msg.selected_events,
+                        conversationHistory: true,
+                        chatLoader: false
+                    }))
+      setMessages(formatMessage)
     } catch (error) {
       console.log(error)
     }
