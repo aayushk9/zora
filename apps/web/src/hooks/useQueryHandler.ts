@@ -45,7 +45,7 @@ export function useQueryHandler() {
                 if (hasRun.current) return;
 
                 hasRun.current = true;
-                isNewConversation.current = true;
+                isNewConversation.current = false;
 
                 setMessages([]);
                 handleUserQuery(incomingText, src);
@@ -54,9 +54,9 @@ export function useQueryHandler() {
         }
     }, [incomingText])
 
+
     useEffect(() => {
         if (!conversationId) return;
-
         if (!isNewConversation.current) return;
 
         const fetchHistory = async () => {
@@ -116,7 +116,7 @@ export function useQueryHandler() {
             message_type: "user",
             content: input,
             conversationHistory: false,
-            selected_events: src == "landing" ? selectedEvents : [],
+            selected_events: src === "landing" ? selectedEvents : [],
         };
 
         const assistantMessage: Messages = {
@@ -161,7 +161,7 @@ export function useQueryHandler() {
                     m.client_id === assistantId ?
                         {
                             ...m,
-                            server_id: data.messageId, content: data.response, isLoading: false, selected_events: src == "landing" ? selectedEvents : []
+                            server_id: data.messageId, content: data.response, isLoading: false, selected_events: src === "landing" ? selectedEvents : []
                         }
                         : m
                 )
