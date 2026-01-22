@@ -7,14 +7,14 @@ import { API_BASE_URL } from "../../env";
 import type { SelectedEventProps } from "../../types/event"
 
 interface Messages {
-    client_id: string
-    server_id?: string
-    message_type: "user" | 'assistant',
-    content: string
-    isLoading?: boolean
-    conversationHistory?: boolean
-    chatLoader?: boolean
-    selected_events?: SelectedEventProps[],
+  client_id: string
+  server_id?: string
+  message_type: "user" | 'assistant',
+  content: string
+  isLoading?: boolean
+  conversationHistory?: boolean
+  chatLoader?: boolean
+  selected_events?: SelectedEventProps[],
 }
 
 export function MobileNavbar() {
@@ -54,15 +54,15 @@ export function MobileNavbar() {
       if (conversationId == activeConversationId) {
         return;
       }
-       setMessages([
-                {
-                    client_id: crypto.randomUUID(),
-                    message_type: "assistant",
-                    content: "",
-                    conversationHistory: true,
-                    chatLoader: true
-                }
-        ])
+      setMessages([
+        {
+          client_id: crypto.randomUUID(),
+          message_type: "assistant",
+          content: "",
+          conversationHistory: true,
+          chatLoader: true
+        }
+      ])
 
       navigate(`/query/${conversationId}`)
 
@@ -79,14 +79,14 @@ export function MobileNavbar() {
 
       const data = await res.json();
       const formatMessage: Messages[] = data.map((msg: any) => ({
-                        client_id: crypto.randomUUID(),
-                        server_id: msg.message_id,
-                        message_type: msg.message_type,
-                        content: msg.content,
-                        selected_events: msg.selected_events,
-                        conversationHistory: true,
-                        chatLoader: false
-                    }))
+        client_id: crypto.randomUUID(),
+        server_id: msg.message_id,
+        message_type: msg.message_type,
+        content: msg.content,
+        selected_events: msg.selected_events,
+        conversationHistory: true,
+        chatLoader: false
+      }))
       setMessages(formatMessage)
     } catch (error) {
       console.log(error)

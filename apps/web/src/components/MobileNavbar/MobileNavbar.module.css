@@ -70,13 +70,13 @@
 .historyHeader {
   padding: 8px;
   cursor: pointer;
-  color: #cfcfcf;
+  color: #ffffff9b;
+  font-family: sans-serif;
   font-size: 14px;
   width: 100%;
 }
 
 .historyHeader:hover {
-  background: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
 }
 
@@ -107,20 +107,22 @@
 .titleItem {
   padding: 6px 10px;
   font-size: 15px;
-  color: #fff;
+  color: #ffffff9b;
   cursor: pointer;
   border-radius: 6px;
   font-family: sans-serif;
+  margin-bottom: 8px;
 }
 
 .activeConversation {
-  background-color: #194d85a5;
+  background-color: #63636365;
   padding: 7px 14px;
   font-size: 15px;
-  color: #fff;
+  color: #ffffffde;
   cursor: pointer;
   border-radius: 17px;
   margin-right: 1rem;
+  margin-bottom: 8px;
 }
 
 .titleItem:hover {
