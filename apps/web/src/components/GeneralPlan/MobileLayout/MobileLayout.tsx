@@ -60,7 +60,7 @@ export function MobileLayout() {
               <div className={styles.messageArea}>
                 {messages.map((message, index) => (
                   message.chatLoader ? <ChatSkeleton /> :
-                    <div key={message.message_id} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
+                    <div key={message.client_id} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
                       {message.message_type == "assistant" ? (
                         message.isLoading ? (
                           <Loader />

@@ -46,7 +46,7 @@ export function DesktopLayout() {
                      <span className={styles.queryHeader}>Query</span>
                   </div>
 
-                  <div className={styles.queryBorder}></div>
+                  <div className={styles.queryBorder}/>
                   <div className={styles.userInterface}>
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
 

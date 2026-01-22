@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: row;
     margin-right: 1rem;
-    padding-top: 1rem;
+   
 }
 
 .queryExecutionBox {
@@ -13,25 +13,24 @@
     display: flex;
     flex-direction: row;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.137);
+    border: 1px solid #1f1f1f;
     border-radius: 6px;
     overflow: hidden;
 }
 
 .inputBox {
-    padding: 0.5rem 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.089);
+    padding: 0.5rem 1.2rem;
     flex-shrink: 0;
 }
 
 .executionBox {
     flex: 1;
     border-radius: 1px;
-    border-left: 1px solid rgba(255, 255, 255, 0.11);
+    border-left: 1px solid #1f1f1f;
 }
 
 .queryBorder, .executionBorder {
-    border-top: 1px solid rgba(255, 255, 255, 0.144);
+    border-top: 1px solid #1f1f1f;
     border-radius: 1px;
 }
 
@@ -58,7 +57,7 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 1.5rem;
     gap: 1rem;
 }
 
