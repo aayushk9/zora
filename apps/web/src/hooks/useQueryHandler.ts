@@ -7,7 +7,8 @@ import { API_BASE_URL } from "../env";
 import type { SelectedEventProps } from "../types/event";
 
 interface Messages {
-    message_id?: string
+    client_id: string
+    server_id?: string
     message_type: "user" | 'assistant',
     content: string
     isLoading?: boolean
@@ -36,31 +37,32 @@ export function useQueryHandler() {
     const addConversation = useConversationStore((conversation) => conversation.addConversation);
     const selectedEvents = useEventStore((s) => s.selectedEvents)
 
-
     useEffect(() => {
         if (incomingText && !hasRun.current) {
-            if (!incomingText) return;
-            if (!conversations) return;
-            if (hasRun.current) return;
+            {
+                if (!incomingText) return;
+                if (!conversations) return;
+                if (hasRun.current) return;
 
-            hasRun.current = true;
-            isNewConversation.current = true;
+                hasRun.current = true;
+                isNewConversation.current = true;
 
-            setMessages([]);
-            handleUserQuery(incomingText, src);
-            navigate(`/query`, { replace: true });
-
+                setMessages([]);
+                handleUserQuery(incomingText, src);
+                navigate("/query", { replace: true });
+            }
         }
     }, [incomingText])
 
     useEffect(() => {
         if (!conversationId) return;
+
         if (!isNewConversation.current) return;
 
         const fetchHistory = async () => {
             setMessages([
                 {
-                    message_id: crypto.randomUUID(),
+                    client_id: crypto.randomUUID(),
                     message_type: "assistant",
                     content: "",
                     conversationHistory: true,
@@ -82,20 +84,24 @@ export function useQueryHandler() {
                     })
 
                     const data = await res.json();
-                    console.log(data)
-                    const formatMesssage: Messages[] = data.map((msg: any) => ({
-                        ...msg,
+
+
+                    const formatMessage: Messages[] = data.map((msg: any) => ({
+                        client_id: crypto.randomUUID(),
+                        server_id: msg.message_id,
+                        message_type: msg.message_type,
+                        content: msg.content,
+                        selected_events: msg.selected_events,
                         conversationHistory: true,
                         chatLoader: false
                     }))
-                    console.log(formatMesssage)
-                    setMessages(formatMesssage)
+                    setMessages(formatMessage)
                 }
             } catch (error) {
                 console.log(error)
             }
         }
-        fetchHistory()
+        fetchHistory();
     }, [conversationId])
 
 
@@ -106,7 +112,7 @@ export function useQueryHandler() {
         const assistantId = crypto.randomUUID();
 
         const userMessage: Messages = {
-            message_id: userId,
+            client_id: userId,
             message_type: "user",
             content: input,
             conversationHistory: false,
@@ -114,7 +120,7 @@ export function useQueryHandler() {
         };
 
         const assistantMessage: Messages = {
-            message_id: assistantId,
+            client_id: assistantId,
             message_type: "assistant",
             content: "",
             isLoading: true,
@@ -123,10 +129,7 @@ export function useQueryHandler() {
 
         setMessages((prev) => [...prev, userMessage, assistantMessage]);
 
-        const payloadMessages = 
-            [userMessage] 
-           
-
+        const payloadMessages = [userMessage]
 
         try {
             const res = await fetch(`${API_BASE_URL}/api/chat`, {
@@ -144,23 +147,26 @@ export function useQueryHandler() {
 
             const data = await res.json();
 
+
             if (!conversationId && data.id) {
                 isNewConversation.current = false
-                addConversation({ id: data.id, title: data.title })
+                addConversation({
+                    id: data.id, title: data.title
+                })
                 navigate(`/query/${data.id}`)
             }
 
             setMessages(prev =>
                 prev.map((m) =>
-                    m.message_id === assistantId ?
+                    m.client_id === assistantId ?
                         {
                             ...m,
-                            message_id: data.messageId, content: data.response, isLoading: false, selected_events: src == "landing" ? selectedEvents : []
+                            server_id: data.messageId, content: data.response, isLoading: false, selected_events: src == "landing" ? selectedEvents : []
                         }
                         : m
                 )
             )
-
+            console.log("messages after server", messages)
         } catch (err) {
             console.log(err);
         }
