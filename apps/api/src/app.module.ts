@@ -10,17 +10,52 @@ import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { GroqModule } from './groq/groq.module';
 import { ConversationsModule } from './conversations/conversations.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { LLMQuotaModule } from './llm-quota/llm-quota.module';
+
 
 @Module({
   imports: [
-    EventsModule, 
-    GeneratePromptsModule, 
+    EventsModule,
+    GeneratePromptsModule,
     ConfigModule.forRoot({
-     isGlobal: true,
-  }), 
-  ChatModule, OpenAIModule, AuthModule, DatabaseModule, GroqModule, ConversationsModule
-],
+      isGlobal: true,
+    }),
+    ChatModule,
+    OpenAIModule,
+    AuthModule,
+    DatabaseModule,
+    GroqModule,
+    ConversationsModule,
+    ThrottlerModule.forRoot([
+      {
+        name: "chat",
+        ttl: 60,
+        limit: 3, // 3 req/minute per IP
+      },
+      {
+        name: "default",
+        ttl: 60,
+        limit: 60 // 60 requests/per IP
+      },
+      {
+        name: "generatePrompts",
+        ttl: 60,
+        limit: 10
+      }
+    ]),
+    LLMQuotaModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ]
+  ,
 })
-export class AppModule {}
+export class AppModule { }
