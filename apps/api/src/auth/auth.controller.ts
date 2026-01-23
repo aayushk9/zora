@@ -5,11 +5,18 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { isProd, CLIENT_URL } from 'src/config/env';
 import { GoogleAuthGuard } from './google-auth.guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
+    @Throttle({
+        default: {
+            ttl: 60,
+            limit: 60
+        }
+    })
     @Post()
     async signin(
         @Body("email") email: string,
