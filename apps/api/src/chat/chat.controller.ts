@@ -5,13 +5,21 @@ import { Messages } from './dto/Messages';
 import type { Request } from 'express';
 import { DatabaseService } from 'src/database/database.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Throttle } from '@nestjs/throttler';
+import { LLMQuotaGuard } from 'src/llm-quota/llm-quota.guard';
 
 @Controller('chat')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, LLMQuotaGuard)
 export class ChatController {
 
   constructor(private readonly chatService: ChatService, private readonly db: DatabaseService) { }
 
+  @Throttle({
+    chat: {
+      limit: 3,
+      ttl: 60
+    }
+  })
   @Post()
   async sendResponse(
     @Body('messages') messages: Messages[],
@@ -31,6 +39,12 @@ export class ChatController {
     )
   }
 
+  @Throttle({
+    default: {
+      limit: 60,
+      ttl: 60
+    }
+  })
   @Post('history')
   async fetchMessages(
     @Body("conversationId") conversationId: string,

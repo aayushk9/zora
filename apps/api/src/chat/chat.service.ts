@@ -5,6 +5,7 @@ import { SelectedEventsDto } from 'src/generate-prompts/dto/selected-events.dto'
 import { DatabaseService } from 'src/database/database.service';
 import { GROQ_CLIENT } from 'src/groq/groq.constant';
 import { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions";
+import { LLMQuotaService } from 'src/llm-quota/llm-quota.service';
 
 
 @Injectable()
@@ -12,13 +13,14 @@ export class ChatService {
 
   constructor(
     private readonly db: DatabaseService,
+    private readonly quotaService: LLMQuotaService,
     @Inject(GROQ_CLIENT)
     private readonly groq: Groq
   ) { }
 
   async fetchResponse(messages: Messages[], selectedEvents: SelectedEventsDto[], userId: string | null, conversationId: string | null) {
-  console.log("messages", messages)
-  console.log("selected events", selectedEvents)
+    console.log("messages", messages)
+    console.log("selected events", selectedEvents)
 
     if (!Array.isArray(messages)) {
       throw new Error("messages must be an array");
@@ -133,6 +135,7 @@ export class ChatService {
     })
 
     const content = response.choices[0].message?.content;
+    const tokensUsed = response.usage?.total_tokens ?? 0;
 
     let title = "New chat"
     if (!conversationId && userId) {
@@ -154,7 +157,7 @@ export class ChatService {
          VALUES (gen_random_uuid(), $1, 'user', $2, $3)
         `, [conversationId, latestUserMessage, isEventSelected ? JSON.stringify(selectedEvents) : null]
       )
-    
+
       const assistantResponse = await this.db.query(
         `INSERT INTO messages (id, conversation_id, message_type, content)
          VALUES(gen_random_uuid(), $1, 'assistant' , $2 )
@@ -162,10 +165,14 @@ export class ChatService {
         `, [conversationId, content]
       )
 
-       assistantId = assistantResponse.rows[0].id;
+      await this.quotaService.consumeTokens(
+        userId,
+        tokensUsed
+      );
+      assistantId = assistantResponse.rows[0].id;
 
       // this will run only when conversation title is New chat whic is at initial user request
-     const updateConversationTitle = await this.db.query(
+      const updateConversationTitle = await this.db.query(
         `
       UPDATE conversations
       SET title = $1
@@ -174,7 +181,7 @@ export class ChatService {
       `,
         [firstUserMessage.slice(0, 60), conversationId]
       );
-     
+
     }
 
     if (!content) {
