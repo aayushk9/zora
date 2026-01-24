@@ -9,8 +9,8 @@ import { StreamingMessage } from "../../StreamingMessage/StreamingMessage";
 import { Loader } from "../../Loader/Loader";
 import { MonitorEventFlow } from "../../MonitorEventFlow/MonitorEventFlow";
 import { ChatSkeleton } from "../../ChatSkeleton/ChatSkeleton";
-import { useQuotaStore } from "../../../store/useQuotaStore";
 import { LimitExceedNotification } from "../../LimitExceedNotification/LimitExceedNotification";
+import { useQuotaStore } from "../../../store/useQuotaStore";
 
 export function DesktopLayout() {
 
@@ -19,9 +19,9 @@ export function DesktopLayout() {
       handleUserQuery,
    } = useQueryHandler();
 
-   const isQuotaExceeded = useQuotaStore((state) => state.isExceeded);
    const messagesEndRef: any = useRef(null);
    const messagesAreaRef = useRef<HTMLDivElement>(null);
+   const quotaExceeded = useQuotaStore((state) => state.isExceeded)
 
    const scrollToBottom = () => {
       if (messagesEndRef.current) {
@@ -121,7 +121,7 @@ export function DesktopLayout() {
                      </div>
                   </div>
                   <div className={styles.inputBox}>
-                      {isQuotaExceeded && <LimitExceedNotification />}
+                      {quotaExceeded && <LimitExceedNotification />}
                      <InputBox noOuterBorder noSuggestedPrompts onSend={handleUserQuery} />
                   </div>
                </div>
