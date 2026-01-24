@@ -5,7 +5,7 @@ things to do asap
 3) improve system prompt and increase token size (do at last)
 4) replace global state for various reasons (done)
 5) place a skeleton chat holder until messages are rednered from db for conversation history messages (done)
-6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear
+6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear (done)
 
 todo in general
 
@@ -20,5 +20,26 @@ todo in general
 - events box mobile resposiveness (done)
 - updat query exxecution page of mobile screens (done)
 
-- make sure new conversatins are appended from top -> bottom even when fast routing/navigations
-- good condition to open concvesations and reload chat page in one request and not let new curent conversation use that api endpoint
+- make sure new conversatins are appended from top -> bottom even when fast routing/navigation
+
+Rate limit following endpoints 
+ - /auth gate [inhouse api call]
+ - /events [api call to jup.ag prediction market]
+ - /generate-prompts [llm call]
+ - /chat [llm call]
+ - /conversations [db call]
+
+ABOUT RATE limiting
+
+1) Set rate limiter tp endpoints mentioned above (done)
+2) set quota for llm calls specifially /chat (done)
+3) set redis up and assign it to our llm quoats limit container rn we are using maps so rate limist would exist for long time not get disaapered after refreshes
+4) let frotend respond to 403 llm calls and display good message abour rate limit exceded for llm calls (done)
+5) let frontend react to 429 to many request with soem frotnend behavipot
+6) update ui of rate limkito interface
+7) check from where tokens are coming, how are we assifing that tokens and are we assining to current user
+
+ABOUT caching
+
+1) set redis 
+2) cach data inside redis and wherever needed retrun data from redis whic is cached instead of db
