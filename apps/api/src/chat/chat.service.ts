@@ -15,7 +15,7 @@ export class ChatService {
     private readonly db: DatabaseService,
     @Inject(GROQ_CLIENT)
     private readonly groq: Groq,
-    private readonly quotaService: LLMQuotaService,
+    private readonly quotaService: LLMQuotaService,  
   ) { }
 
   async fetchResponse(messages: Messages[], selectedEvents: SelectedEventsDto[], userId: string | null, conversationId: string | null) {
@@ -127,63 +127,79 @@ export class ChatService {
       }))
     ]
 
-    const response = await this.groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
-      messages: messagesForLLM,
-      max_tokens: 10,
-      temperature: 0.4
-    })
+    let response;
+    let content: string;
+    let tokensUsed: number;
+    let assistantId: string = "";
+    let title: string = "";
 
-    const content = response.choices[0].message?.content;
-    const tokensUsed = response.usage?.total_tokens ?? 0;
+    try {
+      response = await this.groq.chat.completions.create({
+        model: "llama-3.1-8b-instant",
+        messages: messagesForLLM,
+        max_tokens: 2,
+        temperature: 0.4
+      })
 
-    let title = "New chat"
-    if (!conversationId && userId) {
-      const result = await this.db.query(
-        `INSERT INTO conversations (user_id, title)
+      content = response.choices[0].message?.content;
+      tokensUsed = response.usage?.total_tokens ?? 0;
+
+      title = "New chat"
+      if (!conversationId && userId) {
+        const result = await this.db.query(
+          `INSERT INTO conversations (user_id, title)
          VALUES ($1, $2)
          RETURNING id, title
         `, [userId, firstUserMessage.slice(0, 30)]
-      )
-      conversationId = result.rows[0].id;
-      title = result.rows[0].title;
-    }
+        )
+        conversationId = result.rows[0].id;
+        title = result.rows[0].title;
+      }
 
-    let assistantId: string = "";
-    const isEventSelected = isFirstMessage && Array.isArray(selectedEvents) && selectedEvents.length > 0
-    if (userId && conversationId) {
-      await this.db.query(
-        `INSERT INTO messages (id, conversation_id, message_type, content, selected_events)
+      const isEventSelected = isFirstMessage && Array.isArray(selectedEvents) && selectedEvents.length > 0
+      if (userId && conversationId) {
+        await this.db.query(
+          `INSERT INTO messages (id, conversation_id, message_type, content, selected_events)
          VALUES (gen_random_uuid(), $1, 'user', $2, $3)
         `, [conversationId, latestUserMessage, isEventSelected ? JSON.stringify(selectedEvents) : null]
-      )
+        )
 
-      const assistantResponse = await this.db.query(
-        `INSERT INTO messages (id, conversation_id, message_type, content)
+        const assistantResponse = await this.db.query(
+          `INSERT INTO messages (id, conversation_id, message_type, content)
          VALUES(gen_random_uuid(), $1, 'assistant' , $2 )
          RETURNING id
         `, [conversationId, content]
-      )
+        )
 
-      assistantId = assistantResponse.rows[0].id;
+        assistantId = assistantResponse.rows[0].id;
 
-      await this.quotaService.consumeTokens(userId, tokensUsed);
+        await this.quotaService.consumeTokens(userId, tokensUsed);
 
-      // this will run only when conversation title is New chat whic is at initial user request
-      await this.db.query(
-        `
+        // this will run only when conversation title is New chat whic is at initial user request
+        await this.db.query(
+          `
       UPDATE conversations
       SET title = $1
       WHERE id = $2
         AND title = 'New chat'
       `,
-        [firstUserMessage.slice(0, 60), conversationId]
-      );
+          [firstUserMessage.slice(0, 60), conversationId]
+        );
 
-    }
+      }
 
-    if (!content) {
-      throw new Error("no content found in response from llm")
+      if (!content) {
+        throw new Error("no content found in response from llm")
+      }
+
+    } catch (error) {
+      if (error.status === 429 || error.code === 'rate_limit_exceeded') {
+        throw new Error('AI service is temporarily rate limited. Please try again in a moment.');
+      }
+      if (error.status === 503 || error.status === 500) {
+        throw new Error('AI service temporarily unavailable. Please try again.');
+      }
+      throw error;
     }
 
     return {
