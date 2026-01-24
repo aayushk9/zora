@@ -2,15 +2,19 @@ import styles from "./LimitExceedNotification.module.css";
 import { useQuotaStore } from "../../store/useQuotaStore";
 
 export function LimitExceedNotification() {
-  const { resetAt } = useQuotaStore();
+  const { resetAt, message, isTemporary } = useQuotaStore();
 
-  const getResetTime = () => { 
+  const getResetTime = () => {
     if (!resetAt) return "7:30 PM";
-    return new Date(resetAt).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    return new Date(resetAt).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
     });
   };
+
+  const displayMessage = isTemporary
+    ? message
+    : `You've hit your limit for using me. Limits will reset at ${getResetTime()}. For higher limits we will soon be including pro & pro max plans`;
 
   return (
     <div className={styles.bannerContainer}>
@@ -21,10 +25,9 @@ export function LimitExceedNotification() {
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
       </div>
-      
+
       <div className={styles.textSection}>
-        You've hit your limit for using me. Limits will reset at {getResetTime()}. 
-        For higher limits we will soon be including pro & pro max plans
+        {displayMessage}
       </div>
     </div>
   );
