@@ -7,6 +7,7 @@ import { formatVolumeUsd } from "../../hooks/useFormatVolumeUsd"
 import { API_BASE_URL } from "../../env"
 import { useAuth } from "../../auth/AuthContext"
 import { useAuthStore } from "../../store/useAuthStore"
+import { useQuotaStore } from "../../store/useQuotaStore";
 
  const DEFAULT_PROMPTS = [
   "Predict the outcome of the next Solana price event and explain your reasoning",
@@ -27,6 +28,8 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     const { user } = useAuth();
     const setAuthWindow = useAuthStore((state) => state.setIsAuthWindow)
 
+     const isQuotaExceeded = useQuotaStore((state) => state.isExceeded);
+
     const selectedEvents = useEventStore((s) => s.selectedEvents);
     const removeEvents = useEventStore((s) => s.removeEvent);
 
@@ -34,6 +37,8 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
     const isEmpty = query.trim() === ""
     const showSuggestions = isExpanded && !noSuggestedPrompts && isEmpty
+
+     const isDisabled = isEmpty || isQuotaExceeded;
 
     useEffect(() => {
         if (isEmpty && isFocused) {
@@ -44,6 +49,10 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
     const research = (e: React.FormEvent) => {
         
         e.preventDefault();
+
+        if (isQuotaExceeded) {
+            return;
+        }
 
         if (!isEmpty) {
            if(!user){
@@ -125,8 +134,8 @@ export function InputBox({ noOuterBorder, noSuggestedPrompts, onSend }: any) {
 
                             <button
                                 type="submit"
-                                disabled={isEmpty}
-                                className={`${styles.sendBtn} ${isEmpty ? styles.disabled : ""}`} aria-label="Send">
+                                disabled={isDisabled}
+                                className={`${styles.sendBtn} ${isDisabled ? styles.disabled : ""}`} aria-label="Send">
                                 <img src={sendIcon} alt="send" className={styles.sendIcon} />
                             </button>
                         </div>
