@@ -4,21 +4,21 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { LLMQuotaService } from './llm-quota.service';
+import { Messages } from "../chat/dto/Messages"
 
 @Injectable()
 export class LLMQuotaGuard implements CanActivate {
+
   constructor(private quotaService: LLMQuotaService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
+    const userId: string | null = req.user?.userId ?? 'anonymous';
 
-    // BASIC assumption: user already authenticated
-    const userId: string | null = req.user?.id ?? 'anonymous';
+    const messages: Messages[] = req.body?.messages ?? [];
+    const allContent = messages.map(m => m.content).join(' ');
 
-    // BASIC token estimate (replace later)
-    const prompt: string = req.body?.prompt ?? '';
-    const estimatedTokens = Math.ceil(prompt.length / 4);
-
+    const estimatedTokens = Math.ceil(allContent.length / 4);
     this.quotaService.checkQuota(userId, estimatedTokens);
 
     return true; 
