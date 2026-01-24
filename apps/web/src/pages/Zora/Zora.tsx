@@ -3,14 +3,14 @@ import { InputBox } from '../../components/InputBox/InputBox.tsx'
 import { Events } from "../../components/Events/Events.tsx"
 import styles from './Zora.module.css'
 import { useNavigate } from "react-router-dom";
-import { QuotaLimitMessage } from "../../components/QuotaLimitMessage/QuotaLimitMessage.tsx";
 import { useQuotaStore } from "../../store/useQuotaStore.ts";
+import { LimitExceedNotification } from "../../components/LimitExceedNotification/LimitExceedNotification.tsx";
 
 export default function Zora() {
 
     const navigate = useNavigate()
     const isQuotaExceeded = useQuotaStore((state) => state.isExceeded);
-
+    
     const handleLandingSend = (query: string) => {
         navigate(`/query?c=${encodeURIComponent(query)}&src=landing`)
     }
@@ -31,7 +31,7 @@ export default function Zora() {
                     </span>
                 </div>
                 <InputBox onSend={handleLandingSend} />
-                  {isQuotaExceeded && <QuotaLimitMessage />}
+                {isQuotaExceeded && <LimitExceedNotification/> }
                 <Events />
             </div>
         </div>
