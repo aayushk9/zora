@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Req, UseGuards, Get } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { SelectedEventsDto } from 'src/generate-prompts/dto/selected-events.dto';
 import { Messages } from './dto/Messages';
@@ -7,12 +7,17 @@ import { DatabaseService } from 'src/database/database.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Throttle } from '@nestjs/throttler';
 import { LLMQuotaGuard } from 'src/llm-quota/llm-quota.guard';
+import { LLMQuotaService } from 'src/llm-quota/llm-quota.service';
 
 @Controller('chat')
 @UseGuards(JwtAuthGuard, LLMQuotaGuard)
 export class ChatController {
 
-  constructor(private readonly chatService: ChatService, private readonly db: DatabaseService) { }
+  constructor(
+    private readonly chatService: ChatService, 
+    private readonly db: DatabaseService,
+    private readonly quotaService: LLMQuotaService
+  ) { }
 
   @Throttle({
     chat: {
@@ -59,5 +64,11 @@ export class ChatController {
   
      console.log(result.rows)
      return result.rows;
+  }
+
+   @Get('quota')
+   async getQuota(@Req() req: Request) {
+    const userId = (req.user as any).userId;
+    return this.quotaService.getRemainingQuota(userId);
   }
 }
