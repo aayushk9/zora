@@ -31,7 +31,7 @@ export function useQueryHandler() {
     const messages = useMessageStore((message) => message.messages)
     const setMessages = useMessageStore((message) => message.setMessages)
 
-     const setQuotaExceeded = useQuotaStore((state) => state.setQuotaExceeded);
+    const setQuotaExceeded = useQuotaStore((state) => state.setQuotaExceeded);
     const setQuotaData = useQuotaStore((state) => state.setQuotaData);
 
     const hasRun = useRef(false);
@@ -178,7 +178,6 @@ export function useQueryHandler() {
                         resetAt: error.resetAt,
                         message: error.message
                     });
-
                     // Remove the loading assistant message
                     setMessages(prev => prev.filter(m => m.client_id !== assistantId));
                     return;
