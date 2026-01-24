@@ -21,7 +21,7 @@ export class ChatController {
 
   @Throttle({
     chat: {
-      limit: 3,
+      limit: 70,
       ttl: 60
     }
   })
