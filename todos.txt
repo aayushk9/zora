@@ -35,8 +35,8 @@ ABOUT RATE limiting
 2) set quota for llm calls specifially /chat (done)
 3) set redis up and assign it to our llm quoats limit container rn we are using maps so rate limist would exist for long time not get disaapered after refreshes
 4) let frotend respond to 403 llm calls and display good message abour rate limit exceded for llm calls (done)
-5) let frontend react to 429 to many request with soem frotnend behavipot
-6) update ui of rate limkito interface
+5) let frontend react to 429 to many request with soem frotnend behavipot (done)
+6) update ui of rate limkito interface (done)
 7) check from where tokens are coming, how are we assifing that tokens and are we assining to current user
 
 ABOUT caching
