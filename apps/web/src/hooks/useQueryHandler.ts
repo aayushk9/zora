@@ -5,6 +5,7 @@ import { useConversationStore } from "../store/useConversationStore";
 import { useMessageStore } from "../store/useMessageStore";
 import { API_BASE_URL } from "../env";
 import type { SelectedEventProps } from "../types/event";
+import { useQuotaStore } from "../store/useQuotaStore";
 
 interface Messages {
     client_id: string
@@ -30,6 +31,9 @@ export function useQueryHandler() {
     const messages = useMessageStore((message) => message.messages)
     const setMessages = useMessageStore((message) => message.setMessages)
 
+     const setQuotaExceeded = useQuotaStore((state) => state.setQuotaExceeded);
+    const setQuotaData = useQuotaStore((state) => state.setQuotaData);
+
     const hasRun = useRef(false);
     const isNewConversation = useRef(true);
 
@@ -39,6 +43,26 @@ export function useQueryHandler() {
     const conversations = useConversationStore((state) => state.conversations)
     const addConversation = useConversationStore((conversation) => conversation.addConversation);
     const selectedEvents = useEventStore((s) => s.selectedEvents)
+
+      useEffect(() => {
+        const fetchQuota = async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/chat/quota`, {
+                    method: "GET",
+                    credentials: "include",
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    setQuotaData(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch quota:", error);
+            }
+        };
+
+        fetchQuota();
+    }, []);
 
     useEffect(() => {
         if (incomingText && !hasRun.current) {
@@ -144,7 +168,32 @@ export function useQueryHandler() {
                 }),
             })
 
+            if(res.status == 403) {
+                const error = await res.json();
+
+                if(error.code ==  'LLM_QUOTA_EXCEEDED') {
+                  setQuotaExceeded({
+                        used: error.used,
+                        limit: error.limit,
+                        resetAt: error.resetAt,
+                        message: error.message
+                    });
+
+                    // Remove the loading assistant message
+                    setMessages(prev => prev.filter(m => m.client_id !== assistantId));
+                    return;
+                }
+            }
+
             const data = await res.json();
+
+            if (data.tokensUsed) {
+                setQuotaData({
+                    remaining: data.quota.remaining,
+                    limit: data.quota.limit,
+                    resetAt: data.quota.resetAt
+                });
+            }
 
             if (!conversationId && data.id) {
                 isNewConversation.current = false
