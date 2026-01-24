@@ -44,7 +44,7 @@ export function useQueryHandler() {
     const addConversation = useConversationStore((conversation) => conversation.addConversation);
     const selectedEvents = useEventStore((s) => s.selectedEvents)
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchQuota = async () => {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/chat/quota`, {
@@ -168,20 +168,53 @@ export function useQueryHandler() {
                 }),
             })
 
-            if(res.status == 403) {
+            if (res.status === 403) {
                 const error = await res.json();
 
-                if(error.code ==  'LLM_QUOTA_EXCEEDED') {
-                  setQuotaExceeded({
+                if (error.code === 'LLM_QUOTA_EXCEEDED') {
+                    setQuotaExceeded({
                         used: error.used,
                         limit: error.limit,
                         resetAt: error.resetAt,
-                        message: error.message
+                        message: error.message,
+                        isTemporary: false
                     });
                     // Remove the loading assistant message
                     setMessages(prev => prev.filter(m => m.client_id !== assistantId));
                     return;
                 }
+            }
+
+            if (res.status === 429) { // this either due to to many requst in 60 seconds by user or global rate limit of api, 
+                let errorMessage = "Too many requests. Please slow down and try again.";
+                try {
+                    const contentType = res.headers.get('content-type');
+
+                    if (contentType?.includes('application/json')) {
+                        const error = await res.json();
+                        errorMessage = error.message || errorMessage;
+                    } else {
+                        const textError = await res.text();
+                        errorMessage = textError || errorMessage;
+                    }
+                } catch (parseError) {
+                    console.error('Failed to parse 429 error:', parseError);
+                }
+
+                setQuotaExceeded({
+                    message: errorMessage,
+                    isTemporary: true
+                });
+
+                setMessages(prev => prev.filter(m => m.client_id !== assistantId));
+                return;
+            }
+
+
+            if (!res.ok) {
+                alert('something went wrong, please try again later');
+                setMessages(prev => prev.filter(m => m.client_id !== assistantId));
+                return;
             }
 
             const data = await res.json();
@@ -207,13 +240,22 @@ export function useQueryHandler() {
                     m.client_id === assistantId ?
                         {
                             ...m,
-                            server_id: data.messageId, content: data.response, isLoading: false, selected_events: src === "landing" ? selectedEvents : []
+                            server_id: data.messageId, 
+                            content: data.response, 
+                            isLoading: false, 
+                            selected_events: src === "landing" ? selectedEvents : []
                         }
                         : m
                 )
             )
         } catch (err) {
-            console.log(err);
+            console.error('Chat request failed:', err);
+
+            setMessages(prev => prev.filter(m => m.client_id !== assistantId));
+            setQuotaExceeded({
+                message: "Connection error. Please check your internet and try again.",
+                isTemporary: true
+            });
         }
     }
 
