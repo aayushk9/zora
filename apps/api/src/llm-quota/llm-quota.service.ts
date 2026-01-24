@@ -15,7 +15,7 @@ export class LLMQuotaService {
     if (!this.store.has(userId)) {
       this.store.set(userId, {
         used: 0,
-        limit: 0, // tokens per day (basic)
+        limit: 10000, // tokens per day (basic)
         resetAt: this.getNextResetTime()
       });
     }
