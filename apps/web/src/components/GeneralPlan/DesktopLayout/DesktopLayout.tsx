@@ -10,7 +10,7 @@ import { Loader } from "../../Loader/Loader";
 import { MonitorEventFlow } from "../../MonitorEventFlow/MonitorEventFlow";
 import { ChatSkeleton } from "../../ChatSkeleton/ChatSkeleton";
 import { useQuotaStore } from "../../../store/useQuotaStore";
-import { QuotaLimitMessage } from "../../QuotaLimitMessage/QuotaLimitMessage";
+import { LimitExceedNotification } from "../../LimitExceedNotification/LimitExceedNotification";
 
 export function DesktopLayout() {
 
@@ -20,7 +20,6 @@ export function DesktopLayout() {
    } = useQueryHandler();
 
    const isQuotaExceeded = useQuotaStore((state) => state.isExceeded);
-
    const messagesEndRef: any = useRef(null);
    const messagesAreaRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +52,6 @@ export function DesktopLayout() {
                   <div className={styles.queryBorder}/>
                   <div className={styles.userInterface}>
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
-                        {isQuotaExceeded && <QuotaLimitMessage />}
                         {messages.map((message, index) => (
                            message.chatLoader ? (<ChatSkeleton key={message.client_id}/>) :
                               <div key={message.client_id} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
@@ -112,7 +110,6 @@ export function DesktopLayout() {
                                                 </div>
                                              ))}
                                           </div>
-
                                        </>
                                     ) : (
                                        message.content
@@ -124,6 +121,7 @@ export function DesktopLayout() {
                      </div>
                   </div>
                   <div className={styles.inputBox}>
+                      {isQuotaExceeded && <LimitExceedNotification />}
                      <InputBox noOuterBorder noSuggestedPrompts onSend={handleUserQuery} />
                   </div>
                </div>
