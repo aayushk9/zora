@@ -13,14 +13,12 @@ export class ChatService {
 
   constructor(
     private readonly db: DatabaseService,
-    private readonly quotaService: LLMQuotaService,
     @Inject(GROQ_CLIENT)
-    private readonly groq: Groq
+    private readonly groq: Groq,
+    private readonly quotaService: LLMQuotaService,
   ) { }
 
   async fetchResponse(messages: Messages[], selectedEvents: SelectedEventsDto[], userId: string | null, conversationId: string | null) {
-    console.log("messages", messages)
-    console.log("selected events", selectedEvents)
 
     if (!Array.isArray(messages)) {
       throw new Error("messages must be an array");
@@ -29,6 +27,8 @@ export class ChatService {
     if (!Array.isArray(selectedEvents)) {
       throw new Error("selectedEvents must be an array");
     }
+
+    // sanitize user data
 
     if (
       !conversationId ||
@@ -152,7 +152,7 @@ export class ChatService {
     let assistantId: string = "";
     const isEventSelected = isFirstMessage && Array.isArray(selectedEvents) && selectedEvents.length > 0
     if (userId && conversationId) {
-      const userQuery = await this.db.query(
+      await this.db.query(
         `INSERT INTO messages (id, conversation_id, message_type, content, selected_events)
          VALUES (gen_random_uuid(), $1, 'user', $2, $3)
         `, [conversationId, latestUserMessage, isEventSelected ? JSON.stringify(selectedEvents) : null]
@@ -165,14 +165,12 @@ export class ChatService {
         `, [conversationId, content]
       )
 
-      await this.quotaService.consumeTokens(
-        userId,
-        tokensUsed
-      );
       assistantId = assistantResponse.rows[0].id;
 
+      await this.quotaService.consumeTokens(userId, tokensUsed);
+
       // this will run only when conversation title is New chat whic is at initial user request
-      const updateConversationTitle = await this.db.query(
+      await this.db.query(
         `
       UPDATE conversations
       SET title = $1
@@ -192,7 +190,13 @@ export class ChatService {
       response: content,
       id: conversationId,
       title: title,
-      messageId: assistantId
+      messageId: assistantId,
+      tokensUsed: tokensUsed,
+      quota: {
+        remaining: Math.max(0, (await this.quotaService.getRemainingQuota(userId)).remaining),
+        limit: 10000,
+        resetAt: (await this.quotaService.getRemainingQuota(userId)).resetAt
+      }
     }
   }
 }
