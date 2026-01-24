@@ -31,17 +31,17 @@ import { LLMQuotaModule } from './llm-quota/llm-quota.module';
     ConversationsModule,
     ThrottlerModule.forRoot([
       {
-        name: "chat",
+        name: 'chat',
         ttl: 60,
         limit: 3, // 3 req/minute per IP
       },
       {
-        name: "default",
+        name: 'default',
         ttl: 60,
         limit: 60 // 60 requests/per IP
       },
       {
-        name: "generatePrompts",
+        name: 'generatePrompts',
         ttl: 60,
         limit: 10
       }
