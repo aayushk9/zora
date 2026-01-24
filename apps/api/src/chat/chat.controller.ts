@@ -8,9 +8,10 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Throttle } from '@nestjs/throttler';
 import { LLMQuotaGuard } from 'src/llm-quota/llm-quota.guard';
 import { LLMQuotaService } from 'src/llm-quota/llm-quota.service';
+import { UserThrottlerGuard } from 'src/guards/user-throttler.guard';
 
 @Controller('chat')
-@UseGuards(JwtAuthGuard, LLMQuotaGuard)
+@UseGuards(JwtAuthGuard,  UserThrottlerGuard, LLMQuotaGuard)
 export class ChatController {
 
   constructor(
@@ -21,8 +22,8 @@ export class ChatController {
 
   @Throttle({
     chat: {
-      limit: 70,
-      ttl: 60
+      limit: 4,
+      ttl: 1000
     }
   })
   @Post()
@@ -44,12 +45,6 @@ export class ChatController {
     )
   }
 
-  @Throttle({
-    default: {
-      limit: 60,
-      ttl: 60
-    }
-  })
   @Post('history')
   async fetchMessages(
     @Body("conversationId") conversationId: string,
