@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 6px;
+  padding-right: 4px;
+}
+
+.smallIndicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4ab7de 0%, #2d57d4 100%); 
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.4);
+}
+
+.largeIndicator {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4ab7de 0%, #2d57d4 100%); 
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.4);
+}
