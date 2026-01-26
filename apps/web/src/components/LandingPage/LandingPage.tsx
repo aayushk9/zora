@@ -19,7 +19,7 @@ export function LandingPage() {
                         </h1>
 
                         <p className={styles.subtext}>
-                            A prediction market intelligence layer where users select live market events and prompt for analysis.
+                            A prediction market layer where users select live market events and prompt for insights and analysis
                         </p>
 
                         <div className={styles.actions}>
