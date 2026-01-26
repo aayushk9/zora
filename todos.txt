@@ -2,7 +2,7 @@ things to do asap
 
 1) stop message streaming when rendered from history (done)
 2) fix the undefined response shit coming from llms (done)
-3) improve system prompt and increase token size (do at last)
+3) improve system prompt and increase token size in chat service fetch response  & set token limit in llm quota files (do at last)
 4) replace global state for various reasons (done)
 5) place a skeleton chat holder until messages are rednered from db for conversation history messages (done)
 6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear (done)
@@ -20,7 +20,7 @@ todo in general
 - events box mobile resposiveness (done)
 - updat query exxecution page of mobile screens (done)
 
-- make sure new conversatins are appended from top -> bottom even when fast routing/navigation
+- make sure new conversatins are appended from top even when fast routing/navigation (done)
 
 Rate limit following endpoints 
  - /auth gate [inhouse api call]
@@ -43,3 +43,5 @@ ABOUT caching
 
 1) set redis 
 2) cach data inside redis and wherever needed retrun data from redis whic is cached instead of db
+
+- set profiler color with every user query and replace that porfiler with logout (done)
