@@ -76,16 +76,24 @@
     min-height: 0; 
 }
 
-.userQuery {
-    background-color: #64646446;
-    border-radius: 10px;
+.userMessageWrapper {
     align-self: flex-end;
-    color: #fff;
-    padding: 0.45rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
     max-width: 80%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    margin-bottom: 1rem;
+}
+
+.userQuery {
+    background-color: #64646446; 
+    border-radius: 10px;
+    color: #fff;
+    padding: 0.6rem 1rem;
+    width: fit-content; 
+    font-family: sans-serif;
     font-size: 0.95rem;
-    line-height: 1.2;
+    line-height: 1.4;
 }
 
 .agentResponse {
@@ -93,9 +101,7 @@
     color: #fff;
     padding: 0.75rem 1rem;
     max-width: 80%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    font-size: 0.95rem;
-    line-height: 1.2;
+    font-family: sans-serif;
 }
 
 .events {

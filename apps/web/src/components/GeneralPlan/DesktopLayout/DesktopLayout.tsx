@@ -11,6 +11,7 @@ import { MonitorEventFlow } from "../../MonitorEventFlow/MonitorEventFlow";
 import { ChatSkeleton } from "../../ChatSkeleton/ChatSkeleton";
 import { LimitExceedNotification } from "../../LimitExceedNotification/LimitExceedNotification";
 import { useQuotaStore } from "../../../store/useQuotaStore";
+import ProfileHeader from "../../ProfileHeader/ProfileHeader";
 
 export function DesktopLayout() {
 
@@ -49,12 +50,12 @@ export function DesktopLayout() {
                      <span className={styles.queryHeader}>Query</span>
                   </div>
 
-                  <div className={styles.queryBorder}/>
+                  <div className={styles.queryBorder} />
                   <div className={styles.userInterface}>
                      <div className={styles.messagesArea} ref={messagesAreaRef}>
                         {messages.map((message, index) => (
-                           message.chatLoader ? (<ChatSkeleton key={message.client_id}/>) :
-                              <div key={message.client_id} className={`${message.message_type == "user" ? styles.userQuery : styles.agentResponse}`}>
+                           message.chatLoader ? (<ChatSkeleton key={message.client_id} />) :
+                              <div key={message.client_id} className={`${message.message_type == "user" ? styles.userMessageWrapper : styles.agentResponse}`}>
                                  {message.message_type == "assistant" ? (
                                     message.isLoading ? (
                                        <Loader />
@@ -68,52 +69,57 @@ export function DesktopLayout() {
                                           <StreamingMessage text={message.content} />)
                                     )
                                  ) : (
-                                    message.message_type === "user" && index === firstUserIndex && (message.selected_events?.length ?? 0) > 0 ? (
-                                       <>
-                                          {message.content}
-                                          <div className={styles.events}>
-                                             {message.selected_events?.map((ev) => (
-                                                <div key={ev.title} className={styles.selectedEvent}>
-                                                   <div className={styles.contest}>
-                                                      <div className={styles.subSection}>
-                                                         <span className={styles.title}>{ev.title}</span>
-                                                      </div>
+                                    <>
+                                       <ProfileHeader size="small"/>
+                                       <div className={styles.userQuery}>
+                                          {message.message_type === "user" && index === firstUserIndex && (message.selected_events?.length ?? 0) > 0 ? (
+                                             <>
+                                                {message.content}
+                                                <div className={styles.events}>
+                                                   {message.selected_events?.map((ev) => (
+                                                      <div key={ev.title} className={styles.selectedEvent}>
+                                                         <div className={styles.contest}>
+                                                            <div className={styles.subSection}>
+                                                               <span className={styles.title}>{ev.title}</span>
+                                                            </div>
 
-                                                      <div className={styles.stats}>
-                                                         <span className={styles.volume}>
-                                                            {formatVolumeUsd(ev.totalVolume / 1e6)}
-                                                         </span>
+                                                            <div className={styles.stats}>
+                                                               <span className={styles.volume}>
+                                                                  {formatVolumeUsd(ev.totalVolume / 1e6)}
+                                                               </span>
 
-                                                         <span className={styles.markets}>
-                                                            <svg
-                                                               className={styles.chartIcon}
-                                                               width="12"
-                                                               height="12"
-                                                               viewBox="0 0 16 16"
-                                                               fill="none"
-                                                            >
-                                                               <path
-                                                                  d="M2 14V8M8 14V2M14 14V6"
-                                                                  stroke="currentColor"
-                                                                  strokeWidth="1.5"
-                                                                  strokeLinecap="round"
-                                                               />
-                                                            </svg>
-                                                            <span className={styles.marketCount}>
-                                                               {ev.marketCount === 1
-                                                                  ? "1 MARKET"
-                                                                  : `${ev.marketCount} MARKETS`}
-                                                            </span>
-                                                         </span>
+                                                               <span className={styles.markets}>
+                                                                  <svg
+                                                                     className={styles.chartIcon}
+                                                                     width="12"
+                                                                     height="12"
+                                                                     viewBox="0 0 16 16"
+                                                                     fill="none"
+                                                                  >
+                                                                     <path
+                                                                        d="M2 14V8M8 14V2M14 14V6"
+                                                                        stroke="currentColor"
+                                                                        strokeWidth="1.5"
+                                                                        strokeLinecap="round"
+                                                                     />
+                                                                  </svg>
+                                                                  <span className={styles.marketCount}>
+                                                                     {ev.marketCount === 1
+                                                                        ? "1 MARKET"
+                                                                        : `${ev.marketCount} MARKETS`}
+                                                                  </span>
+                                                               </span>
+                                                            </div>
+                                                         </div>
                                                       </div>
-                                                   </div>
+                                                   ))}
                                                 </div>
-                                             ))}
-                                          </div>
-                                       </>
-                                    ) : (
-                                       message.content
-                                    )
+                                             </>
+                                          ) : (
+                                             <>{message.content}</>
+                                          )}
+                                       </div>
+                                    </>
                                  )}
                               </div>
                         ))}
@@ -121,7 +127,7 @@ export function DesktopLayout() {
                      </div>
                   </div>
                   <div className={styles.inputBox}>
-                      {quotaExceeded && <LimitExceedNotification />}
+                     {quotaExceeded && <LimitExceedNotification />}
                      <InputBox noOuterBorder noSuggestedPrompts onSend={handleUserQuery} />
                   </div>
                </div>
