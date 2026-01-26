@@ -16,32 +16,23 @@ export const useConversationStore = create<ConversationState>((set) => ({
 
   setConversations: (serverConversations) =>
     set((state) => {
-      const map = new Map<string, Conversation>();
-
-      state.conversations.forEach((c) =>
-        map.set(c.id, c)
-      );
-
-      serverConversations.forEach((c) =>
-        map.set(c.id, c)
-      );
+      const serverIds = new Set(serverConversations.map(c => c.id));
+      const localOnly = state.conversations.filter(c => !serverIds.has(c.id));
 
       return {
-        conversations: Array.from(map.values()),
-      };
+        conversations: [...localOnly, ...serverConversations]
+      }
     }),
-
 
   addConversation: (conversation) =>
     set((state) => {
-      const exists = state.conversations.some(
-        (c) => c.id === conversation.id
+
+      const filter = state.conversations.filter(
+        (c) => c.id !== conversation.id
       );
 
-      if (exists) return state;
-
       return {
-        conversations: [conversation, ...state.conversations],
+        conversations: [conversation, ...filter],
       };
     }),
 }));
