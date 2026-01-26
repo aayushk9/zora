@@ -27,7 +27,7 @@ export default function Zora() {
                         Ask Zora to Analyze Prediction Markets
                     </h1>
                     <span className={styles.foot}>
-                        Explore prediction market strategies, risks and scenarios with a single prompt
+                        Explore prediction market strategies with a single prompt
                     </span>
                 </div>
                 <InputBox onSend={handleLandingSend} />
