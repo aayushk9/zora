@@ -15,7 +15,7 @@ export class ChatService {
     private readonly db: DatabaseService,
     @Inject(GROQ_CLIENT)
     private readonly groq: Groq,
-    private readonly quotaService: LLMQuotaService,  
+    private readonly quotaService: LLMQuotaService,
   ) { }
 
   async fetchResponse(messages: Messages[], selectedEvents: SelectedEventsDto[], userId: string | null, conversationId: string | null) {
@@ -109,7 +109,6 @@ export class ChatService {
                       Response Style
                         - Beginner-friendly
                         - Use headers when helpful
-
                    `;
 
     const messagesForLLM: ChatCompletionMessageParam[] = [
@@ -129,7 +128,7 @@ export class ChatService {
 
     let response;
     let content: string;
-    let tokensUsed: number;
+    let tokensUsed: number = 0;
     let assistantId: string = "";
     let title: string = "";
 
@@ -202,17 +201,15 @@ export class ChatService {
       throw error;
     }
 
+    const quota = await this.quotaService.getRemainingQuota(userId);
+    
     return {
       response: content,
       id: conversationId,
-      title: title,
+      title,
       messageId: assistantId,
-      tokensUsed: tokensUsed,
-      quota: {
-        remaining: Math.max(0, (await this.quotaService.getRemainingQuota(userId)).remaining),
-        limit: 10000,
-        resetAt: (await this.quotaService.getRemainingQuota(userId)).resetAt
-      }
+      tokensUsed,
+      quota
     }
   }
 }
