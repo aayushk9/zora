@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import styles from "./Sidebar.module.css"
 import { useNavigate, useParams } from "react-router-dom"
-import { useConversationStore } from "../../store/useConversationStore"
 import { useMessageStore } from "../../store/useMessageStore"
 import { API_BASE_URL } from "../../env"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import type { SelectedEventProps } from "../../types/event"
+import { useConversations } from '../../hooks/useConversation'
 
 interface Messages {
   client_id: string
@@ -22,25 +22,11 @@ export function Sidebar() {
 
   const navigate = useNavigate();
   const { id: activeConversationId } = useParams<{ id: string }>();
-
-  const conversations = useConversationStore((conversation) => conversation.conversations)
-  const setConversations = useConversationStore((conversation) => conversation.setConversations)
+   const { data: conversations = []} = useConversations()
   const setMessages = useMessageStore((message) => message.setMessages)
   const clearEvents = useEventStore((event) => event.clearEvents);
 
   const [historyTabOpen, setHistoryTabOpen] = useState(true)
-
-  useEffect(() => {
-    const fetchConversations = async () => {
-      const res = await fetch(`${API_BASE_URL}/api/conversations`, {
-        method: "GET",
-        credentials: "include"
-      })
-      const data = await res.json();
-      setConversations(data)
-    }
-    fetchConversations()
-  }, [setConversations])
 
   const openNewChat = () => {
     setMessages([])
@@ -65,7 +51,7 @@ export function Sidebar() {
 
       navigate(`/query/${conversationId}`)
 
-      const res = await fetch("http://localhost:3000/api/chat/history", {
+      const res = await fetch(`${API_BASE_URL}/api/chat/history`, {
         method: "POST",
         credentials: "include",
         headers: {
