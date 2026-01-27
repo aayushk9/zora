@@ -50,3 +50,7 @@ ABOUT caching
 history useEffects into useQuery, also events files
 
 0 think about performace (memoization)
+
+Cache following
+1) events call
+2) db calls such as /conversations and /chat/history
