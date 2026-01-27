@@ -23,13 +23,10 @@ export class LLMQuotaGuard implements CanActivate {
 
     const messages: Messages[] = req.body?.messages ?? [];
     const allContent = messages.map(m => m.content).join(' ');
-
     const estimatedTokens = Math.ceil(allContent.length / 4);
 
-
-    // ← ADD THIS: Check global API limits first
     this.checkGlobalApiLimits(estimatedTokens);
-    this.quotaService.checkQuota(userId, estimatedTokens);
+    await this.quotaService.checkQuota(userId, estimatedTokens);
 
     return true; 
   }
