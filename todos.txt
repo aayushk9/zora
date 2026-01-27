@@ -10,7 +10,7 @@ things to do asap
 todo in general
 
 1) landing page (done)
-2) add caching, rate limiting to every api call going to db, external api and manily llms
+2) add caching, rate limiting to every api call going to db, external api and manily llms (done)
 3) remove logs from codebase (done)
 4) replace localhost with envs (done)
 5) add clear message for non authenticated users when try to to access /query (done)
@@ -33,16 +33,16 @@ ABOUT RATE limiting
 
 1) Set rate limiter tp endpoints mentioned above (done)
 2) set quota for llm calls specifially /chat (done)
-3) set redis up and assign it to our llm quoats limit container rn we are using maps so rate limist would exist for long time not get disaapered after refreshes
+3) set redis up and assign it to our llm quoats limit container rn we are using maps so rate limist would exist for long time not get disaapered after refreshes (done)
 4) let frotend respond to 403 llm calls and display good message abour rate limit exceded for llm calls (done)
 5) let frontend react to 429 to many request with soem frotnend behavipot (done)
 6) update ui of rate limkito interface (done)
-7) check from where tokens are coming, how are we assifing that tokens and are we assining to current user
+7) check from where tokens are coming, how are we assifing that tokens and are we assining to current user (tokens come from each request to groq and how many tokens burnt are sent to userQuota tokensUsed thorugh consumeTokens) (done)
 
 ABOUT caching
 
-1) set redis 
-2) cach data inside redis and wherever needed retrun data from redis whic is cached instead of db
+1) set redis (done)
+2) cach data inside redis and wherever needed retrun data from redis whic is cached instead of db (done)
 
 - set profiler color with every user query and replace that porfiler with logout (done)
 
@@ -52,5 +52,5 @@ history useEffects into useQuery, also events files
 0 think about performace (memoization)
 
 Cache following
-1) events call
-2) db calls such as /conversations and /chat/history
+1) events call (done)
+2) db calls such as /conversations and /chat/history (done)
