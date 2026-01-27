@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, Req, UseGuards, Get, Inject } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { SelectedEventsDto } from 'src/generate-prompts/dto/selected-events.dto';
 import { Messages } from './dto/Messages';
@@ -9,6 +9,8 @@ import { Throttle } from '@nestjs/throttler';
 import { LLMQuotaGuard } from 'src/llm-quota/llm-quota.guard';
 import { LLMQuotaService } from 'src/llm-quota/llm-quota.service';
 import { UserThrottlerGuard } from 'src/guards/user-throttler.guard';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
 
 @Controller('chat')
 @UseGuards(JwtAuthGuard,  UserThrottlerGuard, LLMQuotaGuard)
@@ -17,7 +19,8 @@ export class ChatController {
   constructor(
     private readonly chatService: ChatService, 
     private readonly db: DatabaseService,
-    private readonly quotaService: LLMQuotaService
+    private readonly quotaService: LLMQuotaService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) { }
 
   @Throttle({
@@ -49,6 +52,15 @@ export class ChatController {
   async fetchMessages(
     @Body("conversationId") conversationId: string,
 ) {
+
+      const cacheKey = `messages:conversation:${conversationId}`;
+     const cachedData = await this.cacheManager.get(cacheKey);
+     if(cachedData) {
+      console.log("rendering chat history from cache");
+      return cachedData;
+     }
+
+     console.log("rendering from db")
      const result = await this.db.query(
       `SELECT id, message_type, content, selected_events
        FROM messages
@@ -56,8 +68,10 @@ export class ChatController {
        ORDER BY created_at ASC
       `, [conversationId]
      )
+
+
   
-     console.log(result.rows)
+    await this.cacheManager.set(cacheKey, result.rows, 220000);
      return result.rows;
   }
 
