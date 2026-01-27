@@ -10,7 +10,7 @@ import type { Cache } from 'cache-manager';
 export class ConversationsController {
     constructor(
         private readonly db: DatabaseService,
-        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) { }
 
     @Get()
