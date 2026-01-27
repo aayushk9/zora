@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEventStore } from "../store/useSelectedEventStore";
-import { useConversationStore } from "../store/useConversationStore";
 import { useMessageStore } from "../store/useMessageStore";
 import { API_BASE_URL } from "../env";
 import type { SelectedEventProps } from "../types/event";
 import { useQuotaStore } from "../store/useQuotaStore";
+import { useAddConversation } from "../hooks/useConversation"
 
 interface Messages {
     client_id: string
@@ -17,8 +17,6 @@ interface Messages {
     chatLoader?: boolean
     selected_events?: SelectedEventProps[],
 }
-// problem of conversations appending atter old conversations happne when /chat endpoint loads first and than /conversations load so -> request sent at same time to /conversations and /chat so now if if render /conversations first and
-// /chat second we will load exisitng conversatins first and than add new conversation on top vice versa and once the new con is added at bottom adconversation keeps adding at botom unles reloadded
 
 export function useQueryHandler() {
 
@@ -39,11 +37,10 @@ export function useQueryHandler() {
 
     const { id: routeConversationId } = useParams<{ id?: string }>()
     const conversationId = routeConversationId ?? null;
-
-    const conversations = useConversationStore((state) => state.conversations)
-    const addConversation = useConversationStore((conversation) => conversation.addConversation);
     const selectedEvents = useEventStore((s) => s.selectedEvents)
 
+    const addConversationMutation = useAddConversation();
+    
     useEffect(() => {
         const fetchQuota = async () => {
             try {
@@ -67,7 +64,6 @@ export function useQueryHandler() {
     useEffect(() => {
         if (incomingText && !hasRun.current) {
             if (!incomingText) return;
-            if (!conversations) return;
             if (hasRun.current) return;
 
             hasRun.current = true;
@@ -212,7 +208,10 @@ export function useQueryHandler() {
 
 
             if (!res.ok) {
-                alert('something went wrong, please try again later');
+                 setQuotaExceeded({
+                    message: "Due to high traffic on the free tier, this request couldn’t be processed. Please retry shortly — premium plans are coming soon.",
+                    isTemporary: true
+                });
                 setMessages(prev => prev.filter(m => m.client_id !== assistantId));
                 return;
             }
@@ -229,7 +228,7 @@ export function useQueryHandler() {
 
             if (!conversationId && data.id) {
                 isNewConversation.current = false
-                addConversation({
+                addConversationMutation.mutate({
                     id: data.id, title: data.title
                 })
                 navigate(`/query/${data.id}`)
