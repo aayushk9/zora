@@ -54,3 +54,6 @@ history useEffects into useQuery, also events files
 Cache following
 1) events call (done)
 2) db calls such as /conversations and /chat/history (done)
+
+- align left navs and design better
+- deploy backedn and frontend (build local first, be careful of envs, be careful of backend server region, redis server region and db)
