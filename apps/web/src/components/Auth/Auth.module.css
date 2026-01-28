@@ -5,8 +5,8 @@
 
 .authContainer {
     display: flex;
-    width: 90%;
-    height: 100%;
+    width: 60%;
+    height: 80%;
     min-height: 60vh;
     min-width: 40vw;
     background-image: var(--zora);
@@ -55,17 +55,25 @@
     font-weight: 700;
     letter-spacing: 2px;
     margin-bottom: 30px;
-    font-size: 16px;
+    font-size: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-family: monospace;
 }
 
 .heroText {
-    font-size: 36px;
+    font-size: 30px;
     line-height: 1.2;
     font-weight: 600;
     margin-bottom: 15px;
+    font-family: monospace;
+}
+
+.heroForAuth {
+    font-family: Nocturn, sans-serif;
+    font-size: 24px;
+    color: #ffffffef;
 }
 
 .heroText span {
@@ -74,8 +82,9 @@
 
 .heroSubtext {
     font-size: 15px;
-    color: #a1a1aa;
+    color: #b4b4b9;
     margin-bottom: 25px;
+    font-family: Nocturn, sans-serif;
 }
 
 .rhs {
@@ -96,14 +105,15 @@
 .headerText h2 {
     font-size: 22px;
     margin-bottom: 6px;
-    font-family: monospace;
+    font-family: Nocturn, sans-serif;
+    color: #ffffffd0;
 }
 
 .headerText p {
     color: #71717a;
     font-size: 14px;
     margin-bottom: 25px;
-    font-family: monospace;
+    font-family: Nocturn, sans-serif;
 }
 
 .googleBtnLarge {
@@ -111,7 +121,7 @@
     padding: 12px;
     background: #18181b;
     border: 1px solid #27272a;
-    color: white;
+    color: #ffffffd0;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -120,7 +130,7 @@
     cursor: pointer;
     font-weight: 500;
     transition: 0.2s;
-    font-family: monospace;
+    font-family: Nocturn, sans-serif;
 }
 
 .googleBtnLarge:hover {
@@ -146,7 +156,7 @@
     color: #6e6e79;
     font-size: 11px;
     text-transform: uppercase;
-    font-family: monospace;
+    font-family: Nocturn, sans-serif;
 }
 
 .signinForm {
@@ -163,7 +173,7 @@
     color: white;
     outline: none;
     font-size: 14px;
-    font-family: monospace;
+    font-family: Nocturn, sans-serif;
 }
 
 .input:focus {
@@ -172,12 +182,12 @@
 
 .submitBtn {
     background: #000;
-    color: #fff;
+    color: #ffffffd0;
     padding: 12px;
     border-radius: 8px;
     border: none;
     font-weight: 600;
-    font-family: monospace;
+    font-family: Nocturn, sans-serif;
     cursor: pointer;
     margin-top: 8px;
     border: 1px solid rgba(140, 137, 235, 0.186)
@@ -193,18 +203,6 @@
     margin-top: 8px;
 }
 
-.terms {
-    margin-top: 25px;
-    font-size: 11px;
-    color: #52525b;
-    text-align: center;
-}
-
-.terms a {
-    color: #a78bfa;
-    text-decoration: none;
-}
-
 .overlay {
     position: fixed;
     inset: 0;
@@ -217,11 +215,6 @@
 }
 
 .modal {
-    width: 750px;
-    max-width: 95vw;
-    height: 580px;
-    max-height: 90vh;
-    background: #0b0b0b;
     overflow: hidden;
     position: relative;
     box-shadow: 0 30px 60px rgba(0,0,0,0.6);

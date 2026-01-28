@@ -5,7 +5,6 @@ import styles from "./Auth.module.css"
 import { API_BASE_URL } from "../../env";
 import zora from "../../assets/zora.png";
 
-
 interface authModel {
   mode: "inWindowAuth" | "landingPage"
 }
@@ -70,7 +69,7 @@ export function AuthPage({ mode }: authModel) {
           <div className={styles.brandTop}>
             <span className={styles.brandIcon}>▲</span> ZORA
           </div>
-          <h1 className={styles.heroText}>
+          <h1 className={`${mode == "landingPage" ? styles.heroText : styles.heroForAuth}`}>
             The intelligence layer <br />
             for prediction markets.
           </h1>
@@ -125,7 +124,6 @@ export function AuthPage({ mode }: authModel) {
           </div>
         </div>
       )}
-
     </div>
   );
 
