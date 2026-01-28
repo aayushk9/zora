@@ -5,7 +5,8 @@ import { useMessageStore } from "../../store/useMessageStore"
 import { API_BASE_URL } from "../../env"
 import { useEventStore } from "../../store/useSelectedEventStore"
 import type { SelectedEventProps } from "../../types/event"
-import { useConversations } from '../../hooks/useConversation'
+import { conversationsQuery } from '../../hooks/useConversation'
+import { useQuery } from "@tanstack/react-query"
 
 interface Messages {
   client_id: string
@@ -22,7 +23,7 @@ export function Sidebar() {
 
   const navigate = useNavigate();
   const { id: activeConversationId } = useParams<{ id: string }>();
-   const { data: conversations = []} = useConversations()
+  const { data: conversations = [] } = useQuery(conversationsQuery())
   const setMessages = useMessageStore((message) => message.setMessages)
   const clearEvents = useEventStore((event) => event.clearEvents);
 
@@ -35,10 +36,10 @@ export function Sidebar() {
   }
 
   const openConversation = async (conversationId: string) => {
+
     try {
-      if (conversationId == activeConversationId) {
-        return;
-      }
+      if (conversationId == activeConversationId) return;
+
       setMessages([
         {
           client_id: crypto.randomUUID(),
