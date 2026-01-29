@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { VersioningType } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
-import { CLIENT_URL } from './config/env';
-import { ThrottlerGuard } from '@nestjs/throttler';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,7 +11,10 @@ async function bootstrap() {
   server.set('trust proxy', 1);  
 
   app.enableCors({
-    origin: CLIENT_URL,
+    origin: [
+    "http://localhost:5173",
+    "https://zora-phase1.vercel.app"
+  ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   });
