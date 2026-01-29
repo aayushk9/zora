@@ -2,7 +2,7 @@ things to do asap
 
 1) stop message streaming when rendered from history (done)
 2) fix the undefined response shit coming from llms (done)
-3) improve system prompt and increase token size in chat service fetch response  & set token limit in llm quota files (do at last)
+3) improve system prompt and increase token size in chat service fetch response  & set token limit in llm quota files (done)
 4) replace global state for various reasons (done)
 5) place a skeleton chat holder until messages are rednered from db for conversation history messages (done)
 6) create new conversation id  based on needed conditions such as only create conversation id if query is crystal clear (done)
@@ -49,11 +49,13 @@ ABOUT caching
 - understand react query, why replaced useEffect with useQuery, understand useConversation and its use in app.tsx, useConverstion, useQueryhandler.ts and Sidebar. replace post request of/chat/history with get and than convert 
 history useEffects into useQuery, also events files
 
+replace useEffect with react query from events, getSuggestedPrompts, useQueryhandler (/quota and /dhat/history)
+
 0 think about performace (memoization)
 
 Cache following
 1) events call (done)
 2) db calls such as /conversations and /chat/history (done)
 
-- align left navs and design better
+- align left navs and design better (done)
 - deploy backedn and frontend (build local first, be careful of envs, be careful of backend server region, redis server region and db)
