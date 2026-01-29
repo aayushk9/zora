@@ -126,6 +126,10 @@ export class ChatService {
       }))
     ]
 
+     const estimatedTokens = 800;
+
+    await this.quotaService.checkQuota(userId, estimatedTokens);
+
     let response;
     let content: string;
     let tokensUsed: number = 0;
@@ -136,12 +140,12 @@ export class ChatService {
       response = await this.groq.chat.completions.create({
         model: "llama-3.1-8b-instant",
         messages: messagesForLLM,
-        max_tokens: 2,
+        max_tokens: 600,
         temperature: 0.4
       })
 
       content = response.choices[0].message?.content;
-      tokensUsed = response.usage?.total_tokens ?? 0;
+      tokensUsed = response.usage?.total_tokens ?? estimatedTokens;
 
       title = "New chat"
       if (!conversationId && userId) {
