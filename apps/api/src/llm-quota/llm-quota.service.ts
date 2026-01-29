@@ -16,7 +16,7 @@ export class LLMQuotaService {
   ) { }
 
   private getKey(userId: string | null) {
-    return `Quota${userId} ?? 'anonymous`
+    return `quota:${userId ?? "anonymous"}`;
   }
 
   private getNextResetTime(): Date {
@@ -68,6 +68,7 @@ export class LLMQuotaService {
       const resetInMinutes = Math.ceil(
         (new Date(quota.resetAt).getTime() - Date.now()) / 1000 / 60
       );
+
       throw new ForbiddenException({  // 403 forbidden
         code: 'LLM_QUOTA_EXCEEDED',
         message: `Chat quota exceeded. You've used ${quota.used}/${quota.limit} tokens. Resets in ${resetInMinutes} minutes`,
@@ -81,10 +82,11 @@ export class LLMQuotaService {
   async consumeTokens(userId: string | null, tokensUsed: number) { // receiving tokensUsed from groq & adding to userQuota via getUserQuota(userId).used += tokensUsed
     const key = this.getKey(userId);
     const quota = await this.getUserQuota(userId);
+
     quota.used += tokensUsed;
 
     const ttlSeconds = Math.ceil(
-      (new Date(quota.resetAt).getTime() - Date.now()) / 1000
+      (quota.resetAt.getTime() - Date.now()) / 1000
     );
 
     await this.cacheManager.set(key, quota, ttlSeconds)
