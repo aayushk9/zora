@@ -208,6 +208,7 @@ export function useQueryHandler() {
 
 
             if (!res.ok) {
+                console.log("red banner reason: ",res)
                  setQuotaExceeded({
                     message: "Due to high traffic on the free tier, this request couldn’t be processed. Please retry shortly — premium plans are coming soon.",
                     isTemporary: true
