@@ -32,9 +32,10 @@ export class AuthController {
 
         res.cookie('jwt', result.token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            secure: isProd,
+            sameSite: isProd ? "none" : "lax",
             maxAge: 10 * 24 * 60 * 60 * 1000,  // 10 days
+            path: "/"
         });
 
         return res.status(200).json({ message: result.message });
@@ -48,13 +49,18 @@ export class AuthController {
 
     @Post("logout")
     logout(@Res({ passthrough: true }) res: Response) {
-        res.clearCookie("jwt");
+        res.clearCookie("jwt", {
+            httpOnly: true,
+            secure: isProd,
+            sameSite: isProd ? "none" : "lax",
+            path: "/",
+        });
         return { success: true };
     }
 
     @Get("google")
     @UseGuards(GoogleAuthGuard)
-    async googleAuth () {
+    async googleAuth() {
         // redirection handled by passport and google strategy
     }
 
@@ -65,7 +71,8 @@ export class AuthController {
         res.cookie('jwt', jwt.accesstoken, {
             httpOnly: true,
             secure: isProd,
-            sameSite: isProd ? "none" : 'lax'
+            sameSite: isProd ? "none" : 'lax',
+            path: "/"
         })
         return res.redirect(`${CLIENT_URL}/app`)
     }
