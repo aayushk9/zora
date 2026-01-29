@@ -46,7 +46,8 @@ export function AuthPage({ mode }: authModel) {
         credentials: "include",
       });
 
-      const user = await me.json();
+      const user = await me.json(); // if we get 401 from here handle it
+
       setUser(user)
       setIsAuthWindowOpen(false)
     
