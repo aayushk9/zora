@@ -35,18 +35,16 @@ export class AuthController {
             secure: isProd,
             sameSite: isProd ? "none" : "lax",
             maxAge: 10 * 24 * 60 * 60 * 1000,  // 10 days
-            path: "/"
+            path: "/",
+            domain: isProd ? ".zoralabs.fun" : undefined  
         });
 
-        console.log(result.token)
-        console.log(result.message)
         return res.status(200).json({ message: result.message });
     }
 
     @UseGuards(JwtAuthGuard)
     @Get("me")
     me(@Req() req: Request) {
-        console.log(this.authService.getUserFromCookie(req))
         return this.authService.getUserFromCookie(req);
     }
 
@@ -57,6 +55,7 @@ export class AuthController {
             secure: isProd,
             sameSite: isProd ? "none" : "lax",
             path: "/",
+            domain: isProd ? ".zoralabs.fun" : undefined  
         });
         return { success: true };
     }
@@ -75,10 +74,9 @@ export class AuthController {
             httpOnly: true,
             secure: isProd,
             sameSite: isProd ? "none" : 'lax',
-            path: "/"
+            path: "/",
+            domain: isProd ? ".zoralabs.fun" : undefined  
         })
-
-        console.log(jwt.accesstoken);
         
         return res.redirect(`${CLIENT_URL}/app`)
     }
