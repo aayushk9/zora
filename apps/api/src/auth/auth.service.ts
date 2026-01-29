@@ -27,6 +27,7 @@ export class AuthService {
              RETURNING id, email
             `, [email, password_hash]
       )
+      
       const newUser = insert.rows[0]
       const payload = { email: newUser.email, sub: newUser.id };
       const jwt = this.jwt.sign(payload)

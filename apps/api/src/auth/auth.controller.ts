@@ -38,12 +38,15 @@ export class AuthController {
             path: "/"
         });
 
+        console.log(result.token)
+        console.log(result.message)
         return res.status(200).json({ message: result.message });
     }
 
     @UseGuards(JwtAuthGuard)
     @Get("me")
     me(@Req() req: Request) {
+        console.log(this.authService.getUserFromCookie(req))
         return this.authService.getUserFromCookie(req);
     }
 
@@ -74,6 +77,9 @@ export class AuthController {
             sameSite: isProd ? "none" : 'lax',
             path: "/"
         })
+
+        console.log(jwt.accesstoken);
+        
         return res.redirect(`${CLIENT_URL}/app`)
     }
 }
