@@ -13,7 +13,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
     "http://localhost:5173",
-    "https://zora-phase1.vercel.app"
+    "https://v1.zoralabs.fun"
   ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
