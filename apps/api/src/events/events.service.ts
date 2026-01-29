@@ -17,14 +17,18 @@ export class EventsService {
     // Create a unique cache key based on the parameterss
     const cacheKey = `events:${activeCategory}:${start}:${end}`;
 
-    const cachedData = await this.cacheManager.get(cacheKey); // access cached data via get
+    let cachedData: any = null;
+
+    try {
+      cachedData = await this.cacheManager.get(cacheKey); // access cached data via get
+    } catch(error){
+        console.warn("Redis is donw. Please try again later")
+    }
 
     if(cachedData) { // checking if events exists in cache
-        console.log("rendring events from redis")
         return cachedData;
     }
 
-    console.log('fetching events from api call');
      const URL = process.env.PREDICTION_MARKET_API
      const res$ = this.http.get(`${URL}?category=${activeCategory}&start=${start}&end=${end}`)
      const res = await firstValueFrom(res$)
