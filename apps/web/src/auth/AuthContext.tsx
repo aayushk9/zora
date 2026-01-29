@@ -28,12 +28,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    const setConversations = useConversationStore((conversation) => conversation.setConversations)
    const setMessages = useMessageStore((message) => message.setMessages)
 
-  useEffect(() => {
+  useEffect(() => { // this effect exisst just to ensure after succesful redirecion from google oauth w set user as user so we see user logo and this shul happen on mount as the page loads
     fetch(`${API_BASE_URL}/api/auth/me`, {
       method: 'GET',
       credentials: "include",
     })
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => (res.ok ? res.json() : null)) // if we get 401 from here handle it
       .then(setUser)
       .finally(() => setLoading(false));
   }, []);
