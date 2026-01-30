@@ -282,20 +282,14 @@
 }
 
 @media (max-width: 768px) {
-    .container { width: 660px; }
+    .container { 
+        width: 360px; 
+        padding-right: 8px;
+    }
 }
-@media (max-width: 678px) {
-    .container { width: 490px; }
-}
-@media (max-width: 540px) {
-    .container { width: 430px; }
-}
-@media (max-width: 470px) {
-    .container { width: 340px; }
-}
-@media (max-width: 390px) {
-    .container { width: 300px; }
-}
-@media (max-width: 360px) {
-    .container { width: 290px; }
+
+@media  (max-width: 400px) {
+    .container {
+        width: 330px;
+    }
 }

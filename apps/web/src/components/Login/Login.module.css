@@ -65,3 +65,9 @@
   background: transparent;
   border: none;
 }
+
+@media (max-width: 768px) {
+ .signinButton{
+  height: 28px;
+ }
+}

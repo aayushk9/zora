@@ -135,6 +135,7 @@
 }
 
 @media (max-width: 768px) {
+
   .container {
     margin: 0;
     padding: 0 12px;
@@ -146,17 +147,26 @@
   }
 
   .eventCategories {
-    margin-left: 0;
+    margin-left: 10px;
   }
 
   .header {
     margin-top: 25px;
-    font-size: 12px;
+    font-size: 16px;
   }
+
   .active {
     font-size: 10px;
   }
+
   .categoryButton {
-    font-size: 10px;
+    font-size: 13px;
   }
+ .rightBtn {
+    margin-right: 10px;
+ }
+ 
+ .searchContainer {
+    width: 90%;
+ }
 }

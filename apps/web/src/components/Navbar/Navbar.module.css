@@ -35,3 +35,14 @@
   gap: 1rem;
   align-items: center;
 }
+
+@media (max-width: 768px) {
+
+  .zora {
+    font-size: 20px;
+  }
+
+  .agents {
+    font-size: 14px;
+  }
+}
