@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface Conversation {
+type Conversation = {
   id: string;
   title: string;
 }
 
-interface ConversationState {
+type ConversationState = {
   conversations: Conversation[];
   setConversations: (c: Conversation[]) => void;
   addConversation: (c: Conversation) => void;

@@ -7,7 +7,7 @@ import type { SelectedEventProps } from "../types/event";
 import { useQuotaStore } from "../store/useQuotaStore";
 import { useAddConversation } from "../hooks/useConversation"
 
-interface Messages {
+type Messages = {
     client_id: string
     server_id?: string
     message_type: "user" | 'assistant',

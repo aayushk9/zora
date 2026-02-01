@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface auth {
+type auth = {
     isAuthWindowOpen: boolean;
     setIsAuthWindow: (value: boolean) => void
 }

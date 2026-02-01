@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { API_BASE_URL } from '../env'
 
-interface Conversation {
+type Conversation = {
   id: string
   title: string
 }

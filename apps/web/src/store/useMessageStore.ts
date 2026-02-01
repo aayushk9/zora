@@ -1,7 +1,7 @@
 import { create } from "zustand"
 import type { SelectedEventProps } from "../types/event"
 
-interface Messages {
+type Messages = {
     client_id: string,
     server_id?: string
     message_type: "user" | "assistant",
@@ -12,7 +12,7 @@ interface Messages {
     selected_events?: SelectedEventProps[],
 }
 
-interface MessagesState {
+type MessagesState = {
     messages: Messages[],
     setMessages: (message: Messages[] | ((prev: Messages[]) => Messages[])) => void,
     addMessages: (message: Messages) => void
