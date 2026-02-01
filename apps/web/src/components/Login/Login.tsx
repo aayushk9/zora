@@ -59,7 +59,7 @@ export function Login() {
         }}>Sign In</button>
       )}
 
-      { isAuthWindowOpen && <AuthPage mode="inWindowAuth"/> }
+      { isAuthWindowOpen && <AuthPage/> }
 
     </React.Fragment>
   )
