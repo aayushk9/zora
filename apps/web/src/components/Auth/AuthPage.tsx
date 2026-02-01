@@ -5,11 +5,8 @@ import styles from "./Auth.module.css"
 import { API_BASE_URL } from "../../env";
 import zora from "../../assets/zora.png";
 
-interface authModel {
-  mode: "inWindowAuth" | "landingPage"
-}
 
-export function AuthPage({ mode }: authModel) {
+export function AuthPage() {
 
   const { setUser } = useAuth();
 
@@ -64,23 +61,21 @@ export function AuthPage({ mode }: authModel) {
   }
 
   const AuthContent = (
-    <div className={`${mode == "inWindowAuth" ? styles.authContainer : styles.landingAuthContainer}`} style={{ "--zora": `url(${zora})` } as React.CSSProperties} >
+    <div className={styles.authContainer} style={({ "--zora": `url(${zora})` } as React.CSSProperties)}>
       <div className={styles.lhs}>
         <div className={styles.lhsContent}>
           <div className={styles.brandTop}>
             <span className={styles.brandIcon}>▲</span> ZORA
           </div>
-          <h1 className={`${mode == "landingPage" ? styles.heroText : styles.heroForAuth}`}>
-            The intelligence layer <br />
-            for prediction markets.
+          <h1 className={styles.heroForAuth}>
+            Ship prediction market strategies in minutes
           </h1>
           <p className={styles.heroSubtext}>
             Analyze trends and optimize your positions with AI-driven insights.
           </p>
         </div>
       </div>
-    
-      {mode == "inWindowAuth" && (
+     
         <div className={styles.rhs}>
           <div className={styles.formWrapper}>
             <div className={styles.headerText}>
@@ -124,12 +119,9 @@ export function AuthPage({ mode }: authModel) {
             </form>
           </div>
         </div>
-      )}
     </div>
   );
 
-
-  if (mode == "inWindowAuth") {
     return (
       <div className={styles.overlay}>
         <div className={styles.modal}>
@@ -138,11 +130,4 @@ export function AuthPage({ mode }: authModel) {
         </div>
       </div>
     )
-  } else {
-    return (
-      <div className={styles.pageWrapper}>
-        {AuthContent}
-      </div>
-    )
-  }
 }
