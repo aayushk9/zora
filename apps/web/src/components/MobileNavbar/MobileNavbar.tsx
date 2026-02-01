@@ -6,7 +6,7 @@ import { useMessageStore } from "../../store/useMessageStore";
 import { API_BASE_URL } from "../../env";
 import type { SelectedEventProps } from "../../types/event"
 
-interface Messages {
+type Messages = {
   client_id: string
   server_id?: string
   message_type: "user" | 'assistant',

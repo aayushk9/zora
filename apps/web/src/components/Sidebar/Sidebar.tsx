@@ -8,7 +8,7 @@ import type { SelectedEventProps } from "../../types/event"
 import { conversationsQuery } from '../../hooks/useConversation'
 import { useQuery } from "@tanstack/react-query"
 
-interface Messages {
+type Messages = {
   client_id: string
   server_id?: string
   message_type: "user" | 'assistant',
