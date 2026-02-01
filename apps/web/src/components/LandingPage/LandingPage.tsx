@@ -2,7 +2,7 @@ import styles from './LandingPage.module.css'
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '../useIsMobile/useIsMobile';
 import { useState } from 'react';
-import LightRays from '../LightRays/LightRays';
+import Prism from '../Prism/Prism';
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -10,151 +10,117 @@ export function LandingPage() {
 
   const [inputValue, setInputValue] = useState('');
 
-  const [tasks] = useState<Task[]>([
+  const tasks = [
     {
       id: "1",
-      type: "market",
-      from: "Live Market Event",
-      message: "User selects an active prediction market from Jupiter Prediction Market",
+      title: "Live Market Events",
+      message:
+        "Pick an active prediction market directly from live events and prompt zora for suggestions, analyzing and understanding market",
     },
     {
       id: "2",
-      type: "prompt",
-      from: "User Prompt",
-      message: "Ask: What is the best position given current probability shifts?",
+      title: "AI Insights",
+      message:
+        "AI analyzes probability shifts, sentiment, catalysts and optimal positioning.",
+
     },
     {
       id: "3",
-      type: "analysis",
-      from: "Zora AI Insight",
-      message: "AI explains trend momentum, market sentiment, and key catalysts",
-    },
-  ]);
+      title: "Monitor events",
+      message:
+        "Soon (agents will track news, X trends and onchain signals automatically)",
 
-  interface Task {
-    id: string;
-    type: "market" | "prompt" | "analysis" | "strategy";
-    from: string;
-    message: string;
-  }
-
-
-  const getTaskIcon = (type: string) => {
-    switch (type) {
-      case "election":
-        return "🗳️";
-      case "crypto":
-        return "₿";
-      case "macro":
-        return "📉";
-      case "sports":
-        return "🏆";
-    }
-  };
-
+    }]
 
   return (
     <>
       <div className={styles.page}>
-        <div className={styles.left}>
-          <div className={styles.navbar}>zora</div>
-          <div className={styles.content}>
-            <h1 className={styles.heading}>
-              hi. this IS <br /> ZORA
-            </h1>
+        {!isMobile && (
+          <div className={styles.left}>
+            <div className={styles.navbar}>zora</div>
+            <div className={styles.content}>
+              <h1 className={styles.heading}>
+                hi. this IS <br /> ZORA
+              </h1>
 
-            <p className={styles.subtext}>
-              The intelligence layer for prediction markets where users select live market events and prompt for insights and analysis
-            </p>
+              <p className={styles.subtext}>
+                The intelligence layer for prediction markets where users select live market events and prompt for insights and analysis
+              </p>
 
-            <div className={styles.actions}>
-              <button onClick={() => navigate("/app")} className={styles.primary}>
-                try zora
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {!isMobile ? (
-          <div className={styles.right}>
-            <LightRays
-              raysOrigin="top-center"
-              raysColor="#ffffff"
-              raysSpeed={1}
-              lightSpread={0.5}
-              rayLength={3}
-              followMouse={true}
-              mouseInfluence={0.1}
-              noiseAmount={0}
-              distortion={0}
-              pulsating={false}
-              fadeDistance={1}
-              saturation={1}
-              className={styles.raysBackground}
-            />
-
-            <div className={styles.rhs}>
-              <div className={styles.rhsContent}>
-                <div className={styles.brandTop}>
-                  <span className={styles.brandIcon}>▲</span> ZORA
-                </div>
-
-                <div className={styles.container}>
-                  <div className={styles.content}>
-                    <h1 className={styles.heroText}>
-                      Ship prediction market strategies in minutes
-                    </h1>
-                    <p className={styles.heroSubtext}>
-                      Analyze trends and optimize your positions with AI-driven insights.
-                    </p>
-
-                    <div className={styles.inputWrapper}>
-                      <div className={styles.inputContainer}>
-                        <span className={styles.inputIcon}>{getTaskIcon('github')}</span>
-                        <input
-                          type="text"
-                          className={styles.input}
-                          placeholder="Analyze: Will Bitcoin hit $100k this year?"
-                          value={inputValue}
-                          onChange={(e) => setInputValue(e.target.value)}
-                        />
-                        <button className={styles.goButton}>
-                          Ask AI <span className={styles.goArrow}>→</span>
-                        </button>
-                      </div>
-
-                      <button className={styles.addContext}>
-                        <span className={styles.atSymbol}>@</span>
-                        Select event
-                        <span className={styles.contextIcons}>
-                          <span className={styles.contextIcon}>📄</span>
-                          <span className={styles.contextIcon}>🔗</span>
-                          <span className={styles.contextIcon}>📊</span>
-                        </span>
-                      </button>
-                    </div>
-
-                    <div className={styles.taskList}>
-                      {tasks.map((task) => (
-                        <div key={task.id} className={styles.taskCard}>
-                          <div className={styles.taskHeader}>
-                            <span className={styles.taskFrom}>
-                              <span className={styles.taskIcon}>
-                                {getTaskIcon(task.type)}
-                              </span>
-                              <span className={styles.fromName}>{task.from}</span>
-                            </span>
-                            <span className={styles.taskMessage}>{task.message}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              <div className={styles.actions}>
+                <button onClick={() => navigate("/app")} className={styles.primary}>
+                  try zora
+                </button>
               </div>
             </div>
           </div>
-        ) : null}
+        )}
+
+        <div className={styles.right}>
+
+          {!isMobile && (
+            <Prism
+              animationType="rotate"
+              height={3.5}
+              baseWidth={5.5}
+              scale={3.6}
+              hueShift={0}
+              colorFrequency={1}
+              noise={0}
+              glow={1}
+              timeScale={0.6}
+              className={styles.background}
+            />
+          )}
+
+          <div className={styles.demoBox}>
+            <h2 className={styles.heroText}>
+              Ship prediction market strategies in minutes
+            </h2>
+
+            <p className={styles.heroSubtext}>
+              Automate your edge in minutes
+            </p>
+
+            <div className={styles.brandTop}>
+              <span className={styles.brandIcon}>▲</span>
+              ZORA WORKFLOW
+            </div>
+
+            <div className={styles.promptBox}>
+              <div className={styles.promptTop}>
+                <input
+                  type="text"
+                  className={styles.promptInput}
+                  placeholder="Example: Will BTC hit $100k this year?"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                />
+
+                <button className={styles.askButton} onClick={() => navigate("/app")}>
+                  ASK ZORA <span>→</span>
+                </button>
+              </div>
+
+              <div className={styles.promptBottom}>
+                <span className={styles.contextLabel}>
+                  @ Select Event
+                </span>
+              </div>
+            </div>
+
+            <div className={styles.taskList}>
+              {tasks.map((task) => (
+                <div key={task.id} className={styles.taskCard}>
+                  <div className={styles.taskHeader}>
+                    <span className={styles.taskTitle}>{task.title}</span>
+                  </div>
+                  <p className={styles.taskMessage}>{task.message}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
